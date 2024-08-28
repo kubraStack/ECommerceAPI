@@ -6,6 +6,11 @@ namespace API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            //Konfigürasyon dosyalarýný yükledik
+            builder.Configuration.AddJsonFile("appsettings.json");
+
+            //DbContext ve diðer hizmetler eklendi
+            builder.Services.AddPersistenceServices(builder.Configuration);
 
             // Add services to the container.
 

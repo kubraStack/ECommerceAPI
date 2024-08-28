@@ -13,7 +13,11 @@ namespace Domain.Entities
         public Customer Customer { get; set; }
         public DateTime? OrderDate { get; set; }
         public decimal TotalAmount { get; set; }
+        public int OrderStatusId { get; set; }
         public OrderStatus OrderStatus { get; set; }
-        public ICollection<OrderItem> OrderItems { get; set; }
+        public int PaymentId { get; set; }
+        public ICollection<PaymentMethod> PaymentMethods { get; set; }
+        public int OrderDetailId { get; set; }
+        public ICollection<OrderDetail> OrderDetail { get; set; }
     }
 }
