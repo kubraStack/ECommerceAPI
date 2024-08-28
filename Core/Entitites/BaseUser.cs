@@ -13,6 +13,7 @@ namespace Core.Entitites
         public string Email { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
+        //Veri güvenliği için Firstname ve Lastname şifrelendi
         private string? _firstName;
         public string? FirstName
         {
