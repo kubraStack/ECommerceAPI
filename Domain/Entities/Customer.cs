@@ -11,7 +11,7 @@ namespace Domain.Entities
     {
         public string ShippingAddress { get; set; }
         public string BillingAddress  { get; set; }
-
+        public User User { get; set; }
         public ICollection<Order> Orders { get; set; }
         public ICollection <ProductReview> ProductReviews { get; set; }
     }
