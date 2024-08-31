@@ -80,6 +80,7 @@ namespace Persistence.SeedData.User
                 new Domain.Entities.Customer
                 {
                     Id = 1,
+                    UserId = 1,
                     ShippingAddress = "1234 Any St.",
                     BillingAddress = "1234 Any St."
                 }
@@ -89,6 +90,7 @@ namespace Persistence.SeedData.User
                new Domain.Entities.Customer
                {
                    Id = 2,
+                   UserId= 2,
                    ShippingAddress = "4321 Ny St.",
                    BillingAddress = "4321 Ny St."
                }

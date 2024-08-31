@@ -2,7 +2,6 @@
 using Core.Utilities.Hashing;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Persistence.SeedData.BaseUserConfiguration;
 using Persistence.SeedData.Category;
 using Persistence.SeedData.OperationClaim;
 using Persistence.SeedData.Order;
@@ -71,6 +70,28 @@ namespace Persistence.Context
                 .HasForeignKey(pr => pr.ProductId);
             });
 
+            //User
+            modelBuilder.Entity<User>(entity => {
+
+                entity.Property(u => u.PhoneNumber)
+                .IsRequired()
+                .HasMaxLength(15);
+
+                entity.Property(u => u.Gender)
+                .IsRequired(false);
+
+                entity.Property(u => u.IsDeleted)
+                .IsRequired()
+                .HasDefaultValue(false); //Varsayılan olarak silinmiş değil          
+
+                //Customer ile one-to-one ilişkisi
+                entity.HasOne(u => u.Customer)
+                .WithOne(c => c.User) //Customer tarafından User'a olan ilişki
+                .HasForeignKey<Customer>(c => c.UserId)
+                .OnDelete(DeleteBehavior.Cascade); // User silindiğinde müşteri de silinir.
+
+            });
+            
             //Customer
 
             modelBuilder.Entity<Customer>(entity =>
@@ -87,6 +108,11 @@ namespace Persistence.Context
                 entity.HasMany(c => c.ProductReviews)
                 .WithOne(pr => pr.Customer)
                 .HasForeignKey(pr => pr.CustomerId);
+
+                entity.HasOne(c => c.ShoppingCart)
+                .WithOne(sc => sc.Customer)
+                .HasForeignKey<ShoppingCart>(sc => sc.CustomerId)
+                .OnDelete(DeleteBehavior.Cascade); //Müşteri silindiğinde alışveriş sepetide silinecek
                 
             });
 
@@ -111,7 +137,63 @@ namespace Persistence.Context
             });
 
             //OrderStatus
+            modelBuilder.Entity<OrderStatus>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+            });
+            //Order-Detail
+            modelBuilder.Entity<OrderDetail>(entity =>
+            {
+                entity.HasOne(od => od.Order)
+                .WithMany(o => o.OrderDetail)
+                .HasForeignKey(od => od.OrderId)
+                .OnDelete(DeleteBehavior.Cascade); //Sipariş silindiğinde sipariş detayları da silinir
 
+
+                entity.HasOne(od => od.Product)
+                .WithMany()
+                .HasForeignKey(od => od.ProductId)
+                .OnDelete(DeleteBehavior.Restrict); //Ürün silindiğinde sipariş detaylarını silme
+            });
+
+            //Payment
+            modelBuilder.Entity<Payment>(entity =>
+            {
+                entity.HasOne(py => py.Order)
+                .WithMany(o => o.Payments)
+                .HasForeignKey(o => o.OrderId);
+
+                entity.HasOne(py => py.PaymentMethod)
+               .WithMany(pm => pm.Payments)
+               .HasForeignKey(p => p.PaymentMethodId);
+            });
+
+            //Payment Method
+            modelBuilder.Entity<PaymentMethod>(entity => {
+
+                entity.HasMany(pm => pm.Payments)
+                .WithOne(p => p.PaymentMethod)
+                .HasForeignKey(p => p.PaymentMethodId);
+            
+            });
+
+            //ShoppingCart 
+            modelBuilder.Entity<ShoppingCart>(entity =>
+            {
+                entity.HasMany(sc => sc.ShoppingCartDetails)
+                .WithOne(scd => scd.ShoppingCart) // ShoppingCartDetail, ShoppingCart'a referans verir
+                .HasForeignKey(scd => scd.ShoppingCartId)
+                .OnDelete(DeleteBehavior.Cascade); // Sepet silindiğinde detaylar da silinir
+            });
+
+            //ShoppingCart-Detail 
+            modelBuilder.Entity<ShoppingCartDetail>(entity =>
+            {
+                entity.HasOne(scd => scd.ShoppingCart)
+                .WithMany(sc => sc.ShoppingCartDetails)
+                .HasForeignKey(scd => scd.ShoppingCartId)
+                .OnDelete(DeleteBehavior.Cascade);
+            });
 
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new  CustomerConfiguration());
@@ -124,25 +206,27 @@ namespace Persistence.Context
             modelBuilder.ApplyConfiguration(new OrderDetailConfiguration());
             modelBuilder.ApplyConfiguration(new OperationClaimConfiguration());
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
-            modelBuilder.ApplyConfiguration(new BaseUserConfiguration());
 
             base.OnModelCreating(modelBuilder);
 
-            //OrderStatus tablosuna durumları ekleniyor.
+            
+            // Seed data for PaymentMethod
+            modelBuilder.Entity<PaymentMethod>().HasData(
+                new PaymentMethod { Id = 1, Name = "Credit Card", Description = "Kredi Kartı İle Ödeme" },
+                new PaymentMethod { Id = 2, Name = "Wire Transfer/EFT", Description = "Havale/EFT İle Ödeme" },
+                new PaymentMethod { Id = 3, Name = "Mobile Payment", Description = "Mobil Ödeme" },
+                new PaymentMethod { Id = 4, Name = "Payment At Door", Description = "Kapıda Ödeme" }
+            );
+
+            // Seed data for OrderStatus
             modelBuilder.Entity<OrderStatus>().HasData(
-                //seed data
-                new OrderStatus { Id = 1, Name = "Pending", Description = "Beklemede"},
-                new OrderStatus { Id = 2, Name = "Confirmed", Description = "Onaylandı"},
+                new OrderStatus { Id = 1, Name = "Pending", Description = "Beklemede" },
+                new OrderStatus { Id = 2, Name = "Confirmed", Description = "Onaylandı" },
                 new OrderStatus { Id = 3, Name = "Shipped", Description = "Kargoya Verildi" },
                 new OrderStatus { Id = 4, Name = "Delivered", Description = "Teslim Edildi" },
                 new OrderStatus { Id = 5, Name = "Cancelled", Description = "İptal Edildi" }
             );
-            modelBuilder.Entity<PaymentMethod>().HasData(
-                new PaymentMethod { Id = 1, Name = "Credit Card", Description = "Kredi Kartı İle Ödeme"},
-                new PaymentMethod { Id = 2, Name = "Wire Transfer/EFT", Description = "Havale/EFT İle Ödeme"},
-                new PaymentMethod { Id = 3, Name = "Mobile Payment", Description = "Mobil Ödeme"},
-                new PaymentMethod { Id = 4, Name = "Payment At Door", Description = "Kapıda Ödeme"}
-            );
+
 
             //password hash
             byte[] passwordHash, passwordSalt;

@@ -20,8 +20,9 @@ namespace Persistence.SeedData.Payment
                     Id = 1,
                     OrderId = 1,
                     Amount = 500,
+                    PaymentMethodId = 1,
                     PaymentDate = DateTime.Now,
-                    PaymentId = 1,
+                   
                 }
                 
             );
@@ -31,9 +32,10 @@ namespace Persistence.SeedData.Payment
                {
                    Id = 2,
                    OrderId = 2,
+                   PaymentMethodId =2,
                    Amount = 200,
                    PaymentDate = DateTime.Now,
-                   PaymentId = 2,
+                  
                }
 
            );

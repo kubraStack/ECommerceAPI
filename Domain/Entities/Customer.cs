@@ -9,10 +9,12 @@ namespace Domain.Entities
 {
     public class Customer : Entity
     {
+        public int UserId { get; set; }
         public string ShippingAddress { get; set; }
         public string BillingAddress  { get; set; }
         public User User { get; set; }
         public ICollection<Order> Orders { get; set; }
         public ICollection <ProductReview> ProductReviews { get; set; }
+        public ShoppingCart ShoppingCart { get; set; }
     }
 }

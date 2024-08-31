@@ -13,7 +13,7 @@ namespace Domain.Entities
         public string PhoneNumber { get; set; }
         public string Gender{ get; set; }
         public bool IsDeleted { get; set; }
-        public Customer? Customer { get; set; }
+        public Customer Customer { get; set; }
      
 
     }

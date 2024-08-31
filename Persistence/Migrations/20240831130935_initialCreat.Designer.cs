@@ -12,8 +12,8 @@ using Persistence.Context;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ECommerceDbContext))]
-    [Migration("20240828194014_initial")]
-    partial class initial
+    [Migration("20240831130935_initialCreat")]
+    partial class initialCreat
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,15 +53,26 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Kozmetik ürünleri kategorisi",
+                            Name = "Kozmetik"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Cilt bakım ürünleri kategorisi",
+                            Name = "Cilt Bakım"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Customer", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BillingAddress")
                         .IsRequired()
@@ -80,9 +91,28 @@ namespace Persistence.Migrations
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Customers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BillingAddress = "1234 Any St.",
+                            ShippingAddress = "1234 Any St.",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            BillingAddress = "4321 Ny St.",
+                            ShippingAddress = "4321 Ny St.",
+                            UserId = 2
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.OperationClaim", b =>
@@ -109,6 +139,26 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("OperationClaims");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedDate = new DateTime(2024, 8, 31, 16, 9, 34, 672, DateTimeKind.Local).AddTicks(3456),
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedDate = new DateTime(2024, 8, 31, 16, 9, 34, 672, DateTimeKind.Local).AddTicks(3461),
+                            Name = "Customer"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedDate = new DateTime(2024, 8, 31, 16, 9, 34, 672, DateTimeKind.Local).AddTicks(3465),
+                            Name = "Unknow"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Order", b =>
@@ -153,6 +203,28 @@ namespace Persistence.Migrations
                     b.HasIndex("OrderStatusId");
 
                     b.ToTable("Orders");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CustomerId = 1,
+                            OrderDate = new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            OrderDetailId = 0,
+                            OrderStatusId = 1,
+                            PaymentId = 1,
+                            TotalAmount = 0m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CustomerId = 2,
+                            OrderDate = new DateTime(2024, 2, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            OrderDetailId = 0,
+                            OrderStatusId = 2,
+                            PaymentId = 2,
+                            TotalAmount = 7m
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.OrderDetail", b =>
@@ -191,6 +263,24 @@ namespace Persistence.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("OrderDetails");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            OrderId = 1,
+                            Price = 100m,
+                            ProductId = 1,
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            OrderId = 2,
+                            Price = 200m,
+                            ProductId = 2,
+                            Quantity = 2
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.OrderStatus", b =>
@@ -255,7 +345,7 @@ namespace Persistence.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Domain.Entities.PaymentMethod", b =>
+            modelBuilder.Entity("Domain.Entities.Payment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -263,8 +353,61 @@ namespace Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("AmountPaid")
+                    b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PaymentMethodId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("PaymentMethodId");
+
+                    b.ToTable("Payment");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Amount = 500m,
+                            OrderId = 1,
+                            PaymentDate = new DateTime(2024, 8, 31, 16, 9, 34, 672, DateTimeKind.Local).AddTicks(3182),
+                            PaymentMethodId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Amount = 200m,
+                            OrderId = 2,
+                            PaymentDate = new DateTime(2024, 8, 31, 16, 9, 34, 672, DateTimeKind.Local).AddTicks(3199),
+                            PaymentMethodId = 2
+                        });
+                });
+
+            modelBuilder.Entity("Domain.Entities.PaymentMethod", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -280,15 +423,10 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
 
                     b.ToTable("PaymentMethod");
 
@@ -296,28 +434,24 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            AmountPaid = 0m,
                             Description = "Kredi Kartı İle Ödeme",
                             Name = "Credit Card"
                         },
                         new
                         {
                             Id = 2,
-                            AmountPaid = 0m,
                             Description = "Havale/EFT İle Ödeme",
                             Name = "Wire Transfer/EFT"
                         },
                         new
                         {
                             Id = 3,
-                            AmountPaid = 0m,
                             Description = "Mobil Ödeme",
                             Name = "Mobile Payment"
                         },
                         new
                         {
                             Id = 4,
-                            AmountPaid = 0m,
                             Description = "Kapıda Ödeme",
                             Name = "Payment At Door"
                         });
@@ -366,6 +500,28 @@ namespace Persistence.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 1,
+                            Description = "Description",
+                            ImageUrl = "https://images.pexels.com/photos/4938197/pexels-photo-4938197.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                            Name = "Eyeliner",
+                            Price = 500m,
+                            StockQuantity = 10
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryId = 2,
+                            Description = "Description",
+                            ImageUrl = "https://images.pexels.com/photos/9748717/pexels-photo-9748717.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                            Name = "C Vitaminli Krem",
+                            Price = 300m,
+                            StockQuantity = 5
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.ProductReview", b =>
@@ -408,6 +564,26 @@ namespace Persistence.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductReviews");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CustomerId = 1,
+                            ProductId = 1,
+                            Rating = 5,
+                            Review = "Bu eyeliner harikaa!",
+                            ReviewDate = new DateTime(2024, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CustomerId = 2,
+                            ProductId = 2,
+                            Rating = 5,
+                            Review = "Bu ruj harikaa!",
+                            ReviewDate = new DateTime(2024, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.ShoppingCart", b =>
@@ -432,9 +608,22 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("CustomerId")
+                        .IsUnique();
 
                     b.ToTable("ShoppingCarts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CustomerId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CustomerId = 2
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.ShoppingCartDetail", b =>
@@ -450,6 +639,9 @@ namespace Persistence.Migrations
 
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -470,6 +662,24 @@ namespace Persistence.Migrations
                     b.HasIndex("ShoppingCartId");
 
                     b.ToTable("ShoppingCartDetail");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Price = 500.0,
+                            ProductId = 1,
+                            Quantity = 1,
+                            ShoppingCartId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Price = 300.0,
+                            ProductId = 2,
+                            Quantity = 2,
+                            ShoppingCartId = 2
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -483,9 +693,6 @@ namespace Persistence.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("CustomerId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
 
@@ -497,11 +704,12 @@ namespace Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Gender")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
@@ -516,7 +724,8 @@ namespace Persistence.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
@@ -526,9 +735,51 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
-
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedDate = new DateTime(2024, 8, 31, 13, 9, 34, 672, DateTimeKind.Utc).AddTicks(2186),
+                            Email = "customer1@example.com",
+                            FirstName = "+2vS9SiEjuEtdomA+E1iOw==",
+                            Gender = "Famela",
+                            IsDeleted = false,
+                            LastName = "evKlCl7mIBJkEqQf5ueGMg==",
+                            PasswordHash = new byte[] { 221, 96, 86, 84, 35, 135, 66, 112, 228, 15, 26, 187, 64, 207, 244, 95, 47, 143, 197, 45, 214, 102, 83, 181, 36, 208, 110, 159, 148, 123, 47, 181, 18, 98, 103, 4, 210, 202, 112, 233, 35, 31, 30, 249, 138, 27, 154, 86, 108, 7, 213, 146, 3, 239, 28, 238, 166, 6, 85, 178, 187, 119, 73, 13 },
+                            PasswordSalt = new byte[] { 63, 180, 212, 48, 97, 17, 94, 250, 68, 46, 200, 21, 201, 244, 168, 216, 100, 193, 229, 25, 249, 236, 235, 208, 104, 236, 247, 2, 189, 95, 126, 123, 199, 3, 0, 132, 86, 141, 21, 117, 219, 140, 216, 238, 109, 169, 230, 149, 213, 5, 36, 22, 63, 86, 179, 233, 245, 5, 115, 166, 217, 65, 189, 63, 77, 23, 49, 19, 235, 149, 177, 7, 15, 153, 12, 111, 37, 234, 181, 21, 226, 35, 237, 37, 0, 107, 88, 46, 97, 154, 237, 67, 68, 239, 252, 2, 115, 237, 111, 232, 171, 25, 173, 163, 167, 84, 250, 51, 28, 32, 155, 184, 21, 9, 212, 105, 85, 230, 105, 234, 54, 197, 90, 89, 252, 241, 116, 135 },
+                            PhoneNumber = "1234567890",
+                            UserType = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedDate = new DateTime(2024, 8, 31, 13, 9, 34, 672, DateTimeKind.Utc).AddTicks(2341),
+                            Email = "hasta2@example.com",
+                            FirstName = "lx191yNB5UTgUeNqX1QIZQ==",
+                            Gender = "Male",
+                            IsDeleted = false,
+                            LastName = "ESeBAof1D3qOrdvr0NsjqQ==",
+                            PasswordHash = new byte[] { 221, 96, 86, 84, 35, 135, 66, 112, 228, 15, 26, 187, 64, 207, 244, 95, 47, 143, 197, 45, 214, 102, 83, 181, 36, 208, 110, 159, 148, 123, 47, 181, 18, 98, 103, 4, 210, 202, 112, 233, 35, 31, 30, 249, 138, 27, 154, 86, 108, 7, 213, 146, 3, 239, 28, 238, 166, 6, 85, 178, 187, 119, 73, 13 },
+                            PasswordSalt = new byte[] { 63, 180, 212, 48, 97, 17, 94, 250, 68, 46, 200, 21, 201, 244, 168, 216, 100, 193, 229, 25, 249, 236, 235, 208, 104, 236, 247, 2, 189, 95, 126, 123, 199, 3, 0, 132, 86, 141, 21, 117, 219, 140, 216, 238, 109, 169, 230, 149, 213, 5, 36, 22, 63, 86, 179, 233, 245, 5, 115, 166, 217, 65, 189, 63, 77, 23, 49, 19, 235, 149, 177, 7, 15, 153, 12, 111, 37, 234, 181, 21, 226, 35, 237, 37, 0, 107, 88, 46, 97, 154, 237, 67, 68, 239, 252, 2, 115, 237, 111, 232, 171, 25, 173, 163, 167, 84, 250, 51, 28, 32, 155, 184, 21, 9, 212, 105, 85, 230, 105, 234, 54, 197, 90, 89, 252, 241, 116, 135 },
+                            PhoneNumber = "1234512345",
+                            UserType = 0
+                        },
+                        new
+                        {
+                            Id = 99,
+                            CreatedDate = new DateTime(2024, 8, 31, 13, 9, 34, 672, DateTimeKind.Utc).AddTicks(2459),
+                            Email = "admin1@example.com",
+                            FirstName = "aNbdnOzUNuGnMPCOxe7GbA==",
+                            Gender = "Male",
+                            IsDeleted = false,
+                            LastName = "zWkKiFF1SEkTjhIMvlgAfg==",
+                            PasswordHash = new byte[] { 221, 96, 86, 84, 35, 135, 66, 112, 228, 15, 26, 187, 64, 207, 244, 95, 47, 143, 197, 45, 214, 102, 83, 181, 36, 208, 110, 159, 148, 123, 47, 181, 18, 98, 103, 4, 210, 202, 112, 233, 35, 31, 30, 249, 138, 27, 154, 86, 108, 7, 213, 146, 3, 239, 28, 238, 166, 6, 85, 178, 187, 119, 73, 13 },
+                            PasswordSalt = new byte[] { 63, 180, 212, 48, 97, 17, 94, 250, 68, 46, 200, 21, 201, 244, 168, 216, 100, 193, 229, 25, 249, 236, 235, 208, 104, 236, 247, 2, 189, 95, 126, 123, 199, 3, 0, 132, 86, 141, 21, 117, 219, 140, 216, 238, 109, 169, 230, 149, 213, 5, 36, 22, 63, 86, 179, 233, 245, 5, 115, 166, 217, 65, 189, 63, 77, 23, 49, 19, 235, 149, 177, 7, 15, 153, 12, 111, 37, 234, 181, 21, 226, 35, 237, 37, 0, 107, 88, 46, 97, 154, 237, 67, 68, 239, 252, 2, 115, 237, 111, 232, 171, 25, 173, 163, 167, 84, 250, 51, 28, 32, 155, 184, 21, 9, 212, 105, 85, 230, 105, 234, 54, 197, 90, 89, 252, 241, 116, 135 },
+                            PhoneNumber = "1234512345",
+                            UserType = 1
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.UserOperationClaim", b =>
@@ -563,6 +814,17 @@ namespace Persistence.Migrations
                     b.ToTable("UserOperations");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Customer", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithOne("Customer")
+                        .HasForeignKey("Domain.Entities.Customer", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Domain.Entities.Order", b =>
                 {
                     b.HasOne("Domain.Entities.Customer", "Customer")
@@ -593,7 +855,7 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Order");
@@ -601,11 +863,23 @@ namespace Persistence.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Domain.Entities.PaymentMethod", b =>
+            modelBuilder.Entity("Domain.Entities.Payment", b =>
                 {
-                    b.HasOne("Domain.Entities.Order", null)
-                        .WithMany("PaymentMethods")
-                        .HasForeignKey("OrderId");
+                    b.HasOne("Domain.Entities.Order", "Order")
+                        .WithMany("Payments")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.PaymentMethod", "PaymentMethod")
+                        .WithMany("Payments")
+                        .HasForeignKey("PaymentMethodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("PaymentMethod");
                 });
 
             modelBuilder.Entity("Domain.Entities.Product", b =>
@@ -641,8 +915,8 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.ShoppingCart", b =>
                 {
                     b.HasOne("Domain.Entities.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
+                        .WithOne("ShoppingCart")
+                        .HasForeignKey("Domain.Entities.ShoppingCart", "CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -666,15 +940,6 @@ namespace Persistence.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("ShoppingCart");
-                });
-
-            modelBuilder.Entity("Domain.Entities.User", b =>
-                {
-                    b.HasOne("Domain.Entities.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId");
-
-                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("Domain.Entities.UserOperationClaim", b =>
@@ -706,6 +971,9 @@ namespace Persistence.Migrations
                     b.Navigation("Orders");
 
                     b.Navigation("ProductReviews");
+
+                    b.Navigation("ShoppingCart")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Entities.OperationClaim", b =>
@@ -717,7 +985,12 @@ namespace Persistence.Migrations
                 {
                     b.Navigation("OrderDetail");
 
-                    b.Navigation("PaymentMethods");
+                    b.Navigation("Payments");
+                });
+
+            modelBuilder.Entity("Domain.Entities.PaymentMethod", b =>
+                {
+                    b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("Domain.Entities.Product", b =>
@@ -728,6 +1001,12 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.ShoppingCart", b =>
                 {
                     b.Navigation("ShoppingCartDetails");
+                });
+
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.Navigation("Customer")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
