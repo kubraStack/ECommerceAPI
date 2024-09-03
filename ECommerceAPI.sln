@@ -9,11 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{E4E2C00F-1F51-4AEB-BB29-6050DA6A2063}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Insfrastructure", "Insfrastructure\Insfrastructure.csproj", "{78B6821F-5D2C-4954-9FF7-E2C8D253DE85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Insfrastructure\Infrastructure.csproj", "{78B6821F-5D2C-4954-9FF7-E2C8D253DE85}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence", "Persistence\Persistence.csproj", "{BD40EC52-C1C5-4201-BCB7-8CAC2021F4A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "WebAPI\WebAPI.csproj", "{9CA0F848-7090-4A61-B59F-CB45603B720A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI\WebAPI.csproj", "{9CA0F848-7090-4A61-B59F-CB45603B720A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
