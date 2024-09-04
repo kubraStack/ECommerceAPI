@@ -29,7 +29,7 @@ namespace Core.Utilities.JWT
             DateTime expirationTime = DateTime.Now.AddMinutes(_tokenOptions.ExpirationTime);
 
             //Token için kriptografik anahtar
-            SecurityKey key = SecurityKeyHelper.CreateSecurityKey(_tokenOptions.SecurityKeys);
+            SecurityKey key = SecurityKeyHelper.CreateSecurityKey(_tokenOptions.SecurityKey);
 
             //Token'in doğrulama imzası
             SigningCredentials signingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
