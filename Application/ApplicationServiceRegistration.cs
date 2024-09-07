@@ -1,4 +1,6 @@
-﻿using Core.Application.Pipelines.Authorization;
+﻿using Application.Abstracts;
+using Application.Features.Customer.Profiles;
+using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
 using Core.Application.Pipelines.Validation;
 using FluentValidation;
@@ -23,9 +25,13 @@ namespace Application
                 config.AddOpenBehavior(typeof(LogingBehavior<,>));
                 config.AddOpenBehavior(typeof(AuthorizationBehavior<,>));
                 config.AddOpenBehavior(typeof(ValidationBehavior<,>));
+
             });
+            services.AddAutoMapper(typeof(MappingProfile));
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            
+            
             return services;
         }
     }

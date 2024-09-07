@@ -8,6 +8,8 @@ using Core.Utilities.JWT;
 using Core;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Core.Utilities.Encryption;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 //CORS (Cross-Origin Resource Sharing) => bir web sayfasýnýn baþka bir domain'den (kaynak) veri alabilmesini kontrol eden bir güvenlik özelliðidir. 
@@ -78,7 +80,7 @@ builder.Services
             ValidateIssuerSigningKey = true,
             ValidIssuer = tokenOptions.Issuer,
             ValidAudience = tokenOptions.Audience,
-            IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOptions.SecurityKey))
         };
 
     });

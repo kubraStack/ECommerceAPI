@@ -72,7 +72,7 @@ namespace Persistence.SeedData.User
 
     public class CustomerConfiguration : IEntityTypeConfiguration<Domain.Entities.Customer>
     {
-        public void Configure(EntityTypeBuilder<Customer> builder)
+        public void Configure(EntityTypeBuilder<Domain.Entities.Customer> builder)
         {
             //Customer Seed Data
 

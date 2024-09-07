@@ -54,6 +54,7 @@ namespace Core.Utilities.JWT
             claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
             claims.Add(new Claim(ClaimTypes.Name, user.FirstName));
             claims.Add(new Claim(ClaimTypes.Email, user.Email));
+            claims.Add(new Claim(ClaimTypes.Role, "Admin"));
 
             foreach (var operationClaim in operationClaims)
             {

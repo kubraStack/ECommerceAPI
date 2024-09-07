@@ -19,10 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Abstracts\" />
-    <Folder Include="Features\Customer\Commands\" />
-    <Folder Include="Features\Customer\Profiles\" />
-    <Folder Include="Features\Customer\Queries\" />
+    <Folder Include="Features\Product\Command\CustomerCommands\" />
+    <Folder Include="Features\Product\Queries\CustomerQueries\" />
   </ItemGroup>
 
 </Project>

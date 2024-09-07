@@ -66,6 +66,27 @@ namespace Core.DataAccess
             return await data.FirstOrDefaultAsync(predicate);
         }
 
+        public TEntity? GetById(int id, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
+        {
+            IQueryable<TEntity> query = Context.Set<TEntity>();
+            if (include != null)
+            {
+                query = include(query);
+            }
+
+            return query.FirstOrDefault(i => EF.Property<int>(i, "Id") == id);
+        }
+
+        public Task<TEntity?> GetByIdAsync(int id, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
+        {
+            IQueryable<TEntity> query = Context.Set<TEntity>();
+            if (include != null)
+            {
+                query = include(query);
+            }
+            return query.FirstOrDefaultAsync(i => EF.Property<int>(i,"Id") == id);
+        }
+
         //Filter - OrderBy
         public List<TEntity> GetList(Expression<Func<TEntity, bool>>? predicate = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
         {
