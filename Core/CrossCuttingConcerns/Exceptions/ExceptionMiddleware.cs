@@ -32,10 +32,14 @@ namespace Core.CrossCuttingConcerns.Exceptions
 
                 if (exception is BusinessException)
                 {
-                    ProblemDetails problemDetails = new ProblemDetails();
-                    problemDetails.Title = "Business Rule Violation";
-                    problemDetails.Detail = exception.Message;
-                    problemDetails.Type = "BusinessException";
+                    ProblemDetails problemDetails = new ProblemDetails
+                    {
+                      Title = "Business Rule Violation",
+                      Detail = exception.Message,
+                      Type = "BusinessException",
+                      Status = StatusCodes.Status400BadRequest,
+                    };
+                   
                     await context.Response.WriteAsync(JsonSerializer.Serialize(problemDetails));
                 }else if(exception is ValidationException)
                 {
@@ -43,6 +47,20 @@ namespace Core.CrossCuttingConcerns.Exceptions
                     ValidationProblemDetails validationProblemDetails = new ValidationProblemDetails(validationException.Errors.ToList());
 
                     await context.Response.WriteAsync(JsonSerializer.Serialize<ValidationProblemDetails>(validationProblemDetails));
+                }
+                else if(exception is AuthorizationException)
+                {
+                    ProblemDetails problemDetails = new ProblemDetails
+                    {
+                        Title = "Authorization Role Violation",
+                        Detail = exception.Message,
+                        Type = "Authorization",
+                        Status = StatusCodes.Status403Forbidden,
+                    };
+                
+                  
+                    
+                    await context.Response.WriteAsync(JsonSerializer.Serialize(problemDetails));
                 }
                 else
                 {

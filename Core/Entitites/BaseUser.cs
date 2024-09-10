@@ -34,6 +34,7 @@ namespace Core.Entitites
     public enum UserType
     {
         Customer,
-        Admin
+        Admin,
+        Guest
     }
 }

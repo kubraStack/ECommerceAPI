@@ -15,6 +15,6 @@ namespace Domain.Entities
         public bool IsDeleted { get; set; }
         public Customer Customer { get; set; }
      
-
+        
     }
 }

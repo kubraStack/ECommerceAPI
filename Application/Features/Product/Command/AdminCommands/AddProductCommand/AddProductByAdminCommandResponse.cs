@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Product.Command.AdminCommands.AddProductCommand
 {
-    public class AddProductCommandResponse
+    public class AddProductByAdminCommandResponse
     {
         public int ProductId { get; set; }
         public bool Success { get; set; }

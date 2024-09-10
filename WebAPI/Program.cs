@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Core.Utilities.Encryption;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Core.CrossCuttingConcerns.Exceptions.Extentions;
 
 var builder = WebApplication.CreateBuilder(args);
 //CORS (Cross-Origin Resource Sharing) => bir web sayfasýnýn baþka bir domain'den (kaynak) veri alabilmesini kontrol eden bir güvenlik özelliðidir. 
@@ -104,6 +105,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.ConfigureExceptionMiddlewareExtentions(); //ExceptionMiddleware
 app.MapControllers();
 
 app.Run();

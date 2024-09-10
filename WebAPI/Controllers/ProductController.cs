@@ -1,5 +1,7 @@
 ﻿using Application.Features.Product.Command.AdminCommands.AddProductCommand;
+using Application.Features.Product.Command.AdminCommands.DeleteProductCommand;
 using Application.Features.Product.Queries.AdminQueries.GetById;
+using Application.Features.Product.Queries.AdminQueries.GetListProduct;
 using Core.Entitites;
 using Domain.Entities;
 using MediatR;
@@ -23,7 +25,7 @@ namespace WebAPI.Controllers
         // POST: api/Product
         [HttpPost("admin/products")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AddProductByAdmin(AddProductCommand productCommand)
+        public async Task<IActionResult> AddProductByAdmin(AddProductByAdminCommand productCommand)
         {
       
             var response = await _mediator.Send(productCommand);
@@ -31,11 +33,11 @@ namespace WebAPI.Controllers
             return Ok(response);
         }
 
-        //Get
+        //Admin Get productbyid
         [HttpGet("admin/products/{id}")]
-        public async Task<IActionResult> GetProductById(int id)
+        public async Task<IActionResult> GetProductByIdAdmin(int id)
         {
-           var query = new GetProductByIdQuery { Id = id };
+           var query = new GetProductByIdAdminQuery { Id = id };
            var response = await _mediator.Send(query);
             
            
@@ -43,6 +45,25 @@ namespace WebAPI.Controllers
             return Ok(response);
         }
 
+        //Admin Get all product
+        [HttpGet("admin/products")]
+        public async Task<IActionResult> GetListProductByAdmin()
+        {
+            var query = new GetListProductByadminQuery();
+            var result = await _mediator.Send(query);
+            return Ok(result.Products);
+        }
+
+        //Admin Delete product
+        [HttpDelete("admin/product/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteProductByAdmin(int id) 
+        { 
+            var command = new DeleteProductByAdminCommand { ProductId = id };
+            await _mediator.Send(command);
+
+           return Ok(command);
+        }
        
 
     }

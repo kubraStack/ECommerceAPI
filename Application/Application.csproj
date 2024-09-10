@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Features\Product\Command\AdminCommands\UpdateProductCommand\" />
     <Folder Include="Features\Product\Command\CustomerCommands\" />
     <Folder Include="Features\Product\Queries\CustomerQueries\" />
   </ItemGroup>

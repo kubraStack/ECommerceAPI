@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Core.Entitites;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -17,7 +18,7 @@ namespace Persistence.SeedData.OperationClaim
                 new Domain.Entities.OperationClaim
                 {
                    Id = 1,
-                   Name = "AdminRole",
+                   Name = "Admin",
                    CreatedDate = DateTime.Now,
                 }
             );
@@ -25,8 +26,8 @@ namespace Persistence.SeedData.OperationClaim
             builder.HasData(
                 new Domain.Entities.OperationClaim
                 {
-                    Id = 2,
-                    Name = "CustomerRole",
+                    Id =2,
+                    Name = "Customer",
                     CreatedDate = DateTime.Now,
                 }
             );
@@ -35,7 +36,7 @@ namespace Persistence.SeedData.OperationClaim
                 new Domain.Entities.OperationClaim
                 {
                     Id = 3,
-                    Name = "GuestRole",
+                    Name = "Guest",
                     CreatedDate = DateTime.Now,
                 }
             );
@@ -49,7 +50,7 @@ namespace Persistence.SeedData.OperationClaim
                 new Domain.Entities.UserOperationClaim
                 {
                     Id = 1,
-                    UserId = 1,  // Kullanıcı Id (Users tablosundaki Id)
+                    UserId = 99,  // Kullanıcı Id (Users tablosundaki Id)
                     OperationClaimId = 1,  // Rol Id (AdminRole)
                     CreatedDate = DateTime.Now
                 }
@@ -59,10 +60,22 @@ namespace Persistence.SeedData.OperationClaim
                new Domain.Entities.UserOperationClaim
                {
                    Id = 2,
-                   UserId = 2,  // Kullanıcı Id (Users tablosundaki Id)
-                   OperationClaimId = 2,  // Rol Id (Customer Role)
+                   UserId = 1,  // Kullanıcı Id (Users tablosundaki Id)
+                   OperationClaimId =2,  // Rol Id (Customer Role)
                    CreatedDate = DateTime.Now
                }
+            );
+            
+         
+           
+            builder.HasData(
+                new Domain.Entities.UserOperationClaim
+                {
+                    Id=3,
+                    UserId=3,
+                    OperationClaimId=3,
+                    CreatedDate= DateTime.Now
+                }
             );
 
         }

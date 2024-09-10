@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Product.Queries.AdminQueries.GetById
 {
-    public class GetProductByIdQuery : IRequest<GetProductByIdResponse>
+    public class GetProductByIdAdminQuery : IRequest<GetProductByIdAdminResponse>
     {
         public int Id { get; set; }
-        public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, GetProductByIdResponse>
+        public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdAdminQuery, GetProductByIdAdminResponse>
         {
             private readonly IProductRepository _productRepository;
             private readonly IMapper _mapper;
@@ -23,14 +23,14 @@ namespace Application.Features.Product.Queries.AdminQueries.GetById
                 _mapper = mapper;
             }
 
-            public async Task<GetProductByIdResponse> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
+            public async Task<GetProductByIdAdminResponse> Handle(GetProductByIdAdminQuery request, CancellationToken cancellationToken)
             {
                var product = await _productRepository.GetByIdAsync(request.Id);
                 if (product == null) {
                     throw new Exception("Ürün Bulunamadı");
                 }
 
-                return _mapper.Map<GetProductByIdResponse>(product);
+                return _mapper.Map<GetProductByIdAdminResponse>(product);
             }
         }
     }

@@ -15,10 +15,10 @@ namespace Persistence.SeedData.User
     {
         public void Configure(EntityTypeBuilder<Domain.Entities.User> builder)
         {
-            //Kullanıcı için parola jasj ve salt oluşturma
-            HashingHelper.CreatePasswordHash("123456", out byte[] passwordHash, out byte[] passwordSalt);
+            
+            HashingHelper.CreatePasswordHash("123456", out byte[] passwordHash1, out byte[] passwordSalt1);
 
-            //User Seed Data
+            // User Seed Data
             builder.HasData(
                 new Domain.Entities.User
                 {
@@ -26,46 +26,66 @@ namespace Persistence.SeedData.User
                     FirstName = "Alina",
                     LastName = "Jast",
                     Email = "customer1@example.com",
-                    PasswordHash = passwordHash,
-                    PasswordSalt = passwordSalt,
+                    PasswordHash = passwordHash1,
+                    PasswordSalt = passwordSalt1,
                     PhoneNumber = "1234567890",
                     Gender = "Famela",
                     UserType = UserType.Customer,
                     CreatedDate = DateTime.UtcNow
                 }
             );
+
             builder.HasData(
                new Domain.Entities.User
                {
                    Id = 2,
-                   FirstName = ("Jonathan"),
-                   LastName = ("Corwin"),
-                   Email = "hasta2@example.com",
-                   PasswordHash = passwordHash,
-                   PasswordSalt = passwordSalt,
+                   FirstName = "Jonathan",
+                   LastName = "Corwin",
+                   Email = "customer2@example.com",
+                   PasswordHash = passwordHash1,
+                   PasswordSalt = passwordSalt1,
                    PhoneNumber = "1234512345",
                    Gender = "Male",
                    UserType = UserType.Customer,
                    CreatedDate = DateTime.UtcNow
                }
             );
+
+            builder.HasData(
+
+               new Domain.Entities.User
+               {
+                   Id = 3,
+                   FirstName = "Ziyaretçi",
+                   LastName = "Guest",
+                   Email = "guest1@example.com",
+                   PasswordHash = passwordHash1,
+                   PasswordSalt = passwordHash1,
+                   PhoneNumber = "2568947898",
+                   Gender = "Male",
+                   UserType = UserType.Guest,
+                   CreatedDate = DateTime.UtcNow
+               }
+
+            );
             builder.HasData(
                new Domain.Entities.User
                {
                    Id = 99,
-                   FirstName = ("Admin"),
-                   LastName = ("Yönetici"),
+                   FirstName = "Admin",
+                   LastName = "Yönetici",
                    Email = "admin1@example.com",
-                   PasswordHash = passwordHash,
-                   PasswordSalt = passwordSalt,
+                   PasswordHash = passwordHash1,
+                   PasswordSalt = passwordHash1,
                    PhoneNumber = "1234512345",
                    Gender = "Male",
                    UserType = UserType.Admin,
                    CreatedDate = DateTime.UtcNow
                }
             );
-
+           
         }
+
 
 
     }
