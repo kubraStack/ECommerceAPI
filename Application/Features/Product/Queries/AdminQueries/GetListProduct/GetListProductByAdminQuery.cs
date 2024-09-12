@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Product.Queries.AdminQueries.GetListProduct
 {
-    public class GetListProductByadminQuery : IRequest<GetListProductByAdminResponse>
+    public class GetListProductByAdminQuery : IRequest<GetListProductByAdminResponse>
     {
-        public class GetListProductQueryHandler : IRequestHandler<GetListProductByadminQuery, GetListProductByAdminResponse>
+        public class GetListProductQueryHandler : IRequestHandler<GetListProductByAdminQuery, GetListProductByAdminResponse>
         {
             private readonly IProductRepository _productRepository;
             private readonly IHttpContextAccessor _httpContextAccessor;
@@ -23,12 +23,12 @@ namespace Application.Features.Product.Queries.AdminQueries.GetListProduct
                 _httpContextAccessor = httpContextAccessor;
             }
 
-            public async Task<GetListProductByAdminResponse> Handle(GetListProductByadminQuery request, CancellationToken cancellationToken)
+            public async Task<GetListProductByAdminResponse> Handle(GetListProductByAdminQuery request, CancellationToken cancellationToken)
             {
                 var isAdmin = _httpContextAccessor.HttpContext.User.IsInRole("Admin");
                 if (!isAdmin)
                 {
-                    throw new BusinessException("Bu işlem için yetkiniz yok!");
+                    throw new AuthorizationException("Bu işlem için yetkiniz yok!");
                 }
 
                 var allProducts = await _productRepository.GetListAsync();

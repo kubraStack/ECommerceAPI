@@ -1,5 +1,6 @@
 ﻿using Application.Features.Product.Command.AdminCommands.AddProductCommand;
 using Application.Features.Product.Command.AdminCommands.DeleteProductCommand;
+using Application.Features.Product.Command.AdminCommands.UpdateProductCommand;
 using Application.Features.Product.Queries.AdminQueries.GetById;
 using Application.Features.Product.Queries.AdminQueries.GetListProduct;
 using Core.Entitites;
@@ -24,7 +25,6 @@ namespace WebAPI.Controllers
 
         // POST: api/Product
         [HttpPost("admin/products")]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddProductByAdmin(AddProductByAdminCommand productCommand)
         {
       
@@ -49,14 +49,14 @@ namespace WebAPI.Controllers
         [HttpGet("admin/products")]
         public async Task<IActionResult> GetListProductByAdmin()
         {
-            var query = new GetListProductByadminQuery();
+            var query = new GetListProductByAdminQuery();
             var result = await _mediator.Send(query);
             return Ok(result.Products);
         }
 
         //Admin Delete product
         [HttpDelete("admin/product/{id}")]
-        [Authorize(Roles = "Admin")]
+        
         public async Task<IActionResult> DeleteProductByAdmin(int id) 
         { 
             var command = new DeleteProductByAdminCommand { ProductId = id };
@@ -64,7 +64,15 @@ namespace WebAPI.Controllers
 
            return Ok(command);
         }
-       
+
+        //Admin Update product
+        [HttpPost("admin/product/update")]
+        public async Task<IActionResult> UpdateProductByAdmin( [FromBody] UpdateProductCommand command)
+        {
+            
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
 
     }
 }

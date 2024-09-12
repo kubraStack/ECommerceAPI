@@ -1,5 +1,6 @@
 ﻿using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -9,9 +10,12 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Product.Queries.AdminQueries.GetById
 {
-    public class GetProductByIdAdminQuery : IRequest<GetProductByIdAdminResponse>
+    public class GetProductByIdAdminQuery : IRequest<GetProductByIdAdminResponse>, ISequredRequest
     {
         public int Id { get; set; }
+
+        public string[] ReuqiredRoles =>["Admin"];
+
         public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdAdminQuery, GetProductByIdAdminResponse>
         {
             private readonly IProductRepository _productRepository;

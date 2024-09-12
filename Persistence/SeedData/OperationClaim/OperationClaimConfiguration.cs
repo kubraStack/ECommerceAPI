@@ -65,8 +65,7 @@ namespace Persistence.SeedData.OperationClaim
                    CreatedDate = DateTime.Now
                }
             );
-            
-         
+       
            
             builder.HasData(
                 new Domain.Entities.UserOperationClaim
@@ -77,6 +76,15 @@ namespace Persistence.SeedData.OperationClaim
                     CreatedDate= DateTime.Now
                 }
             );
+            builder.HasData(
+                 new Domain.Entities.UserOperationClaim
+                 {
+                     Id = 4,
+                     UserId = 2,
+                     OperationClaimId=3,
+                     CreatedDate= DateTime.Now
+                 }
+          );
 
         }
     }
