@@ -196,7 +196,7 @@ namespace Persistence.Context
             });
 
             modelBuilder.ApplyConfiguration(new UserConfiguration());
-            modelBuilder.ApplyConfiguration(new  CustomerConfiguration());
+            modelBuilder.ApplyConfiguration(new CustomerConfiguration());
             modelBuilder.ApplyConfiguration(new ShoppingCartConfiguration());   
             modelBuilder.ApplyConfiguration(new ShoppingCartDetailConfiguration()); 
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
@@ -205,6 +205,7 @@ namespace Persistence.Context
             modelBuilder.ApplyConfiguration(new OrderConfiguration());
             modelBuilder.ApplyConfiguration(new OrderDetailConfiguration());
             modelBuilder.ApplyConfiguration(new OperationClaimConfiguration());
+            modelBuilder.ApplyConfiguration(new UserOperationClaimConfiguration());
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
 
             base.OnModelCreating(modelBuilder);

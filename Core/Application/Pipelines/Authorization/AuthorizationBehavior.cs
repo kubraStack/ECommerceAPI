@@ -23,7 +23,7 @@ namespace Core.Application.Pipelines.Authorization
         {
             if (!_contextAccessor.HttpContext.User.Identity.IsAuthenticated)
             {
-                //TODO: add business exception
+                
                 throw new Core.CrossCuttingConcerns.Exceptions.Types.BusinessException("Giriş Yapmadınız.");
             }
 

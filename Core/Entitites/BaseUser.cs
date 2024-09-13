@@ -33,7 +33,8 @@ namespace Core.Entitites
 
     public enum UserType
     {
-        Customer,
-        Admin
+        Customer = 2,
+        Admin = 1,
+        Guest = 3
     }
 }
