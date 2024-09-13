@@ -1,5 +1,6 @@
 ﻿using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,13 +9,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Customer.Queries.GetAll
+namespace Application.Features.Customer.Queries.QueryByAdmin.GetAll
 {
-    public class GetAllCustomerQuery : IRequest<GetAllCustomerQueryResponse>
+    public class GetAllCustomerQuery : IRequest<GetAllCustomerQueryResponse> , ISequredRequest
     {
-        public int Page { get; set; }
+        public int Page  { get; set; }
         public int PageSize { get; set; }
 
+        public string[] ReuqiredRoles => ["Admin"];
 
         public class GetAllCustomerQueryHandler : IRequestHandler<GetAllCustomerQuery, GetAllCustomerQueryResponse>
         {

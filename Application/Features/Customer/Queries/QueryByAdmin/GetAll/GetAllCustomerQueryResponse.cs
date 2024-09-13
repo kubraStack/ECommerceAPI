@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Customer.Queries.GetAll
+namespace Application.Features.Customer.Queries.QueryByAdmin.GetAll
 {
     public class GetAllCustomerQueryResponse
     {
