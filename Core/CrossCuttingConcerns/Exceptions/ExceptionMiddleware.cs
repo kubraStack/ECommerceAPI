@@ -1,6 +1,7 @@
 ﻿using Core.CrossCuttingConcerns.Exceptions.HttpProblemDetails;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,13 @@ namespace Core.CrossCuttingConcerns.Exceptions
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly ILogger _logger;
 
-        public ExceptionMiddleware(RequestDelegate next)
+        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
         {
             _next = next;
+            _logger = logger;   
+
         }
 
         public async Task Invoke(HttpContext context)
@@ -27,6 +31,7 @@ namespace Core.CrossCuttingConcerns.Exceptions
             }
             catch(Exception exception)
             {
+                _logger.LogError(exception, "An error occurred while processing the request."); // Loglama
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
 
@@ -64,8 +69,25 @@ namespace Core.CrossCuttingConcerns.Exceptions
                 }
                 else
                 {
-                    context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                    await context.Response.WriteAsync("Bilinmedik Hata");
+
+                    context.Response.ContentType = "application/json";
+                    context.Response.StatusCode = StatusCodes.Status500InternalServerError; // 500 Hatası döndür
+
+                    var problemDetails = new ProblemDetails
+                    {
+                        Title = "Internal Server Error",
+                        Detail = exception.Message,
+                        Type = "UnknownError",
+                        Status = StatusCodes.Status500InternalServerError,
+                    };
+
+                    // Inner exception'ı ekleyin
+                    if (exception.InnerException != null)
+                    {
+                        problemDetails.Detail += $" Inner Exception: {exception.InnerException.Message}";
+                    }
+
+                    await context.Response.WriteAsync(JsonSerializer.Serialize(problemDetails));
                 }
             }
         }

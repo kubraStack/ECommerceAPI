@@ -1,5 +1,6 @@
 ﻿using Application.Repositories;
 using AutoMapper;
+using Core.CrossCuttingConcerns.Exceptions.Types;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Customer.Commands.CreateCustomerRole
 {
-    public class CustomerRoleCommand : IRequest<CustomerRoleCommanResponse>
+    public class AdminRoleCommand : IRequest<AdminRoleCommandResponse>
     {
         public int UserId { get; set; }
 
-        public class CustomerRoleCommandHandler : IRequestHandler<CustomerRoleCommand, CustomerRoleCommanResponse>
+        public class CustomerRoleCommandHandler : IRequestHandler<AdminRoleCommand, AdminRoleCommandResponse>
         {
             private readonly IUserRepository _userRepository;
             private readonly IMapper _mapper;
@@ -26,31 +27,41 @@ namespace Application.Features.Customer.Commands.CreateCustomerRole
                 _userOperationClaimRepository = userOperationClaimRepository;
             }
 
-            public async Task<CustomerRoleCommanResponse> Handle(CustomerRoleCommand request, CancellationToken cancellationToken)
+            public async Task<AdminRoleCommandResponse> Handle(AdminRoleCommand request, CancellationToken cancellationToken)
             {
-               //Kullanıcıyı al
-
+                // Kullanıcıyı al
                 var currentlyUser = await _userRepository.GetAsync(u => u.Id == request.UserId);
 
                 if (currentlyUser == null)
                 {
-                    //Kullanıcı bulunamadı
-                    throw new Exception("Kullanıcı Bulunamadı !");
+                    // Kullanıcı bulunamadı
+                    throw new BusinessException("Kullanıcı Bulunamadı !");
                 }
 
-                //Kullanıcı rolü => customer olarak güncellendi
-                currentlyUser.UserType = Core.Entitites.UserType.Customer;
+                // Kullanıcı rolünü güncelle
+                currentlyUser.UserType = Core.Entitites.UserType.Admin;
+
+                // Güncellemeden önce loglama yap
+                Console.WriteLine($"Güncellenmeden önce: UserType = {currentlyUser.UserType}");
+
                 await _userRepository.UpdateAsync(currentlyUser);
 
-                //Kullanıcıya müşteri rolü atandı
+                // Güncellemeyi kontrol et
+                var updatedUser = await _userRepository.GetAsync(u => u.Id == request.UserId);
+                if (updatedUser.UserType != Core.Entitites.UserType.Admin)
+                {
+                    throw new BusinessException("Kullanıcı rolü güncellenemedi !");
+                }
+
+                // Kullanıcıya admin rolü atandı
                 await _userOperationClaimRepository.AddAsync(new Domain.Entities.UserOperationClaim
                 {
                     UserId = request.UserId,
-                    OperationClaimId = 2
+                    OperationClaimId = 1
                 });
 
-                return new CustomerRoleCommanResponse();
-               
+                return new AdminRoleCommandResponse();
+
             }
         }
 

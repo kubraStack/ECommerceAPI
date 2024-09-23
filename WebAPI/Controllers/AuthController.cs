@@ -1,4 +1,5 @@
 ﻿using Application.Features.Auth.Commands.Login;
+using Application.Features.Auth.Commands.Register;
 using Core.Utilities.JWT;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -23,5 +24,13 @@ namespace WebAPI.Controllers
             AccessToken response = await _mediator.Send(loginCommand);
             return Ok(response);    
         }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(RegisterCommand command)
+        {
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
     }
 }

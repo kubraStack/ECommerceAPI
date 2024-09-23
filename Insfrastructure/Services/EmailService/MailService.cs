@@ -39,7 +39,16 @@ namespace Infrastructure.Services.EmailService
             };
 
             mailMsg.To.Add(toEmail);
-            await smtpClient.SendMailAsync(mailMsg);
+            try
+            {
+                await smtpClient.SendMailAsync(mailMsg);
+            }
+            catch (Exception ex)
+            {
+                // Hata yönetimi: Loglama veya hata işleme
+                Console.WriteLine($"E-posta gönderim hatası: {ex.Message}");
+                throw; // Hatanın üst katmana iletilmesi
+            }
         }
     }
 }

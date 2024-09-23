@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Customer.Commands.CreateCustomerRole
 {
-    public class CustomerRoleCommanResponse
+    public class AdminRoleCommandResponse
     {
     }
 }

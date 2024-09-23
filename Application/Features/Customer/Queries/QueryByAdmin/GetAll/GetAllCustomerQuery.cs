@@ -1,6 +1,7 @@
 ﻿using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
+using Core.Utilities.Encryption;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,34 +23,41 @@ namespace Application.Features.Customer.Queries.QueryByAdmin.GetAll
         {
             private readonly ICustomerRepository _customerRepository;
             private readonly IMapper _mapper;
-
+            
             public GetAllCustomerQueryHandler(ICustomerRepository customerRepository, IMapper mapper)
             {
                 _customerRepository = customerRepository;
                 _mapper = mapper;
+               
             }
 
             public async Task<GetAllCustomerQueryResponse> Handle(GetAllCustomerQuery request, CancellationToken cancellationToken)
             {
-                var query = _customerRepository.GetList(include: q => q.Include(c => c.User));
+                var query = _customerRepository.GetList(include: q => q.Include(c => c.User))
+                                                .Where(c=> c.User.UserType == Core.Entitites.UserType.Customer);
 
-                var totalCount = query.Count;
+                var totalCount = query.Count();
                 if (request.PageSize == 0)
                 {
                     request.PageSize = totalCount;
                 }
 
                 var customers = query
-                    .Skip((request.Page - 1) * request.PageSize)
-                    .Take(request.PageSize)
-                    .Select(c => new
-                    {
-                        c.Id,
-                        c.User.FirstName,
-                        c.User.LastName,
-                        c.User.Email,
-                        c.User.PhoneNumber
-                    });
+                .Skip((request.Page - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .Select(c => new
+                {
+                    c.Id,
+                    c.User.FirstName,
+                    c.User.LastName,                        
+                    c.User.Email,
+                    c.User.PhoneNumber,
+                    c.Orders,
+                    c.ShippingAddress,
+                    c.BillingAddress,
+                    c.ShoppingCart,
+                    c.ProductReviews
+                }).ToList();
 
                 return new GetAllCustomerQueryResponse
                 {
