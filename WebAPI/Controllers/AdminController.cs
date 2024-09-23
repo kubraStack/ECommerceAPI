@@ -1,4 +1,5 @@
-﻿using Application.Features.Customer.Queries.QueryByAdmin.GetAll;
+﻿using Application.Features.Customer.Commands.CreateCustomerRole;
+using Application.Features.Customer.Queries.QueryByAdmin.GetAll;
 using Application.Features.Customer.Queries.QueryByAdmin.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -34,6 +35,12 @@ namespace WebAPI.Controllers
             return Ok(response);
 
         
+        }
+        [HttpPost("assign-admin-role")]
+        public async Task<IActionResult> CreateAdminRole(AdminRoleCommand command)
+        {
+            var response = await _mediator.Send(command);
+            return Ok(response);
         }
        
     }
