@@ -14,7 +14,7 @@ namespace Application.Features.Product.Command.AdminCommands.DeleteProductComman
     public class DeleteProductByAdminCommand : IRequest<DeleteProductByAdminCommandResponse>, ISequredRequest
     {
         public int ProductId { get; set; }
-        public string[] ReuqiredRoles => ["Admin"];
+        public string[] RequiredRoles => ["Admin"];
 
         public class DeleteProductByAdminCommandHandler : IRequestHandler<DeleteProductByAdminCommand, DeleteProductByAdminCommandResponse>
         {

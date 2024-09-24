@@ -2,11 +2,11 @@
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.Features.Customer.Queries.GetByIdSelf
@@ -28,14 +28,25 @@ namespace Application.Features.Customer.Queries.GetByIdSelf
 
             public async Task<GetByIdCustomerSelfQueryResponse> Handle(GetByIdCustomerSelfQuery request, CancellationToken cancellationToken)
             {
-                var userIdClaim = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                if (userIdClaim == 0)
+                var userIdClaim = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+                if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userId) || userId == 0)
                 {
                     throw new Exception("Böyle bir kullanıcı bulunamadı.");
                 }
 
-                var user = _customerRepository.GetAsync(u => u.Id == userIdClaim);
-                GetByIdCustomerSelfQueryResponse result = _mapper.Map<GetByIdCustomerSelfQueryResponse>(user);
+                // User tablosunu dahil et
+                var customer = await _customerRepository.GetAsync(
+                       c => c.UserId == userId,
+                       include: c => c.Include(u => u.User)
+                );
+                
+
+                if (customer == null)
+                {
+                    throw new Exception("Müşteri Bulunamadı");
+                }
+
+                GetByIdCustomerSelfQueryResponse result = _mapper.Map<GetByIdCustomerSelfQueryResponse>(customer);
                 return result;
             }
         }

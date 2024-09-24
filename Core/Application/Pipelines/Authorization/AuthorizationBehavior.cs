@@ -27,14 +27,14 @@ namespace Core.Application.Pipelines.Authorization
                 throw new Core.CrossCuttingConcerns.Exceptions.Types.BusinessException("Giriş Yapmadınız.");
             }
 
-            if (request.ReuqiredRoles.Any())
+            if (request.RequiredRoles.Any())
             {
                 ICollection<string>? userRoles = _contextAccessor.HttpContext.User.Claims
                     .Where(i => i.Type == ClaimTypes.Role)
                     .Select(i => i.Value)
                     .ToList();
 
-                var matchingRole = userRoles.FirstOrDefault(i => i == "Admin" || request.ReuqiredRoles.Contains(i));
+                var matchingRole = userRoles.FirstOrDefault(i => i == "Admin" || request.RequiredRoles.Contains(i));
                 bool hasNoMatchingRole = string.IsNullOrEmpty(matchingRole);
 
                 if (hasNoMatchingRole) {

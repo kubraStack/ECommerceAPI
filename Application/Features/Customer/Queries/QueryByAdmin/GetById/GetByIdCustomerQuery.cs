@@ -14,7 +14,7 @@ namespace Application.Features.Customer.Queries.QueryByAdmin.GetById
     public class GetByIdCustomerQuery : IRequest<GetByIdCustomerQueryResponse>, ISequredRequest
     {
         public int Id { get; set; }
-        public string[] ReuqiredRoles => ["Admin"];
+        public string[] RequiredRoles => ["Admin"];
 
         public class GetByIdCustomerQueryHandler : IRequestHandler<GetByIdCustomerQuery, GetByIdCustomerQueryResponse>
         {

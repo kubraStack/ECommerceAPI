@@ -17,7 +17,7 @@ namespace Application.Features.Customer.Queries.QueryByAdmin.GetAll
         public int Page  { get; set; }
         public int PageSize { get; set; }
 
-        public string[] ReuqiredRoles => ["Admin"];
+        public string[] RequiredRoles => ["Admin"];
 
         public class GetAllCustomerQueryHandler : IRequestHandler<GetAllCustomerQuery, GetAllCustomerQueryResponse>
         {

@@ -14,7 +14,7 @@ namespace Application.Features.Product.Queries.AdminQueries.GetById
     {
         public int Id { get; set; }
 
-        public string[] ReuqiredRoles =>["Admin"];
+        public string[] RequiredRoles => ["Admin"];
 
         public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdAdminQuery, GetProductByIdAdminResponse>
         {

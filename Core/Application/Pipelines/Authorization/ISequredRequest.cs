@@ -8,6 +8,6 @@ namespace Core.Application.Pipelines.Authorization
 {
     public interface ISequredRequest
     {
-        public string[] ReuqiredRoles { get; }
+        public string[] RequiredRoles { get; }
     }
 }

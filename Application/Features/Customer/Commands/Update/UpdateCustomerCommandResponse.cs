@@ -8,7 +8,7 @@ namespace Application.Features.Customer.Commands.Update
 {
     public class UpdateCustomerCommandResponse
     {
-        public int CustomerId { get; set; }
+        public int Id { get; set; }
       
         public string ShippingAddress { get; set; }
         public string BillingAddress { get; set; }

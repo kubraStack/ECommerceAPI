@@ -12,11 +12,9 @@ namespace Application.Features.Customer.Profiles
     {
         public MappingProfile() 
         {
-           
-
-
             CreateMap<Domain.Entities.Customer, GetByIdCustomerSelfQueryResponse>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.FirstName))
+                
                 .ForMember(dest => dest.Orders, opt => opt.MapFrom(src => src.Orders))
                 .ForMember(dest => dest.ProductReviews, opt => opt.MapFrom(src => src.ProductReviews))
                 .ForMember(dest => dest.ShoppingCart, opt => opt.MapFrom(src => src.ShoppingCart));

@@ -67,9 +67,10 @@ namespace Application.Features.Auth.Commands.Register
 
                 var customer = new Domain.Entities.Customer
                 {
-                    Id = user.Id,
+                    UserId = user.Id,
                     BillingAddress = request.BillingAddress,
                     ShippingAddress = request.ShippingAddress,
+                    
                 };
 
                 await _customerRepository.AddAsync(customer);
