@@ -20,7 +20,7 @@ namespace Application.Features.Product.Command.AdminCommands.UpdateProductComman
         public int StockQuantity { get; set; }
         public string ImageUrl { get; set; } //Ürün görüntüsünü saklamak için
         public int CategoryId { get; set; }
-        public string[] ReuqiredRoles => ["Admin"];
+        public string[] RequiredRoles => ["Admin"];
 
         public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, UpdateProductCommandResponse>
         {

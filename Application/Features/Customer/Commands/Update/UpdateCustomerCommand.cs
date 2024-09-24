@@ -1,5 +1,6 @@
 ﻿using Application.Repositories;
 using Core.Application.Pipelines.Authorization;
+using Core.CrossCuttingConcerns.Exceptions.Types;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -11,11 +12,12 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Customer.Commands.Update
 {
-    public class UpdateCustomerCommand : IRequest<UpdateCustomerCommandResponse>, ISequredRequest
+    public class UpdateCustomerCommand : IRequest<UpdateCustomerCommandResponse>
     {
         public string ShippingAddress { get; set; }
         public string BillingAddress { get; set; }
-        public string[] ReuqiredRoles => ["Customer"];
+
+     
 
         public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand, UpdateCustomerCommandResponse>
         {
@@ -31,13 +33,10 @@ namespace Application.Features.Customer.Commands.Update
             public async Task<UpdateCustomerCommandResponse> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
             {
                 var currentUserId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-                var customerToUpdate = await _customerRepository.GetAsync(c => c.Id == currentUserId);
-                customerToUpdate.BillingAddress = request.BillingAddress != null ? request.BillingAddress : customerToUpdate.BillingAddress;
-                customerToUpdate.ShippingAddress = request.ShippingAddress != null ? request.ShippingAddress : customerToUpdate.ShippingAddress;
-
+               
+                var customerToUpdate = await _customerRepository.GetAsync(c => c.UserId == currentUserId);
                 await _customerRepository.UpdateAsync(customerToUpdate);
-                return new() { CustomerId = currentUserId, ShippingAddress = customerToUpdate.ShippingAddress, BillingAddress = customerToUpdate.BillingAddress };
+                return new UpdateCustomerCommandResponse { Id = currentUserId , BillingAddress = customerToUpdate.BillingAddress, ShippingAddress = customerToUpdate.ShippingAddress};
             }
         }
     }

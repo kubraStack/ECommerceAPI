@@ -98,7 +98,7 @@ namespace Persistence.Context
             {
                 entity.HasOne(c => c.User)
                 .WithOne(u => u.Customer)
-                .HasForeignKey<Customer>(c => c.Id);
+                .HasForeignKey<Customer>(c => c.UserId);
 
 
                 entity.HasMany(c => c.Orders)

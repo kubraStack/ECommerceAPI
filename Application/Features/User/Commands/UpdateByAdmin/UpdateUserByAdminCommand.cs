@@ -17,7 +17,7 @@ namespace Application.Features.User.Commands.UpdateByAdmin
         public string? LastName { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Gender { get; set; }
-        public string[] ReuqiredRoles => ["Admin"];
+        public string[] RequiredRoles => ["Admin"];
 
 
         public class UpdateUserByAdminCommandHandler : IRequestHandler<UpdateUserByAdminCommand, UpdateUserByAdminCommandResponse>

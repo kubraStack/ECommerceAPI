@@ -12,7 +12,7 @@ namespace Application.Features.Customer.Commands.DeleteByAdmin
     public class DeleteCustomerByAdminCommand : IRequest<DeleteCustomerByAdminCommandResponse>, ISequredRequest
     {
         public int Id { get; set; }
-        public string[] ReuqiredRoles => ["Admin"];
+        public string[] RequiredRoles => ["Admin"];
 
         public class  DeleteCustomerByAdminCommandHandler : IRequestHandler<DeleteCustomerByAdminCommand, DeleteCustomerByAdminCommandResponse>
         {

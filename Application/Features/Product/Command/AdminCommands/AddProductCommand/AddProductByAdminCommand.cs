@@ -21,7 +21,7 @@ namespace Application.Features.Product.Command.AdminCommands.AddProductCommand
         public int StockQuantity { get; set; }
         public string ImageUrl { get; set; } 
         public int CategoryId { get; set; }
-        public string[] ReuqiredRoles => ["Admin"];
+        public string[] RequiredRoles => ["Admin"];
 
         public class AddProductCommandHandler : IRequestHandler<AddProductByAdminCommand, AddProductByAdminCommandResponse>
         {

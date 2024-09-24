@@ -27,7 +27,7 @@ namespace Application
                 config.AddOpenBehavior(typeof(ValidationBehavior<,>));
 
             });
-            services.AddAutoMapper(typeof(MappingProfile));
+            
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             
