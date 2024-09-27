@@ -52,6 +52,7 @@ namespace Application.Features.Customer.Queries.QueryByAdmin.GetAll
                     c.User.LastName,                        
                     c.User.Email,
                     c.User.PhoneNumber,
+                    c.User.Gender,
                     c.Orders,
                     c.ShippingAddress,
                     c.BillingAddress,

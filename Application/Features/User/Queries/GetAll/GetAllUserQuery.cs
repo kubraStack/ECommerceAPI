@@ -44,6 +44,7 @@ namespace Application.Features.User.Queries.GetAll
                         u.LastName,
                         u.Email,
                         u.PhoneNumber,
+                        u.Gender
 
                     }).ToList();
 

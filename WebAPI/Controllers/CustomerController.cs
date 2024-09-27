@@ -34,7 +34,7 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
-        [HttpPut("admin/customer-update")]
+        [HttpPut("customer/update-byAdmin")]
         public async Task<IActionResult> UpdateCustomerByAdmin([FromBody] UpdateCustomerByAdminCommand command)
         {
             var result = await _mediator.Send(command);
