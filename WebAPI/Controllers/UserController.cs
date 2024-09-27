@@ -1,4 +1,6 @@
-﻿using Application.Features.User.Queries.GetAll;
+﻿using Application.Features.User.Commands.Update;
+using Application.Features.User.Commands.UpdateByAdmin;
+using Application.Features.User.Queries.GetAll;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,5 +25,19 @@ namespace WebAPI.Controllers
             return Ok(response);
         }
 
+        [HttpPut("user/update")]
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+        [HttpPut("user/update-byAdmin")]
+        public async Task<IActionResult> UpdateUserByAdmin([FromBody] UpdateUserByAdminCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return Ok(result);
+
+        }
     }
 }
