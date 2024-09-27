@@ -1,6 +1,8 @@
-﻿using Application.Features.User.Commands.Update;
+﻿using Application.Features.User.Commands.Delete;
+using Application.Features.User.Commands.Update;
 using Application.Features.User.Commands.UpdateByAdmin;
 using Application.Features.User.Queries.GetAll;
+using Application.Features.User.Queries.GetByIdSelf;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +20,15 @@ namespace WebAPI.Controllers
             _mediator = mediator;
         }
 
+        [HttpGet("user/settings")]
+        public async Task<IActionResult> GetByIdSelf([FromQuery] GetByIdUserSelfQuery query)
+        {
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+
+
+
         [HttpGet("user/[action]")]
         public async Task<IActionResult> GetAll([FromQuery] GetAllUserQuery userGetAllQuery)
         {
@@ -26,18 +37,27 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("user/update")]
-        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserCommand command)
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserCommand updateUserCommand)
         {
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(updateUserCommand);
             return Ok(result);
         }
 
         [HttpPut("user/update-byAdmin")]
-        public async Task<IActionResult> UpdateUserByAdmin([FromBody] UpdateUserByAdminCommand command)
+        public async Task<IActionResult> UpdateUserByAdmin([FromBody] UpdateUserByAdminCommand updateUserByAdminCommand)
         {
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(updateUserByAdminCommand);
             return Ok(result);
 
         }
+
+        [HttpDelete("user/delete")]
+        public async Task<IActionResult> DeleteUser([FromRoute] DeleteUserCommand deleteUsercommand) 
+        { 
+            var response = await _mediator.Send(deleteUsercommand);
+            return Ok(response);
+        
+        }
+
     }
 }
