@@ -1,9 +1,11 @@
-﻿using Application.Features.User.Commands.Delete;
+﻿using Application.Features.User.Commands.ChangePassword.Commands;
+using Application.Features.User.Commands.Delete;
 using Application.Features.User.Commands.Update;
 using Application.Features.User.Commands.UpdateByAdmin;
 using Application.Features.User.Queries.GetAll;
 using Application.Features.User.Queries.GetByIdSelf;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -51,12 +53,21 @@ namespace WebAPI.Controllers
 
         }
 
-        [HttpDelete("user/delete")]
+        [HttpDelete("user/delete/{Id}")]
         public async Task<IActionResult> DeleteUser([FromRoute] DeleteUserCommand deleteUsercommand) 
         { 
             var response = await _mediator.Send(deleteUsercommand);
             return Ok(response);
         
+        }
+
+        //Change Password
+        [HttpPut("user/ChangePassword")]
+        [Authorize]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommand changePasswordCommand)
+        {
+            var result = await _mediator.Send(changePasswordCommand);
+            return Ok(result.Message);
         }
 
     }

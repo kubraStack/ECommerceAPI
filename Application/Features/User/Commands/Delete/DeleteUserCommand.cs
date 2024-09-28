@@ -14,7 +14,7 @@ namespace Application.Features.User.Commands.Delete
 {
     public class DeleteUserCommand : IRequest<DeleteUserCommandResponse>
     {
-       
+        public int Id { get; set; }
 
         public class UserDeleteCommandHandler : IRequestHandler<DeleteUserCommand, DeleteUserCommandResponse>
         {
@@ -31,25 +31,23 @@ namespace Application.Features.User.Commands.Delete
 
             public async Task<DeleteUserCommandResponse> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
             {
-                // Oturum açmış kullanıcının ID'sini alıyoruz.
                 var userId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-                // Kullanıcıyı veritabanından buluyoruz.
-                var userToDelete = await _userRepository.GetAsync(u => u.Id == userId);
-                if (userToDelete == null)
+                if (userId == request.Id)
                 {
-                    throw new BusinessException("Kullanıcı bulunamadı.");
+                    var userToDelete = await _userRepository.GetAsync(u => u.Id == request.Id);
+                    await _userRepository.SoftDeleteAsync(userToDelete);
+                    _userRepository.Update(userToDelete);
+                    // Başarılı yanıt dönüyoruz.
+                    return new DeleteUserCommandResponse
+                    {
+                        Success = true,
+                        Message = "Kullanıcı başarıyla silindi."
+                    };
                 }
 
-                // Kullanıcıyı silme işlemi.
-                await _userRepository.SoftDeleteAsync(userToDelete);
+                throw new BusinessException("İşlem başarısız !");
 
-                // Başarılı yanıt dönüyoruz.
-                return new DeleteUserCommandResponse
-                {
-                    Success = true,
-                    Message = "Kullanıcı başarıyla silindi."
-                };
+              
             }
         }
     }
