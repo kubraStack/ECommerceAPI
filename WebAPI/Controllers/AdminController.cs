@@ -18,24 +18,8 @@ namespace WebAPI.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("admin/customers")]
-        public async Task<IActionResult> GetAllCustomer()
-        {
-            var query = new GetAllCustomerQuery();
-            var response = await _mediator.Send(query);
-
-            return Ok(response);
-        }
-
-        [HttpGet("admin/customer/{id}")]
-        public async Task<IActionResult> GetCustomerById(int id) {
-
-            var query = new GetByIdCustomerQuery { Id = id};
-            var response = await _mediator.Send(query);
-            return Ok(response);
-
-        
-        }
+       
+       
         [HttpPost("assign-admin-role")]
         public async Task<IActionResult> CreateAdminRole(AdminRoleCommand command)
         {

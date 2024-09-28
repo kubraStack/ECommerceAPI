@@ -19,8 +19,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Features\Product\Command\AdminCommands\ChangeProductPriceCommand\" />
+    <Folder Include="Features\Product\Command\AdminCommands\ReStockProductCommand\" />
     <Folder Include="Features\Product\Command\CustomerCommands\" />
-    <Folder Include="Features\Product\Queries\CustomerQueries\" />
+    <Folder Include="Features\Product\Queries\GetProductsByCategory\" />
+    <Folder Include="Features\Product\Queries\GetTopSellingProduct\" />
+    <Folder Include="Features\Product\Queries\SearchProducts\" />
   </ItemGroup>
 
 </Project>

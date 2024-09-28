@@ -1,5 +1,5 @@
 ﻿using Application.Features.Product.Command.AdminCommands.AddProductCommand;
-using Application.Features.Product.Queries.AdminQueries.GetById;
+using Application.Features.Product.Queries.GetById;
 using AutoMapper;
 using Domain.Entities;
 using System;

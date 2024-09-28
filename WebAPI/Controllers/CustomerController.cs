@@ -1,6 +1,9 @@
-﻿using Application.Features.Customer.Commands.Update;
+﻿using Application.Features.Customer.Commands.DeleteByAdmin;
+using Application.Features.Customer.Commands.Update;
 using Application.Features.Customer.Commands.UpdateByAdmin;
 using Application.Features.Customer.Queries.GetByIdSelf;
+using Application.Features.Customer.Queries.QueryByAdmin.GetAll;
+using Application.Features.Customer.Queries.QueryByAdmin.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +19,21 @@ namespace WebAPI.Controllers
         public CustomerController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [HttpGet("customers")]
+        public async Task<IActionResult> GetAllCustomers([FromQuery] GetAllCustomerQuery getAllCustomerQuery)
+        {
+            var response = await _mediator.Send(getAllCustomerQuery);
+            return Ok(response);
+        }
+
+        [HttpGet("customers/{Id}")]
+        public async Task<IActionResult> GetByIdCustomer(int Id)
+        {
+            var query = new GetByIdCustomerQuery { Id = Id };
+            var response = await _mediator.Send(query);
+            return Ok(response);
         }
 
         //Customer Ayarları
@@ -38,6 +56,13 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> UpdateCustomerByAdmin([FromBody] UpdateCustomerByAdminCommand command)
         {
             var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+        [HttpDelete("admin/customers/{Id}")]
+        public async Task<IActionResult> DeleteCustomerByAdmin([FromRoute] DeleteCustomerByAdminCommand deleteCustomerByAdminCommand)
+        {
+            var result = await _mediator.Send(deleteCustomerByAdminCommand);
             return Ok(result);
         }
     }
