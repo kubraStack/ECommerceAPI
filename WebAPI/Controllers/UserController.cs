@@ -3,6 +3,7 @@ using Application.Features.User.Commands.Delete;
 using Application.Features.User.Commands.Update;
 using Application.Features.User.Commands.UpdateByAdmin;
 using Application.Features.User.Queries.GetAll;
+using Application.Features.User.Queries.GetById;
 using Application.Features.User.Queries.GetByIdSelf;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -20,6 +21,14 @@ namespace WebAPI.Controllers
         public UserController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+
+        [HttpGet("user/[action]")]
+        public async Task<IActionResult> GetById([FromQuery] GetByIdUserQuery userGetByIdQuery)
+        {
+            var response = await _mediator.Send(userGetByIdQuery);
+            return Ok(response);
         }
 
         [HttpGet("user/settings")]

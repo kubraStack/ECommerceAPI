@@ -8,13 +8,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Product.Queries.AdminQueries.GetById
+namespace Application.Features.Product.Queries.GetById
 {
-    public class GetProductByIdAdminQuery : IRequest<GetProductByIdAdminResponse>, ISequredRequest
+    public class GetProductByIdAdminQuery : IRequest<GetProductByIdAdminResponse>
     {
         public int Id { get; set; }
 
-        public string[] RequiredRoles => ["Admin"];
+
 
         public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdAdminQuery, GetProductByIdAdminResponse>
         {
@@ -29,8 +29,9 @@ namespace Application.Features.Product.Queries.AdminQueries.GetById
 
             public async Task<GetProductByIdAdminResponse> Handle(GetProductByIdAdminQuery request, CancellationToken cancellationToken)
             {
-               var product = await _productRepository.GetByIdAsync(request.Id);
-                if (product == null) {
+                var product = await _productRepository.GetByIdAsync(request.Id);
+                if (product == null)
+                {
                     throw new Exception("Ürün Bulunamadı");
                 }
 

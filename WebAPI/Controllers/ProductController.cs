@@ -1,8 +1,10 @@
 ﻿using Application.Features.Product.Command.AdminCommands.AddProductCommand;
 using Application.Features.Product.Command.AdminCommands.DeleteProductCommand;
 using Application.Features.Product.Command.AdminCommands.UpdateProductCommand;
-using Application.Features.Product.Queries.AdminQueries.GetById;
-using Application.Features.Product.Queries.AdminQueries.GetListProduct;
+
+using Application.Features.Product.Queries.GetById;
+using Application.Features.Product.Queries.GetListProduct;
+using Application.Features.Product.Queries.GetProductDetails;
 using Core.Entitites;
 using Domain.Entities;
 using MediatR;
@@ -23,8 +25,8 @@ namespace WebAPI.Controllers
             _mediator = mediator;
         }
 
-        // POST: api/Product
-        [HttpPost("admin/products")]
+        // Admin Add Product
+        [HttpPost("admin/addProducts")]
         public async Task<IActionResult> AddProductByAdmin(AddProductByAdminCommand productCommand)
         {
       
@@ -33,6 +35,7 @@ namespace WebAPI.Controllers
             return Ok(response);
         }
 
+        
         //Admin Get productbyid
         [HttpGet("admin/products/{id}")]
         public async Task<IActionResult> GetProductByIdAdmin(int id)
@@ -64,9 +67,19 @@ namespace WebAPI.Controllers
 
            return Ok(command);
         }
+        //Admin get productDetail
+        [HttpGet("admin/product/details")]
+        public async Task<IActionResult> GetProductDetails(int Id)
+        {
+            var query = new GetProductDetailQuery { Id = Id };
+            var response = await _mediator.Send(query); 
+            return Ok(response);
+        }
+
+
 
         //Admin Update product
-        [HttpPost("admin/product/update")]
+        [HttpPut("admin/product/update")]
         public async Task<IActionResult> UpdateProductByAdmin( [FromBody] UpdateProductCommand command)
         {
             
