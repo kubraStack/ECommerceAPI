@@ -1,4 +1,5 @@
-﻿using Core.DataAccess;
+﻿using Core.Abstractions;
+using Core.DataAccess;
 using Core.Entitites;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class User : BaseUser
+    public class User : BaseUser, ISoftDeletable
     {
         public string PhoneNumber { get; set; }
         public string Gender{ get; set; }

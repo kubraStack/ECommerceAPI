@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Core.Abstractions
 {
-    public class ISoftDeletable
+    public interface ISoftDeletable
     {
-        public bool IsDeletable { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

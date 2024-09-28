@@ -119,12 +119,13 @@ namespace Core.DataAccess
             var datas = Context.ChangeTracker.Entries<TEntity>();
             //ChangeTracker => Bağlam tarafından izlenen tüm TEntity türündeki nesneleri alır. Bu, veritabanında yapılan değişikliklerin izlenmesi ve yönetilmesi için kullanılır.
 
-            foreach (var item in datas) 
+            foreach (var item in datas)
             {
                 if (item.Entity is ISoftDeletable e) //ISoftDeletable arayüzünün implemente edilmesini kontrol eder
                 {
+                   
                     item.State = EntityState.Modified;
-                    e.IsDeletable = true;
+                    e.IsDeleted = true;
                 }
             }
             await Context.SaveChangesAsync();
