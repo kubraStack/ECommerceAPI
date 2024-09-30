@@ -9,11 +9,7 @@ using Application.Features.Product.Command.CustomerCommands.UpdateProductReviews
 using Application.Features.Product.Queries.GetById;
 using Application.Features.Product.Queries.GetListProduct;
 using Application.Features.Product.Queries.GetProductDetails;
-using Core.Entitites;
-using Domain.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
