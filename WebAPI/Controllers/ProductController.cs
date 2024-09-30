@@ -4,6 +4,8 @@ using Application.Features.Product.Command.AdminCommands.DeleteProductCommand;
 using Application.Features.Product.Command.AdminCommands.ReStockProductCommand;
 using Application.Features.Product.Command.AdminCommands.UpdateProductCommand;
 using Application.Features.Product.Command.CustomerCommands.AddProductReviews;
+using Application.Features.Product.Command.CustomerCommands.DeleteProductReviews;
+using Application.Features.Product.Command.CustomerCommands.UpdateProductReviews;
 using Application.Features.Product.Queries.GetById;
 using Application.Features.Product.Queries.GetListProduct;
 using Application.Features.Product.Queries.GetProductDetails;
@@ -39,7 +41,7 @@ namespace WebAPI.Controllers
 
         
         //Admin Get productbyid
-        [HttpGet("admin/products/{id}")]
+        [HttpGet("products/{id}")]
         public async Task<IActionResult> GetProductByIdAdmin(int id)
         {
            var query = new GetProductByIdQuery { Id = id };
@@ -51,8 +53,8 @@ namespace WebAPI.Controllers
         }
 
         //Admin Get all product
-        [HttpGet("admin/products")]
-        public async Task<IActionResult> GetListProductByAdmin()
+        [HttpGet("products")]
+        public async Task<IActionResult> GetListProducts()
         {
             var query = new GetListProductQuery();
             var result = await _mediator.Send(query);
@@ -60,7 +62,7 @@ namespace WebAPI.Controllers
         }
 
         //Admin Delete product
-        [HttpDelete("admin/product/{id}")]
+        [HttpDelete("product/{id}")]
         
         public async Task<IActionResult> DeleteProductByAdmin(int id) 
         { 
@@ -106,10 +108,27 @@ namespace WebAPI.Controllers
 
         //Customer Add-Comment
         [HttpPost("customer/product/reviews/{productId}")]
-        public async Task<IActionResult> AddReviews(int productId, [FromBody] AddProductReviewsCommand reviewCommand)
+        public async Task<IActionResult> AddProductReviews(int productId, [FromBody] AddProductReviewsCommand reviewCommand)
         {
             reviewCommand.ProductId = productId;
             var response = await _mediator.Send(reviewCommand);
+            return Ok(response);
+        }
+
+        //Customer Delete-Comment
+        [HttpDelete("customer/product/reviews/{id}")]
+        public async Task<IActionResult> DeleteProductReview(int id)
+        {
+           var result = await _mediator.Send(new DeleteProductReviewsCommand { ProductReviewId = id });
+            return Ok(result);
+        }
+
+        //Customer Update-Comment
+        [HttpPut("customer/product/reviews/{productReviewId}")]
+        public async Task<IActionResult> UpdateProductReview (int productReviewId, [FromBody] UpdateProductReviewsCommand updateProductReviewsCommand) 
+        { 
+            updateProductReviewsCommand.ProductReviewId = productReviewId;
+            var response = await _mediator.Send(updateProductReviewsCommand);
             return Ok(response);
         }
     }

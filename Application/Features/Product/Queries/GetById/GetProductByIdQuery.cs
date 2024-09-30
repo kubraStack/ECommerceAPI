@@ -2,6 +2,7 @@
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +30,11 @@ namespace Application.Features.Product.Queries.GetById
 
             public async Task<GetProductByIdQueryResponse> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
             {
-                var product = await _productRepository.GetByIdAsync(request.Id);
+                var product = await _productRepository.GetAsync(
+                    p => p.Id == request.Id,
+                    include: pr => pr.Include(p => p.ProductReviews)
+                );
+
                 if (product == null)
                 {
                     throw new Exception("Ürün Bulunamadı");

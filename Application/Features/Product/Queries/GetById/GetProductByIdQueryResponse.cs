@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Application.Features.Product.Queries.GetProductDetails;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,5 +17,6 @@ namespace Application.Features.Product.Queries.GetById
         public int StockQuantity { get; set; }
         public string ImageUrl { get; set; }
         public int CategoryId { get; set; }
+        public List<ProductReviewResponse> ProductReviews { get; set; }
     }
 }
