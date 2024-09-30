@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Product.Command.CustomerCommands.DeleteProductReviews
 {
-    internal class DeleteProductReviewsCommandResponse
+    public class DeleteProductReviewsCommandResponse
     {
+        public string Message { get; set; }
     }
 }

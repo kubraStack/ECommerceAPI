@@ -1,5 +1,6 @@
 ﻿using Application.Features.Product.Command.AdminCommands.AddProductCommand;
 using Application.Features.Product.Queries.GetById;
+using Application.Features.Product.Queries.GetProductDetails;
 using AutoMapper;
 using Domain.Entities;
 using System;
@@ -15,8 +16,13 @@ namespace Application.Features.Product.Profiles
         public MappingProfiles()
         {
             CreateMap<AddProductByAdminCommand, Domain.Entities.Product>();
-            CreateMap<Domain.Entities.Product, GetProductByIdQueryResponse>();
-                  
+            CreateMap<Domain.Entities.Product, GetProductByIdQueryResponse>()
+                .ForMember(dest => dest.ProductReviews, opt => opt.MapFrom(src => src.ProductReviews))
+                .ReverseMap(); // Eğer ters haritalama gerekiyorsa.
+
+            // ProductReviewResponse için haritalama
+            CreateMap<ProductReview, ProductReviewResponse>();
+
         }
     }
 }

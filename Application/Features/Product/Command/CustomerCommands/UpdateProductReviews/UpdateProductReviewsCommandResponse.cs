@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Product.Command.CustomerCommands.UpdateProductReviews
 {
-    internal class UpdateProductReviewsCommandResponse
+    public  class UpdateProductReviewsCommandResponse 
     {
+       
+        public string Message { get; set; }
     }
 }
