@@ -19,12 +19,27 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Product\Command\AdminCommands\ChangeProductPriceCommand\" />
-    <Folder Include="Features\Product\Command\AdminCommands\ReStockProductCommand\" />
-    <Folder Include="Features\Product\Command\CustomerCommands\" />
+    <Folder Include="Features\Customer\Commands\DeleteFavoriteProduct\" />
+    <Folder Include="Features\Order\Commands\ProductReturn\" />
+    <Folder Include="Features\Order\Queries\" />
+    <Folder Include="Features\Payment\Commands\" />
+    <Folder Include="Features\Payment\Profiles\" />
+    <Folder Include="Features\Payment\Queries\" />
+    <Folder Include="Features\Product\Command\CustomerCommands\AddProductReviews\" />
+    <Folder Include="Features\Product\Command\CustomerCommands\DeleteProductReviews\" />
+    <Folder Include="Features\Product\Command\CustomerCommands\UpdateProductReviews\" />
     <Folder Include="Features\Product\Queries\GetProductsByCategory\" />
     <Folder Include="Features\Product\Queries\GetTopSellingProduct\" />
+    <Folder Include="Features\Product\Queries\FAQ\" />
     <Folder Include="Features\Product\Queries\SearchProducts\" />
+    <Folder Include="Features\ShoppingCart\Command\AddProductToShoppingCart\" />
+    <Folder Include="Features\ShoppingCart\Command\DeleteProductToShoppingCart\" />
+    <Folder Include="Features\ShoppingCart\Queries\ViewingShoppingCart\" />
+    <Folder Include="Features\ShoppingCart\Profiles\" />
+    <Folder Include="Features\ShoppingCart\Queries\" />
+    <Folder Include="Features\SocialMedia\Commands\SharingProducts\" />
+    <Folder Include="Features\SocialMedia\Profiles\" />
+    <Folder Include="Features\SocialMedia\Queries\" />
   </ItemGroup>
 
 </Project>

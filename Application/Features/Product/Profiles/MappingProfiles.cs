@@ -15,7 +15,7 @@ namespace Application.Features.Product.Profiles
         public MappingProfiles()
         {
             CreateMap<AddProductByAdminCommand, Domain.Entities.Product>();
-            CreateMap<Domain.Entities.Product, GetProductByIdAdminResponse>();
+            CreateMap<Domain.Entities.Product, GetProductByIdQueryResponse>();
                   
         }
     }

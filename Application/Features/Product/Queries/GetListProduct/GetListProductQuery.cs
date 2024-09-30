@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Product.Queries.GetListProduct
 {
-    public class GetListProductByAdminQuery : IRequest<GetListProductByAdminResponse>
+    public class GetListProductQuery : IRequest<GetListProductQueryResponse>
     {
-        public class GetListProductQueryHandler : IRequestHandler<GetListProductByAdminQuery, GetListProductByAdminResponse>
+        public class GetListProductQueryHandler : IRequestHandler<GetListProductQuery, GetListProductQueryResponse>
         {
             private readonly IProductRepository _productRepository;
             private readonly IHttpContextAccessor _httpContextAccessor;
@@ -23,7 +23,7 @@ namespace Application.Features.Product.Queries.GetListProduct
                 _httpContextAccessor = httpContextAccessor;
             }
 
-            public async Task<GetListProductByAdminResponse> Handle(GetListProductByAdminQuery request, CancellationToken cancellationToken)
+            public async Task<GetListProductQueryResponse> Handle(GetListProductQuery request, CancellationToken cancellationToken)
             {
                 var isAdmin = _httpContextAccessor.HttpContext.User.IsInRole("Admin");
                 if (!isAdmin)
@@ -33,7 +33,7 @@ namespace Application.Features.Product.Queries.GetListProduct
 
                 var allProducts = await _productRepository.GetListAsync();
 
-                return new GetListProductByAdminResponse
+                return new GetListProductQueryResponse
                 {
                     Products = allProducts
                 };
