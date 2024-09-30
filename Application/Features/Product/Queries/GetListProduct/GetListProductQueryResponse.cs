@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Product.Queries.GetListProduct
 {
-    public class GetListProductByAdminResponse
+    public class GetListProductQueryResponse
     {
         public IEnumerable<Domain.Entities.Product> Products { get; set; }
     }

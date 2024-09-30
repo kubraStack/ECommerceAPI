@@ -42,7 +42,7 @@ namespace WebAPI.Controllers
         [HttpGet("admin/products/{id}")]
         public async Task<IActionResult> GetProductByIdAdmin(int id)
         {
-           var query = new GetProductByIdAdminQuery { Id = id };
+           var query = new GetProductByIdQuery { Id = id };
            var response = await _mediator.Send(query);
             
            
@@ -54,7 +54,7 @@ namespace WebAPI.Controllers
         [HttpGet("admin/products")]
         public async Task<IActionResult> GetListProductByAdmin()
         {
-            var query = new GetListProductByAdminQuery();
+            var query = new GetListProductQuery();
             var result = await _mediator.Send(query);
             return Ok(result.Products);
         }

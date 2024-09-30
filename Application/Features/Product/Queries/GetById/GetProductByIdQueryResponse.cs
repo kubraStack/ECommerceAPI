@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Product.Queries.GetById
 {
-    public class GetProductByIdAdminResponse
+    public class GetProductByIdQueryResponse
     {
         public int Id { get; set; }
         public string Name { get; set; }
