@@ -1,7 +1,9 @@
 ﻿using Application.Repositories;
 using Core.Application.Pipelines.Authorization;
 using Core.CrossCuttingConcerns.Exceptions.Types;
+using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,14 +28,24 @@ namespace Application.Features.Product.Queries.GetProductDetails
 
             public async Task<GetProductDetailQueryResponse> Handle(GetProductDetailQuery request, CancellationToken cancellationToken)
             {
-                var product = await _productRepository.GetAsync(p => p.Id == request.Id);
+                var product = await _productRepository.GetAsync(
+                    p => p.Id == request.Id,
+                    include: p => p.Include(p => p.ProductReviews)
+                );
 
                 if (product == null)
                 {
-
                     throw new Exception("Ürün Bulunamadı");
-
                 }
+
+                // ProductReviewResponse tipine mapleme
+                var productReviewsResponse = product.ProductReviews.Select(pr => new ProductReviewResponse
+                {
+                    CustomerId = pr.CustomerId,
+                    Review = pr.Review,
+                    Rating = pr.Rating,
+                    ReviewDate = pr.ReviewDate
+                }).ToList();
 
                 return new GetProductDetailQueryResponse
                 {
@@ -44,6 +56,7 @@ namespace Application.Features.Product.Queries.GetProductDetails
                     StockQuantity = product.StockQuantity,
                     ImageUrl = product.ImageUrl,
                     CategoryId = product.CategoryId,
+                    ProductReviews = productReviewsResponse // Convert and assign the list
                 };
             }
         }

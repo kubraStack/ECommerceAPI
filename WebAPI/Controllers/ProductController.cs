@@ -3,7 +3,7 @@ using Application.Features.Product.Command.AdminCommands.ChangeProductPriceComma
 using Application.Features.Product.Command.AdminCommands.DeleteProductCommand;
 using Application.Features.Product.Command.AdminCommands.ReStockProductCommand;
 using Application.Features.Product.Command.AdminCommands.UpdateProductCommand;
-
+using Application.Features.Product.Command.CustomerCommands.AddProductReviews;
 using Application.Features.Product.Queries.GetById;
 using Application.Features.Product.Queries.GetListProduct;
 using Application.Features.Product.Queries.GetProductDetails;
@@ -70,7 +70,7 @@ namespace WebAPI.Controllers
            return Ok(command);
         }
         //Admin get productDetail
-        [HttpGet("admin/product/details")]
+        [HttpGet("product/details")]
         public async Task<IActionResult> GetProductDetails(int Id)
         {
             var query = new GetProductDetailQuery { Id = Id };
@@ -104,5 +104,13 @@ namespace WebAPI.Controllers
             return Ok(response);
         }
 
+        //Customer Add-Comment
+        [HttpPost("customer/product/reviews/{productId}")]
+        public async Task<IActionResult> AddReviews(int productId, [FromBody] AddProductReviewsCommand reviewCommand)
+        {
+            reviewCommand.ProductId = productId;
+            var response = await _mediator.Send(reviewCommand);
+            return Ok(response);
+        }
     }
 }
