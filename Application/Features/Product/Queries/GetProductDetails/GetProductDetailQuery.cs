@@ -40,6 +40,7 @@ namespace Application.Features.Product.Queries.GetProductDetails
                     Name = product.Name,
                     Description = product.Description,
                     Price = product.Price,
+                    FinalPrice = product.FinalPrice,
                     StockQuantity = product.StockQuantity,
                     ImageUrl = product.ImageUrl,
                     CategoryId = product.CategoryId,

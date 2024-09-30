@@ -1,5 +1,7 @@
 ﻿using Application.Features.Product.Command.AdminCommands.AddProductCommand;
+using Application.Features.Product.Command.AdminCommands.ChangeProductPriceCommand;
 using Application.Features.Product.Command.AdminCommands.DeleteProductCommand;
+using Application.Features.Product.Command.AdminCommands.ReStockProductCommand;
 using Application.Features.Product.Command.AdminCommands.UpdateProductCommand;
 
 using Application.Features.Product.Queries.GetById;
@@ -77,6 +79,21 @@ namespace WebAPI.Controllers
         }
 
 
+        //Admin Update Product-Stock
+        [HttpPut("admin/product/restock")]
+        public async Task<IActionResult> ReStockProduct([FromBody] ReStockProductCommand reStockCommand)
+        {
+            var response = await _mediator.Send(reStockCommand);
+            return Ok(response);
+
+        }
+        //Admin Update Product-Price
+        [HttpPut("admin/product/change-price")]
+        public async Task<IActionResult> ChangeProductPrice([FromBody] ChangePriceCommand changePriceCommand)
+        {
+            var response = await _mediator.Send(changePriceCommand);
+            return Ok(response);
+        }
 
         //Admin Update product
         [HttpPut("admin/product/update")]
