@@ -25,11 +25,7 @@ namespace Application.Features.Product.Queries.GetListProduct
 
             public async Task<GetListProductQueryResponse> Handle(GetListProductQuery request, CancellationToken cancellationToken)
             {
-                var isAdmin = _httpContextAccessor.HttpContext.User.IsInRole("Admin");
-                if (!isAdmin)
-                {
-                    throw new AuthorizationException("Bu işlem için yetkiniz yok!");
-                }
+                
 
                 var allProducts = await _productRepository.GetListAsync();
 
