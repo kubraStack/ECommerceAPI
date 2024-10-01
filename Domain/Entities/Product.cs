@@ -18,5 +18,6 @@ namespace Domain.Entities
         public int CategoryId { get; set; }
         public Category? Category { get; set; }
         public ICollection<ProductReview> ProductReviews { get; set; }
+        public ICollection<Favorite> Favorites { get; set; }
     }
 }

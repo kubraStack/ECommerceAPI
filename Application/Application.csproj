@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Customer\Commands\DeleteFavoriteProduct\" />
     <Folder Include="Features\Order\Commands\ProductReturn\" />
     <Folder Include="Features\Order\Queries\" />
     <Folder Include="Features\Payment\Commands\" />

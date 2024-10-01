@@ -15,6 +15,7 @@ namespace Domain.Entities
         public User User { get; set; }
         public ICollection<Order> Orders { get; set; }
         public ICollection <ProductReview> ProductReviews { get; set; }
+        public ICollection <Favorite> Favorites { get; set; }
         public ShoppingCart ShoppingCart { get; set; }
     }
 }

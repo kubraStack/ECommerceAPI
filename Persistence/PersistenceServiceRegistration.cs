@@ -29,6 +29,7 @@ namespace Persistence
             services.AddDbContext<ECommerceDbContext>(options => options.UseSqlServer(configurationManager.GetConnectionString("DefaultConnection")));
             services.AddScoped<IUserRepository, EfUserRepository>();
             services.AddScoped<IUserOperationClaimRepository, EfUserOperationClaimRepository>();
+            services.AddScoped<IFavoriteRepository, EfFavoriteRepository>();
             services.AddScoped<IOperationClaimRepository, EfOperationClaimRepository>();
             services.AddScoped<ICustomerRepository, EfCustomerRepository>();
             services.AddScoped<ICategoryRepository, EfCategoryRepository>();

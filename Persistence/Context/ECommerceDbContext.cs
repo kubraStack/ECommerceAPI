@@ -26,6 +26,7 @@ namespace Persistence.Context
         public DbSet<User> Users { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Favorite> Favorites { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperations { get; set; }
@@ -57,6 +58,20 @@ namespace Persistence.Context
                 .WithOne(pr => pr.Product)
                 .HasForeignKey(pr => pr.ProductId);
             });
+
+            //Favorite
+            modelBuilder.Entity<Favorite>(entity =>
+            {
+                entity.HasOne(f => f.Customer)
+                .WithMany(c => c.Favorites)
+                .HasForeignKey(f => f.CustomerId);
+
+                entity.HasOne(f => f.Product)
+                .WithMany(p => p.Favorites)
+                .HasForeignKey(f => f.ProductId);
+            });
+               
+
 
             //ProductReview
             modelBuilder.Entity<ProductReview>(entity =>

@@ -1,6 +1,9 @@
-﻿using Application.Features.Customer.Commands.DeleteByAdmin;
+﻿using Application.Features.Customer.Commands.AddFavoriteProduct;
+using Application.Features.Customer.Commands.DeleteByAdmin;
+using Application.Features.Customer.Commands.DeleteFavoriteProduct;
 using Application.Features.Customer.Commands.Update;
 using Application.Features.Customer.Commands.UpdateByAdmin;
+using Application.Features.Customer.Queries.GetAllFavoriteProduct;
 using Application.Features.Customer.Queries.GetByIdSelf;
 using Application.Features.Customer.Queries.QueryByAdmin.GetAll;
 using Application.Features.Customer.Queries.QueryByAdmin.GetById;
@@ -63,6 +66,32 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> DeleteCustomerByAdmin([FromRoute] DeleteCustomerByAdminCommand deleteCustomerByAdminCommand)
         {
             var result = await _mediator.Send(deleteCustomerByAdminCommand);
+            return Ok(result);
+        }
+
+        // Customer Add Favorite Product
+        [HttpPost("customer/add-favorite")]
+        public async Task<IActionResult> AddFavoriteProduct([FromBody] AddFavoriteProductCommand addFavoriteCommand)
+        {
+            var response = await _mediator.Send(addFavoriteCommand);
+            return Ok(response);
+        }
+
+        //Customer GetFavoriteListProducts
+
+        [HttpGet("customer/getAllFavoriteProducts")]
+        public async Task<IActionResult> GetAllFavoriteProducts()
+        {
+            var query = new GetAllFavoriteProductQuery();
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+        //Customer Delete Favori Product
+        [HttpDelete("customer/deleteFavoriteProduct/{favoriteId}")]
+        public async Task<IActionResult> DeleteFavoriteProduct(int favoriteId)
+        {
+            var command = new DeleteFavoriteProductCommand { FavoriteId = favoriteId };
+            var result = await _mediator.Send(command);
             return Ok(result);
         }
     }
