@@ -19,8 +19,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Features\OrderDetails\" />
+    <Folder Include="Features\Order\Commands\CreateOrder\" />
+    <Folder Include="Features\Order\Commands\CancelOrder\" />
+    <Folder Include="Features\Order\Commands\UpdateOrder\" />
     <Folder Include="Features\Order\Commands\ProductReturn\" />
-    <Folder Include="Features\Order\Queries\" />
+    <Folder Include="Features\Order\Queries\GetAllOrders\" />
+    <Folder Include="Features\Order\Queries\GetByIdOrder\" />
+    <Folder Include="Features\Order\Queries\GetOrdersByCustomerId\" />
+    <Folder Include="Features\Order\Queries\GetOrderStatus\" />
     <Folder Include="Features\Payment\Commands\" />
     <Folder Include="Features\Payment\Profiles\" />
     <Folder Include="Features\Payment\Queries\" />
