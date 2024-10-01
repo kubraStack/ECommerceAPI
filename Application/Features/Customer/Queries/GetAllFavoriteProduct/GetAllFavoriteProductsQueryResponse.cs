@@ -1,4 +1,4 @@
-﻿using Application.DTOS;
+﻿using Application.Features.Customer.DTOS;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
