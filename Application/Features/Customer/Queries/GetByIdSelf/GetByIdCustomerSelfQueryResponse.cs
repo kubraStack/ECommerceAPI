@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Features.Order.DTOS;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Application.Features.Customer.Queries.GetByIdSelf
         public string ShippingAddress { get; set; }
         public string BillingAddress { get; set; }
         public string UserName { get; set; }
-        public ICollection<Order> Orders { get; set; }
+        public ICollection<OrderDto> Orders { get; set; }
         public ICollection<ProductReview> ProductReviews { get; set; }
         public ShoppingCart ShoppingCart { get; set; }
     }
