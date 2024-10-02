@@ -19,10 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Order\Commands\CancelOrder\" />
     <Folder Include="Features\Order\Commands\UpdateOrder\" />
     <Folder Include="Features\Order\Commands\ProductReturn\" />
-    <Folder Include="Features\Order\Queries\GetAllOrders\" />
     <Folder Include="Features\Order\Queries\GetByIdOrder\" />
     <Folder Include="Features\Order\Queries\GetOrdersByCustomerId\" />
     <Folder Include="Features\Order\Queries\GetOrderStatus\" />
