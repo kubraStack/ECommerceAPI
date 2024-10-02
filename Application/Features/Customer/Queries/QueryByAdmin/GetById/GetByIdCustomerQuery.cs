@@ -1,4 +1,7 @@
-﻿using Application.Repositories;
+﻿using Application.Features.Order.DTOS;
+using Application.Features.OrderDetails.DTOS;
+using Application.Features.Product.DTOS;
+using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using MediatR;
@@ -40,13 +43,17 @@ namespace Application.Features.Customer.Queries.QueryByAdmin.GetById
                 }
 
                 // Müşteri verilerini al
-                var customer = await _customerRepository.GetAsync(c => c.UserId == request.Id);
+                var customer = await _customerRepository.GetAsync(c => c.UserId == request.Id, include: c => c
+                    
+                    .Include(u => u.Orders)
+                );
+               
                 if (customer == null)
                 {
                     // Müşteri bulunamazsa uygun bir hata mesajı döndürmek gerekebilir
                     throw new Exception("Customer not found");
                 }
-
+                
                 // Yanıtı oluştur
                 var response = new GetByIdCustomerQueryResponse
                 {
@@ -55,9 +62,12 @@ namespace Application.Features.Customer.Queries.QueryByAdmin.GetById
                     PhoneNumber = user.PhoneNumber,
                     ShippingAddress = customer.ShippingAddress,
                     BillingAddress = customer.BillingAddress,
-                    Orders = customer.Orders, // Eğer Orders doğrudan müşteri nesnesindeyse
-                    ProductReviews = customer.ProductReviews, // Eğer ProductReviews doğrudan müşteri nesnesindeyse
-                    ShoppingCart = customer.ShoppingCart // Eğer ShoppingCart doğrudan müşteri nesnesindeyse
+                    Orders = customer.Orders.Select(o => new OrderDto
+                    {
+                        OrderId = o.Id,
+                        TotalAmount = o.TotalAmount
+                    }).ToList(),
+                  
                 };
 
                 return response;

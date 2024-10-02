@@ -3,6 +3,7 @@ using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Linq;
 using System.Security.Claims;
@@ -37,7 +38,10 @@ namespace Application.Features.Customer.Queries.GetByIdSelf
                 // User tablosunu dahil et
                 var customer = await _customerRepository.GetAsync(
                        c => c.UserId == userId,
-                       include: c => c.Include(u => u.User)
+                       include: c => c
+                        .Include(u => u.User)
+                        .Include(c =>c.Orders)
+                        .ThenInclude(o => o.OrderDetail)
                 );
                 
 

@@ -19,8 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\OrderDetails\" />
-    <Folder Include="Features\Order\Commands\CreateOrder\" />
     <Folder Include="Features\Order\Commands\CancelOrder\" />
     <Folder Include="Features\Order\Commands\UpdateOrder\" />
     <Folder Include="Features\Order\Commands\ProductReturn\" />
