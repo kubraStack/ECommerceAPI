@@ -15,40 +15,40 @@ namespace Core.DataAccess
         where TEntity : Entity
 
     {
-        private readonly TContext Context;
+        protected internal readonly TContext _context; // Erişim düzeyini güncelleyin
         public EfRepositoryBase(TContext context)
         {
-            Context = context;
+            _context = context;
         }
         public void Add(TEntity entity)
         {
-           Context.Add(entity);
-           Context.SaveChanges();
+           _context.Add(entity);
+           _context.SaveChanges();
         }
 
         public async Task AddAsync(TEntity entity)
         {
-            await Context.AddAsync(entity);
-            await Context.SaveChangesAsync();
+            await _context.AddAsync(entity);
+            await _context.SaveChangesAsync();
 
         }
 
         public void Delete(TEntity entity)
         {
-            Context.Remove(entity); 
-            Context.SaveChanges();
+            _context.Remove(entity); 
+            _context.SaveChanges();
         }
 
         public async Task DeleteAsync(TEntity entity)
         {
-            Context.Remove(entity);
-            await Context.SaveChangesAsync();
+            _context.Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
         //Filter - OrderBy
         public TEntity? Get(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
         {
-           IQueryable<TEntity> data = Context.Set<TEntity>();
+           IQueryable<TEntity> data = _context.Set<TEntity>();
             if (include != null)
             {
                 data = include(data);
@@ -58,7 +58,7 @@ namespace Core.DataAccess
 
         public async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
         {
-            IQueryable<TEntity> data = Context.Set<TEntity>();
+            IQueryable<TEntity> data = _context.Set<TEntity>();
             if (include != null)
             {
                 data = include(data);
@@ -68,7 +68,7 @@ namespace Core.DataAccess
 
         public TEntity? GetById(int id, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
         {
-            IQueryable<TEntity> query = Context.Set<TEntity>();
+            IQueryable<TEntity> query = _context.Set<TEntity>();
             if (include != null)
             {
                 query = include(query);
@@ -79,7 +79,7 @@ namespace Core.DataAccess
 
         public Task<TEntity?> GetByIdAsync(int id, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
         {
-            IQueryable<TEntity> query = Context.Set<TEntity>();
+            IQueryable<TEntity> query = _context.Set<TEntity>();
             if (include != null)
             {
                 query = include(query);
@@ -90,7 +90,7 @@ namespace Core.DataAccess
         //Filter - OrderBy
         public List<TEntity> GetList(Expression<Func<TEntity, bool>>? predicate = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
         {
-            IQueryable<TEntity> data = Context.Set<TEntity>();
+            IQueryable<TEntity> data = _context.Set<TEntity>();
             if (predicate != null)
                 data = data.Where(predicate);
 
@@ -103,7 +103,7 @@ namespace Core.DataAccess
 
         public async Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>>? predicate = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
         {
-            IQueryable<TEntity> data = Context.Set<TEntity>();
+            IQueryable<TEntity> data = _context.Set<TEntity>();
 
             if (predicate != null)
                 data = data.Where(predicate);
@@ -116,7 +116,7 @@ namespace Core.DataAccess
 
         public async Task SoftDeleteAsync(TEntity entity)
         {
-            var datas = Context.ChangeTracker.Entries<TEntity>();
+            var datas = _context.ChangeTracker.Entries<TEntity>();
             //ChangeTracker => Bağlam tarafından izlenen tüm TEntity türündeki nesneleri alır. Bu, veritabanında yapılan değişikliklerin izlenmesi ve yönetilmesi için kullanılır.
 
             foreach (var item in datas)
@@ -128,19 +128,19 @@ namespace Core.DataAccess
                     e.IsDeleted = true;
                 }
             }
-            await Context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         public void Update(TEntity entity)
         {
-            Context.Update(entity);
-            Context.SaveChanges();
+            _context.Update(entity);
+            _context.SaveChanges();
         }
 
         public async Task UpdateAsync(TEntity entity)
         {
-            Context.Update(entity);
-            await Context.SaveChangesAsync();   
+            _context.Update(entity);
+            await _context.SaveChangesAsync();   
         }
     }
 }

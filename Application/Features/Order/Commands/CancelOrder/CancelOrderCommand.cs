@@ -52,7 +52,7 @@ namespace Application.Features.Order.Commands.CancelOrder
                 }
 
                 //Yetki
-                if (order.Id != userId)
+                if (order.CustomerId != userId)
                 {
                     return new CancelOrderCommandResponse
                     {
@@ -63,7 +63,7 @@ namespace Application.Features.Order.Commands.CancelOrder
 
                 var orderStatuses = await _orderStatusRepository.GetListAsync();
                 var pendingStatus = orderStatuses.FirstOrDefault(status => status.Name.Equals("Pending"));
-                var cancelledStatus = orderStatuses.FirstOrDefault(status => status.Name.Equals("Cancel")); 
+                var cancelledStatus = orderStatuses.FirstOrDefault(status => status.Name.Equals("Cancelled")); 
                 if (pendingStatus == null || cancelledStatus == null)
                 {
                     return new CancelOrderCommandResponse

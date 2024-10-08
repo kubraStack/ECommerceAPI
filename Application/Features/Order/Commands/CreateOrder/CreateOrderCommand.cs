@@ -16,7 +16,6 @@ namespace Application.Features.Order.Commands.CreateOrder
     {
        
         public List<OrderItemDto>  OrderItems { get; set; }
-        public string ShippingAddress { get; set; }
        
 
         public class CreatedOrderCommandHandler : IRequestHandler<CreateOrderCommand, CreateOrderCommandResponse>
@@ -35,9 +34,12 @@ namespace Application.Features.Order.Commands.CreateOrder
             public async Task<CreateOrderCommandResponse> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
             {
                 var customerId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-               //Toplam tutarı hesaplamak için
-               decimal totalAmount = 0;
+                if (customerId == null)
+                {
+                    throw new Exception("Kullanıcı bulunamadı");
+                    
+                }
+                decimal totalAmount = 0;
 
                 var orderDetails = new List<OrderDetail>();
 
@@ -46,30 +48,29 @@ namespace Application.Features.Order.Commands.CreateOrder
                     var product = await _productRepository.GetByIdAsync(item.ProductId);
                     if (product == null)
                     {
-                        throw new Exception("Product not found");
+                        throw new Exception($"Product with ID {item.ProductId} not found.");
                     }
 
                     totalAmount += product.Price * item.Quantity;
 
-                    orderDetails.Add(new OrderDetail
+                    orderDetails.Add(new Domain.Entities.OrderDetail
                     {
                         ProductId = item.ProductId,
                         Quantity = item.Quantity,
-                        Price = product.Price
+                        Price = product.Price // Burada, fiyatın güncel durumunu yansıtıyor olmalısınız
                     });
                 }
+
                 var order = new Domain.Entities.Order
                 {
                     CustomerId = customerId,
                     OrderDate = DateTime.UtcNow,
                     TotalAmount = totalAmount,
-                    OrderDetail = orderDetails,
-                    OrderStatusId = 1
+                    OrderDetails = orderDetails,
+                    OrderStatusId = 1 // Sipariş durumu burada sabit, dinamik olmalı
                 };
 
-
-
-                //Siparişi veritabanına kaydet
+                // Siparişi veritabanına kaydet
                 await _orderRepository.AddAsync(order);
 
                 return new CreateOrderCommandResponse

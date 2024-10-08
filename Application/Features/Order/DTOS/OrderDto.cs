@@ -11,9 +11,10 @@ namespace Application.Features.Order.DTOS
     public class OrderDto
     {
         public int OrderId { get; set; } // Sipariş ID
+        public int CustomerId { get; set; }
         public int OrderStatusId { get; set; }
-        public DateTime OrderDate { get; set; } // Sipariş tarihi
+        public DateTime? OrderDate { get; set; } // Sipariş tarihi
         public decimal TotalAmount { get; set; } // Toplam tutar
-        public ICollection<OrderDetailDto> OrderDetails { get; set; } // Sipariş detayları
+        public ICollection<OrderDetailDto>? OrderDetails { get; set; } // Sipariş detayları
     }
 }

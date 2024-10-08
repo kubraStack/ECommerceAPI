@@ -18,24 +18,23 @@ namespace Persistence.SeedData.Order
                 new Domain.Entities.Order
                 {
                     Id = 1,
-                    OrderDate = new DateTime(2024,1,15),
                     CustomerId = 1,
-                    TotalAmount = 0,
+                    TotalAmount = 1,
                     OrderStatusId = 1,
-                    PaymentId = 1,
-                }    
+                    PaymentId = 1
+                }
             );
+
             builder.HasData(
-              new Domain.Entities.Order
-              {
-                  Id = 2,
-                  OrderDate = new DateTime(2024, 2, 25),
-                  CustomerId = 2,
-                  TotalAmount = 7,
-                  OrderStatusId = 2,
-                  PaymentId = 2,
-              }
-          );
+                new Domain.Entities.Order
+                {
+                    Id = 2,
+                    CustomerId = 2,
+                    TotalAmount = 2,
+                    OrderStatusId = 2,
+                    PaymentId = 2
+                }
+            );
         }
     }
     public class OrderDetailConfiguration : IEntityTypeConfiguration<Domain.Entities.OrderDetail>

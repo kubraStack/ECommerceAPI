@@ -1,5 +1,6 @@
 ﻿using Application.Features.Order.Commands.CancelOrder;
 using Application.Features.Order.Commands.CreateOrder;
+using Application.Features.Order.Commands.ProductReturn;
 using Application.Features.Order.Queries.GetAllOrders;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -39,6 +40,13 @@ namespace WebAPI.Controllers
         {
             var command = new CancelOrderCommand { OrderId = id };
             var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+        [HttpPost("order/return")]
+        public async Task<IActionResult> ReturnProduct([FromBody] ProductReturnCommand returnProductCommand)
+        {
+            var result = await _mediator.Send(returnProductCommand);
             return Ok(result);
         }
     }

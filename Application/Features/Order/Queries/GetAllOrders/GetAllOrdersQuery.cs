@@ -29,38 +29,77 @@ namespace Application.Features.Order.Queries.GetAllOrders
 
             public async Task<GetAllOrdersQueryResponse> Handle(GetAllOrdersQuery request, CancellationToken cancellationToken)
             {
-                // Kullanıcı rolünü almak için HttpContextAccessor kullanıyoruz
+                // Kullanıcı rolünü ve ID'sini al
                 var userRole = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Role)?.Value;
-                var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var userIdClaim = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
 
-                // Eğer kullanıcı admin ise, tüm siparişleri al
-                if (userRole == "Admin")
+                if (userIdClaim == null || string.IsNullOrWhiteSpace(userIdClaim.Value))
                 {
-                    var orders = await _orderRepository.GetListAsync();
-
-                    var orderDtos = orders.Select(order => new OrderDto
-                    {
-                        OrderId = order.Id,
-                        OrderDate = (DateTime)order.OrderDate,
-                        TotalAmount = order.TotalAmount,
-                        OrderStatusId = order.OrderStatusId,
-                    }).ToList();
-
-                    return new GetAllOrdersQueryResponse
-                    {
-                        Orders = orderDtos
-                    };
+                    throw new Exception("Kullanıcı bulunamadı.");
                 }
 
-                // Eğer kullanıcı customer ise, sadece kendi siparişlerini al
+                var userId = userIdClaim.Value;
+
+                // Kullanıcı rolüne göre siparişleri al
+                if (userRole == "Admin")
+                {
+                    return await GetAllOrders();
+                }
+                else if (userRole == "Customer")
+                {
+                    return await GetCustomerOrders(userId);
+                }
+                else
+                {
+                    throw new Exception("Geçersiz kullanıcı rolü.");
+                }
+            }
+
+            private async Task<GetAllOrdersQueryResponse> GetAllOrders()
+            {
+                var orders = await _orderRepository.GetListAsync();
+
+                var orderDtos = orders.Select(order => new OrderDto
+                {
+                    OrderId = order.Id,
+                    OrderDate = order.OrderDate ?? DateTime.Now, // Null kontrolü
+                    TotalAmount = order.TotalAmount,
+                    OrderStatusId = order.OrderStatusId,
+                    OrderDetails = order.OrderDetails?.Select(detail => new OrderDetailDto
+                    {
+                        ProductId = detail.ProductId,
+                        Quantity = detail.Quantity,
+                        UnitPrice = detail.Price
+                    }).ToList() ?? new List<OrderDetailDto>()
+                }).ToList();
+
+                return new GetAllOrdersQueryResponse
+                {
+                    Orders = orderDtos
+                };
+            }
+
+            private async Task<GetAllOrdersQueryResponse> GetCustomerOrders(string userId)
+            {
                 var customerOrders = await _orderRepository.GetListAsync(order => order.CustomerId.ToString() == userId);
+
+                if (customerOrders == null || !customerOrders.Any())
+                {
+                    throw new Exception("Siparişler bulunamadı.");
+                }
 
                 var customerOrderDtos = customerOrders.Select(order => new OrderDto
                 {
                     OrderId = order.Id,
-                    OrderDate = (DateTime)order.OrderDate,
+                    OrderDate = order.OrderDate ?? DateTime.Now, // Null kontrolü
                     TotalAmount = order.TotalAmount,
                     OrderStatusId = order.OrderStatusId,
+                    OrderDetails = order.OrderDetails?.Select(detail => new OrderDetailDto
+                    {
+                        ProductId = detail.ProductId,
+                        Quantity = detail.Quantity,
+                        UnitPrice = detail.Price
+                    }).ToList() ?? new List<OrderDetailDto>()
                 }).ToList();
 
                 return new GetAllOrdersQueryResponse

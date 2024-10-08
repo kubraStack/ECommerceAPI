@@ -134,21 +134,26 @@ namespace Persistence.Context
             //Order
             modelBuilder.Entity<Order>(entity =>
             {
+                entity.HasKey(o => o.Id);
+
                 entity.HasOne(o => o.Customer)
-                .WithMany(c => c.Orders)
-                .HasForeignKey(o => o.CustomerId);
+                      .WithMany(c => c.Orders)
+                      .HasForeignKey(o => o.CustomerId);
+
+                entity.HasMany(o => o.OrderDetails)
+                     .WithOne(od => od.Order)
+                     .HasForeignKey(od => od.OrderId)
+                     .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(o => o.OrderStatus)
-                .WithMany()
-                .HasForeignKey(o => o.OrderStatusId);
+                      .WithMany()
+                      .HasForeignKey(o => o.OrderStatusId);
 
                 entity.HasMany(o => o.Payments)
-                .WithOne(p => p.Order)
-                .HasForeignKey(p => p.OrderId);
+                      .WithOne(p => p.Order)
+                      .HasForeignKey(p => p.OrderId);
 
-                entity.HasMany(o => o.OrderDetail)
-                .WithOne(od => od.Order)
-                .HasForeignKey(od => od.OrderId);
+
             });
 
             //OrderStatus
@@ -159,16 +164,17 @@ namespace Persistence.Context
             //Order-Detail
             modelBuilder.Entity<OrderDetail>(entity =>
             {
-                entity.HasOne(od => od.Order)
-                .WithMany(o => o.OrderDetail)
-                .HasForeignKey(od => od.OrderId)
-                .OnDelete(DeleteBehavior.Cascade); //Sipariş silindiğinde sipariş detayları da silinir
+                entity.HasKey(od => od.Id);
 
+                entity.HasOne(od => od.Order)
+                .WithMany(o => o.OrderDetails)
+                .HasForeignKey(od => od.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(od => od.Product)
                 .WithMany()
                 .HasForeignKey(od => od.ProductId)
-                .OnDelete(DeleteBehavior.Restrict); //Ürün silindiğinde sipariş detaylarını silme
+                .OnDelete(DeleteBehavior.Restrict);
             });
 
             //Payment
@@ -240,7 +246,8 @@ namespace Persistence.Context
                 new OrderStatus { Id = 2, Name = "Confirmed", Description = "Onaylandı" },
                 new OrderStatus { Id = 3, Name = "Shipped", Description = "Kargoya Verildi" },
                 new OrderStatus { Id = 4, Name = "Delivered", Description = "Teslim Edildi" },
-                new OrderStatus { Id = 5, Name = "Cancelled", Description = "İptal Edildi" }
+                new OrderStatus { Id = 5, Name = "Cancelled", Description = "İptal Edildi" },
+                new OrderStatus { Id = 6, Name = "Returned", Description = "İade Edildi"}
             );
 
 

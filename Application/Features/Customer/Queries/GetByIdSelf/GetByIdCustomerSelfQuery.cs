@@ -41,7 +41,7 @@ namespace Application.Features.Customer.Queries.GetByIdSelf
                        include: c => c
                         .Include(u => u.User)
                         .Include(c =>c.Orders)
-                        .ThenInclude(o => o.OrderDetail)
+                        .ThenInclude(o => o.OrderDetails)
                 );
                 
 
