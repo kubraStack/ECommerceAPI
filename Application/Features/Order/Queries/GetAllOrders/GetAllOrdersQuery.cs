@@ -30,29 +30,43 @@ namespace Application.Features.Order.Queries.GetAllOrders
             public async Task<GetAllOrdersQueryResponse> Handle(GetAllOrdersQuery request, CancellationToken cancellationToken)
             {
                 // Kullanıcı rolünü ve ID'sini al
-                var userRole = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Role)?.Value;
-                var userIdClaim = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+                var userRoleClaim = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Role)?.Value;
+                var userIdClaim = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-                if (userIdClaim == null || string.IsNullOrWhiteSpace(userIdClaim.Value))
+                
+                // Kullanıcı ID'si kontrolü
+                if (string.IsNullOrWhiteSpace(userIdClaim))
                 {
-                    throw new Exception("Kullanıcı bulunamadı.");
+                    throw new Exception("Kullanıcı ID'si bulunamadı.");
+                }
+                Console.WriteLine($"User Role: {userRoleClaim}"); // Loglama
+
+
+                // Rol kontrolü
+                if (string.IsNullOrWhiteSpace(userRoleClaim))
+                {
+                    throw new Exception("Kullanıcı rolü bulunamadı.");
                 }
 
-                var userId = userIdClaim.Value;
-
                 // Kullanıcı rolüne göre siparişleri al
-                if (userRole == "Admin")
+                if (userRoleClaim == "Admin")
                 {
                     return await GetAllOrders();
                 }
-                else if (userRole == "Customer")
+                else if (userRoleClaim == "Customer")
                 {
-                    return await GetCustomerOrders(userId);
+                    return await GetCustomerOrders(userIdClaim);
                 }
+                else if (userRoleClaim == "Customer")
+                {
+                    return await GetCustomerOrders(userIdClaim);
+                }
+
                 else
                 {
                     throw new Exception("Geçersiz kullanıcı rolü.");
                 }
+
             }
 
             private async Task<GetAllOrdersQueryResponse> GetAllOrders()
@@ -81,7 +95,7 @@ namespace Application.Features.Order.Queries.GetAllOrders
 
             private async Task<GetAllOrdersQueryResponse> GetCustomerOrders(string userId)
             {
-                var customerOrders = await _orderRepository.GetListAsync(order => order.CustomerId.ToString() == userId);
+                var customerOrders = await _orderRepository.GetListAsync(order => order.CustomerId == Convert.ToInt32(userId));
 
                 if (customerOrders == null || !customerOrders.Any())
                 {
@@ -91,6 +105,7 @@ namespace Application.Features.Order.Queries.GetAllOrders
                 var customerOrderDtos = customerOrders.Select(order => new OrderDto
                 {
                     OrderId = order.Id,
+                    CustomerId = (int)order.CustomerId,
                     OrderDate = order.OrderDate ?? DateTime.Now, // Null kontrolü
                     TotalAmount = order.TotalAmount,
                     OrderStatusId = order.OrderStatusId,
@@ -108,5 +123,6 @@ namespace Application.Features.Order.Queries.GetAllOrders
                 };
             }
         }
+        
     }
 }

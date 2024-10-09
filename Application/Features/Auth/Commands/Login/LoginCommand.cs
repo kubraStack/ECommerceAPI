@@ -7,7 +7,9 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -43,9 +45,28 @@ namespace Application.Features.Auth.Commands.Login
                     throw new BusinessException("Giriş Başarısız");
                 }
 
+
                 List<UserOperationClaim> userOperationClaims = await _userOperationClaimRepository
-                        .GetListAsync(i => i.UserId == user.Id, include: i => i.Include(i => i.OperationClaim));
-                return _tokenHelper.CreateToken(user, userOperationClaims.Select(i => (Core.Entitites.BaseOperationClaim)i.OperationClaim).ToList());
+                     .GetListAsync(i => i.UserId == user.Id, include: i => i.Include(i => i.OperationClaim));
+
+                // Kullanıcıya ait claim'leri oluştur
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(ClaimTypes.Email, user.Email) // E-posta claim'i ekleyebilirsiniz
+                };
+
+                // Kullanıcının sahip olduğu rol veya işlemler
+                foreach (var operationClaim in userOperationClaims)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, operationClaim.OperationClaim.Name)); // Rol bilgisi ekliyoruz
+                }
+                //Token oluştur
+                var token = _tokenHelper.CreateToken(user, userOperationClaims.Select(i => (Core.Entitites.BaseOperationClaim)i.OperationClaim).ToList());
+                return token;
+
+                
+               
             }
         }
     }

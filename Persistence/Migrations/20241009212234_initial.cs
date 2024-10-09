@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class test : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -47,7 +47,7 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderStatus",
+                name: "OrderStatuses",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -60,11 +60,11 @@ namespace Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderStatus", x => x.Id);
+                    table.PrimaryKey("PK_OrderStatuses", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "PaymentMethod",
+                name: "PaymentMethods",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -77,7 +77,7 @@ namespace Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PaymentMethod", x => x.Id);
+                    table.PrimaryKey("PK_PaymentMethods", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -86,9 +86,10 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    UserType = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -96,8 +97,7 @@ namespace Persistence.Migrations
                     PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserType = table.Column<int>(type: "int", nullable: false)
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -157,7 +157,7 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserOperations",
+                name: "UserOperationClaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -170,15 +170,15 @@ namespace Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserOperations", x => x.Id);
+                    table.PrimaryKey("PK_UserOperationClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserOperations_OperationClaims_OperationClaimId",
+                        name: "FK_UserOperationClaims_OperationClaims_OperationClaimId",
                         column: x => x.OperationClaimId,
                         principalTable: "OperationClaims",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserOperations_Users_UserId",
+                        name: "FK_UserOperationClaims_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -221,11 +221,11 @@ namespace Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CustomerId = table.Column<int>(type: "int", nullable: false),
+                    GuestInfo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OrderDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     OrderStatusId = table.Column<int>(type: "int", nullable: false),
                     PaymentId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -240,16 +240,11 @@ namespace Persistence.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Orders_OrderStatus_OrderStatusId",
+                        name: "FK_Orders_OrderStatuses_OrderStatusId",
                         column: x => x.OrderStatusId,
-                        principalTable: "OrderStatus",
+                        principalTable: "OrderStatuses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Orders_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -334,11 +329,11 @@ namespace Persistence.Migrations
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Payment",
+                name: "Payments",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -353,23 +348,23 @@ namespace Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Payment", x => x.Id);
+                    table.PrimaryKey("PK_Payments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Payment_Orders_OrderId",
+                        name: "FK_Payments_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Payment_PaymentMethod_PaymentMethodId",
+                        name: "FK_Payments_PaymentMethods_PaymentMethodId",
                         column: x => x.PaymentMethodId,
-                        principalTable: "PaymentMethod",
+                        principalTable: "PaymentMethods",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ShoppingCartDetail",
+                name: "ShoppingCartDetails",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -384,15 +379,15 @@ namespace Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ShoppingCartDetail", x => x.Id);
+                    table.PrimaryKey("PK_ShoppingCartDetails", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ShoppingCartDetail_Products_ProductId",
+                        name: "FK_ShoppingCartDetails_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ShoppingCartDetail_ShoppingCarts_ShoppingCartId",
+                        name: "FK_ShoppingCartDetails_ShoppingCarts_ShoppingCartId",
                         column: x => x.ShoppingCartId,
                         principalTable: "ShoppingCarts",
                         principalColumn: "Id",
@@ -413,13 +408,13 @@ namespace Persistence.Migrations
                 columns: new[] { "Id", "CreatedDate", "DeletedDate", "Name", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 10, 7, 12, 57, 58, 39, DateTimeKind.Local).AddTicks(3738), null, "Admin", null },
-                    { 2, new DateTime(2024, 10, 7, 12, 57, 58, 39, DateTimeKind.Local).AddTicks(3744), null, "Customer", null },
-                    { 3, new DateTime(2024, 10, 7, 12, 57, 58, 39, DateTimeKind.Local).AddTicks(3747), null, "Guest", null }
+                    { 1, new DateTime(2024, 10, 10, 0, 22, 33, 849, DateTimeKind.Local).AddTicks(272), null, "Admin", null },
+                    { 2, new DateTime(2024, 10, 10, 0, 22, 33, 849, DateTimeKind.Local).AddTicks(280), null, "Customer", null },
+                    { 3, new DateTime(2024, 10, 10, 0, 22, 33, 849, DateTimeKind.Local).AddTicks(285), null, "Guest", null }
                 });
 
             migrationBuilder.InsertData(
-                table: "OrderStatus",
+                table: "OrderStatuses",
                 columns: new[] { "Id", "CreatedDate", "DeletedDate", "Description", "Name", "UpdatedDate" },
                 values: new object[,]
                 {
@@ -432,7 +427,7 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "PaymentMethod",
+                table: "PaymentMethods",
                 columns: new[] { "Id", "CreatedDate", "DeletedDate", "Description", "Name", "UpdatedDate" },
                 values: new object[,]
                 {
@@ -444,13 +439,13 @@ namespace Persistence.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "CreatedDate", "DeletedDate", "Email", "FirstName", "Gender", "LastName", "PasswordHash", "PasswordSalt", "PhoneNumber", "UpdatedDate", "UserType" },
+                columns: new[] { "Id", "CreatedDate", "DeletedDate", "Email", "FirstName", "Gender", "IsDeleted", "LastName", "PasswordHash", "PasswordSalt", "PhoneNumber", "UpdatedDate", "UserType" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 10, 7, 9, 57, 58, 39, DateTimeKind.Utc).AddTicks(2083), null, "customer1@example.com", "+2vS9SiEjuEtdomA+E1iOw==", "Famela", "evKlCl7mIBJkEqQf5ueGMg==", new byte[] { 12, 190, 100, 234, 171, 145, 157, 103, 152, 216, 89, 178, 12, 137, 39, 237, 79, 57, 75, 181, 109, 124, 27, 76, 205, 76, 80, 83, 207, 60, 26, 124, 218, 186, 107, 210, 159, 173, 125, 220, 145, 29, 23, 87, 3, 124, 86, 62, 196, 162, 2, 12, 70, 26, 200, 31, 101, 232, 143, 110, 52, 20, 249, 155 }, new byte[] { 187, 54, 163, 136, 115, 220, 194, 157, 186, 205, 219, 92, 197, 226, 52, 137, 199, 192, 208, 182, 39, 191, 240, 215, 209, 200, 234, 109, 105, 217, 193, 39, 12, 246, 14, 202, 184, 94, 192, 108, 117, 13, 127, 152, 72, 24, 179, 236, 199, 174, 210, 11, 227, 132, 174, 169, 55, 164, 25, 38, 242, 48, 184, 131, 132, 220, 157, 6, 97, 85, 4, 190, 161, 9, 92, 201, 200, 86, 105, 234, 66, 55, 34, 110, 18, 142, 229, 230, 136, 223, 55, 152, 147, 182, 249, 85, 100, 30, 98, 57, 195, 237, 68, 101, 147, 209, 118, 70, 133, 184, 15, 9, 204, 102, 119, 13, 203, 239, 18, 236, 221, 109, 68, 253, 213, 108, 244, 1 }, "1234567890", null, 2 },
-                    { 2, new DateTime(2024, 10, 7, 9, 57, 58, 39, DateTimeKind.Utc).AddTicks(2277), null, "customer2@example.com", "lx191yNB5UTgUeNqX1QIZQ==", "Male", "ESeBAof1D3qOrdvr0NsjqQ==", new byte[] { 12, 190, 100, 234, 171, 145, 157, 103, 152, 216, 89, 178, 12, 137, 39, 237, 79, 57, 75, 181, 109, 124, 27, 76, 205, 76, 80, 83, 207, 60, 26, 124, 218, 186, 107, 210, 159, 173, 125, 220, 145, 29, 23, 87, 3, 124, 86, 62, 196, 162, 2, 12, 70, 26, 200, 31, 101, 232, 143, 110, 52, 20, 249, 155 }, new byte[] { 187, 54, 163, 136, 115, 220, 194, 157, 186, 205, 219, 92, 197, 226, 52, 137, 199, 192, 208, 182, 39, 191, 240, 215, 209, 200, 234, 109, 105, 217, 193, 39, 12, 246, 14, 202, 184, 94, 192, 108, 117, 13, 127, 152, 72, 24, 179, 236, 199, 174, 210, 11, 227, 132, 174, 169, 55, 164, 25, 38, 242, 48, 184, 131, 132, 220, 157, 6, 97, 85, 4, 190, 161, 9, 92, 201, 200, 86, 105, 234, 66, 55, 34, 110, 18, 142, 229, 230, 136, 223, 55, 152, 147, 182, 249, 85, 100, 30, 98, 57, 195, 237, 68, 101, 147, 209, 118, 70, 133, 184, 15, 9, 204, 102, 119, 13, 203, 239, 18, 236, 221, 109, 68, 253, 213, 108, 244, 1 }, "1234512345", null, 2 },
-                    { 3, new DateTime(2024, 10, 7, 9, 57, 58, 39, DateTimeKind.Utc).AddTicks(2395), null, "guest1@example.com", "XsKf4aJaXsFVtCmJtPLh9A==", "Male", "jp8wRnLaDCWzCeqYjo2dOQ==", new byte[] { 12, 190, 100, 234, 171, 145, 157, 103, 152, 216, 89, 178, 12, 137, 39, 237, 79, 57, 75, 181, 109, 124, 27, 76, 205, 76, 80, 83, 207, 60, 26, 124, 218, 186, 107, 210, 159, 173, 125, 220, 145, 29, 23, 87, 3, 124, 86, 62, 196, 162, 2, 12, 70, 26, 200, 31, 101, 232, 143, 110, 52, 20, 249, 155 }, new byte[] { 187, 54, 163, 136, 115, 220, 194, 157, 186, 205, 219, 92, 197, 226, 52, 137, 199, 192, 208, 182, 39, 191, 240, 215, 209, 200, 234, 109, 105, 217, 193, 39, 12, 246, 14, 202, 184, 94, 192, 108, 117, 13, 127, 152, 72, 24, 179, 236, 199, 174, 210, 11, 227, 132, 174, 169, 55, 164, 25, 38, 242, 48, 184, 131, 132, 220, 157, 6, 97, 85, 4, 190, 161, 9, 92, 201, 200, 86, 105, 234, 66, 55, 34, 110, 18, 142, 229, 230, 136, 223, 55, 152, 147, 182, 249, 85, 100, 30, 98, 57, 195, 237, 68, 101, 147, 209, 118, 70, 133, 184, 15, 9, 204, 102, 119, 13, 203, 239, 18, 236, 221, 109, 68, 253, 213, 108, 244, 1 }, "2568947898", null, 3 },
-                    { 99, new DateTime(2024, 10, 7, 9, 57, 58, 39, DateTimeKind.Utc).AddTicks(2501), null, "admin1@example.com", "aNbdnOzUNuGnMPCOxe7GbA==", "Male", "zWkKiFF1SEkTjhIMvlgAfg==", new byte[] { 12, 190, 100, 234, 171, 145, 157, 103, 152, 216, 89, 178, 12, 137, 39, 237, 79, 57, 75, 181, 109, 124, 27, 76, 205, 76, 80, 83, 207, 60, 26, 124, 218, 186, 107, 210, 159, 173, 125, 220, 145, 29, 23, 87, 3, 124, 86, 62, 196, 162, 2, 12, 70, 26, 200, 31, 101, 232, 143, 110, 52, 20, 249, 155 }, new byte[] { 187, 54, 163, 136, 115, 220, 194, 157, 186, 205, 219, 92, 197, 226, 52, 137, 199, 192, 208, 182, 39, 191, 240, 215, 209, 200, 234, 109, 105, 217, 193, 39, 12, 246, 14, 202, 184, 94, 192, 108, 117, 13, 127, 152, 72, 24, 179, 236, 199, 174, 210, 11, 227, 132, 174, 169, 55, 164, 25, 38, 242, 48, 184, 131, 132, 220, 157, 6, 97, 85, 4, 190, 161, 9, 92, 201, 200, 86, 105, 234, 66, 55, 34, 110, 18, 142, 229, 230, 136, 223, 55, 152, 147, 182, 249, 85, 100, 30, 98, 57, 195, 237, 68, 101, 147, 209, 118, 70, 133, 184, 15, 9, 204, 102, 119, 13, 203, 239, 18, 236, 221, 109, 68, 253, 213, 108, 244, 1 }, "1234512345", null, 1 }
+                    { 1, new DateTime(2024, 10, 9, 21, 22, 33, 848, DateTimeKind.Utc).AddTicks(8587), null, "customer1@example.com", "+2vS9SiEjuEtdomA+E1iOw==", "Famela", false, "evKlCl7mIBJkEqQf5ueGMg==", new byte[] { 43, 102, 223, 53, 145, 22, 219, 133, 88, 136, 190, 81, 25, 97, 91, 171, 172, 34, 104, 184, 127, 171, 60, 102, 18, 251, 91, 12, 194, 27, 149, 204, 115, 169, 47, 77, 9, 115, 70, 164, 99, 152, 180, 245, 142, 115, 80, 242, 211, 86, 25, 249, 198, 165, 207, 249, 104, 60, 224, 10, 97, 39, 181, 86 }, new byte[] { 73, 223, 233, 251, 183, 30, 238, 53, 147, 57, 129, 72, 208, 78, 114, 50, 248, 161, 163, 92, 12, 35, 133, 98, 18, 59, 69, 168, 10, 17, 250, 161, 121, 185, 71, 161, 176, 83, 145, 124, 187, 42, 75, 23, 237, 144, 161, 112, 67, 206, 37, 90, 200, 148, 90, 103, 59, 222, 0, 133, 33, 253, 133, 180, 37, 96, 238, 39, 114, 247, 111, 132, 96, 61, 58, 245, 227, 18, 150, 8, 215, 9, 98, 105, 176, 127, 243, 200, 201, 39, 181, 251, 250, 155, 37, 84, 252, 220, 15, 114, 14, 147, 245, 146, 111, 240, 2, 34, 113, 100, 176, 47, 221, 81, 15, 98, 174, 9, 8, 206, 219, 74, 49, 152, 201, 246, 10, 247 }, "1234567890", null, 2 },
+                    { 2, new DateTime(2024, 10, 9, 21, 22, 33, 848, DateTimeKind.Utc).AddTicks(8795), null, "customer2@example.com", "lx191yNB5UTgUeNqX1QIZQ==", "Male", false, "ESeBAof1D3qOrdvr0NsjqQ==", new byte[] { 43, 102, 223, 53, 145, 22, 219, 133, 88, 136, 190, 81, 25, 97, 91, 171, 172, 34, 104, 184, 127, 171, 60, 102, 18, 251, 91, 12, 194, 27, 149, 204, 115, 169, 47, 77, 9, 115, 70, 164, 99, 152, 180, 245, 142, 115, 80, 242, 211, 86, 25, 249, 198, 165, 207, 249, 104, 60, 224, 10, 97, 39, 181, 86 }, new byte[] { 73, 223, 233, 251, 183, 30, 238, 53, 147, 57, 129, 72, 208, 78, 114, 50, 248, 161, 163, 92, 12, 35, 133, 98, 18, 59, 69, 168, 10, 17, 250, 161, 121, 185, 71, 161, 176, 83, 145, 124, 187, 42, 75, 23, 237, 144, 161, 112, 67, 206, 37, 90, 200, 148, 90, 103, 59, 222, 0, 133, 33, 253, 133, 180, 37, 96, 238, 39, 114, 247, 111, 132, 96, 61, 58, 245, 227, 18, 150, 8, 215, 9, 98, 105, 176, 127, 243, 200, 201, 39, 181, 251, 250, 155, 37, 84, 252, 220, 15, 114, 14, 147, 245, 146, 111, 240, 2, 34, 113, 100, 176, 47, 221, 81, 15, 98, 174, 9, 8, 206, 219, 74, 49, 152, 201, 246, 10, 247 }, "1234512345", null, 2 },
+                    { 3, new DateTime(2024, 10, 9, 21, 22, 33, 848, DateTimeKind.Utc).AddTicks(8909), null, "guest1@example.com", "XsKf4aJaXsFVtCmJtPLh9A==", "Male", false, "jp8wRnLaDCWzCeqYjo2dOQ==", new byte[] { 43, 102, 223, 53, 145, 22, 219, 133, 88, 136, 190, 81, 25, 97, 91, 171, 172, 34, 104, 184, 127, 171, 60, 102, 18, 251, 91, 12, 194, 27, 149, 204, 115, 169, 47, 77, 9, 115, 70, 164, 99, 152, 180, 245, 142, 115, 80, 242, 211, 86, 25, 249, 198, 165, 207, 249, 104, 60, 224, 10, 97, 39, 181, 86 }, new byte[] { 73, 223, 233, 251, 183, 30, 238, 53, 147, 57, 129, 72, 208, 78, 114, 50, 248, 161, 163, 92, 12, 35, 133, 98, 18, 59, 69, 168, 10, 17, 250, 161, 121, 185, 71, 161, 176, 83, 145, 124, 187, 42, 75, 23, 237, 144, 161, 112, 67, 206, 37, 90, 200, 148, 90, 103, 59, 222, 0, 133, 33, 253, 133, 180, 37, 96, 238, 39, 114, 247, 111, 132, 96, 61, 58, 245, 227, 18, 150, 8, 215, 9, 98, 105, 176, 127, 243, 200, 201, 39, 181, 251, 250, 155, 37, 84, 252, 220, 15, 114, 14, 147, 245, 146, 111, 240, 2, 34, 113, 100, 176, 47, 221, 81, 15, 98, 174, 9, 8, 206, 219, 74, 49, 152, 201, 246, 10, 247 }, "2568947898", null, 3 },
+                    { 4, new DateTime(2024, 10, 9, 21, 22, 33, 848, DateTimeKind.Utc).AddTicks(9056), null, "admin1@example.com", "aNbdnOzUNuGnMPCOxe7GbA==", "Male", false, "zWkKiFF1SEkTjhIMvlgAfg==", new byte[] { 43, 102, 223, 53, 145, 22, 219, 133, 88, 136, 190, 81, 25, 97, 91, 171, 172, 34, 104, 184, 127, 171, 60, 102, 18, 251, 91, 12, 194, 27, 149, 204, 115, 169, 47, 77, 9, 115, 70, 164, 99, 152, 180, 245, 142, 115, 80, 242, 211, 86, 25, 249, 198, 165, 207, 249, 104, 60, 224, 10, 97, 39, 181, 86 }, new byte[] { 73, 223, 233, 251, 183, 30, 238, 53, 147, 57, 129, 72, 208, 78, 114, 50, 248, 161, 163, 92, 12, 35, 133, 98, 18, 59, 69, 168, 10, 17, 250, 161, 121, 185, 71, 161, 176, 83, 145, 124, 187, 42, 75, 23, 237, 144, 161, 112, 67, 206, 37, 90, 200, 148, 90, 103, 59, 222, 0, 133, 33, 253, 133, 180, 37, 96, 238, 39, 114, 247, 111, 132, 96, 61, 58, 245, 227, 18, 150, 8, 215, 9, 98, 105, 176, 127, 243, 200, 201, 39, 181, 251, 250, 155, 37, 84, 252, 220, 15, 114, 14, 147, 245, 146, 111, 240, 2, 34, 113, 100, 176, 47, 221, 81, 15, 98, 174, 9, 8, 206, 219, 74, 49, 152, 201, 246, 10, 247 }, "1234512345", null, 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -472,23 +467,23 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "UserOperations",
+                table: "UserOperationClaims",
                 columns: new[] { "Id", "CreatedDate", "DeletedDate", "OperationClaimId", "UpdatedDate", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 10, 7, 12, 57, 58, 39, DateTimeKind.Local).AddTicks(3877), null, 1, null, 99 },
-                    { 2, new DateTime(2024, 10, 7, 12, 57, 58, 39, DateTimeKind.Local).AddTicks(3883), null, 2, null, 1 },
-                    { 3, new DateTime(2024, 10, 7, 12, 57, 58, 39, DateTimeKind.Local).AddTicks(3887), null, 3, null, 3 },
-                    { 4, new DateTime(2024, 10, 7, 12, 57, 58, 39, DateTimeKind.Local).AddTicks(3891), null, 3, null, 2 }
+                    { 1, new DateTime(2024, 10, 10, 0, 22, 33, 849, DateTimeKind.Local).AddTicks(456), null, 1, null, 4 },
+                    { 2, new DateTime(2024, 10, 10, 0, 22, 33, 849, DateTimeKind.Local).AddTicks(465), null, 2, null, 1 },
+                    { 3, new DateTime(2024, 10, 10, 0, 22, 33, 849, DateTimeKind.Local).AddTicks(470), null, 3, null, 3 },
+                    { 4, new DateTime(2024, 10, 10, 0, 22, 33, 849, DateTimeKind.Local).AddTicks(474), null, 3, null, 2 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Orders",
-                columns: new[] { "Id", "CreatedDate", "CustomerId", "DeletedDate", "OrderDate", "OrderStatusId", "PaymentId", "ProductId", "TotalAmount", "UpdatedDate" },
+                columns: new[] { "Id", "CreatedDate", "CustomerId", "DeletedDate", "GuestInfo", "OrderDate", "OrderStatusId", "PaymentId", "TotalAmount", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { 1, null, 1, null, null, 1, 1, null, 1m, null },
-                    { 2, null, 2, null, null, 2, 2, null, 2m, null }
+                    { 1, null, 1, null, null, null, 1, 1, 1m, null },
+                    { 2, null, 2, null, null, null, 2, 2, 2m, null }
                 });
 
             migrationBuilder.InsertData(
@@ -519,16 +514,16 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Payment",
+                table: "Payments",
                 columns: new[] { "Id", "Amount", "CreatedDate", "DeletedDate", "OrderId", "PaymentDate", "PaymentMethodId", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { 1, 500m, null, null, 1, new DateTime(2024, 10, 7, 12, 57, 58, 39, DateTimeKind.Local).AddTicks(3446), 1, null },
-                    { 2, 200m, null, null, 2, new DateTime(2024, 10, 7, 12, 57, 58, 39, DateTimeKind.Local).AddTicks(3465), 2, null }
+                    { 1, 500m, null, null, 1, new DateTime(2024, 10, 10, 0, 22, 33, 848, DateTimeKind.Local).AddTicks(9863), 1, null },
+                    { 2, 200m, null, null, 2, new DateTime(2024, 10, 10, 0, 22, 33, 848, DateTimeKind.Local).AddTicks(9887), 2, null }
                 });
 
             migrationBuilder.InsertData(
-                table: "ShoppingCartDetail",
+                table: "ShoppingCartDetails",
                 columns: new[] { "Id", "CreatedDate", "DeletedDate", "Price", "ProductId", "Quantity", "ShoppingCartId", "UpdatedDate" },
                 values: new object[,]
                 {
@@ -573,18 +568,14 @@ namespace Persistence.Migrations
                 column: "OrderStatusId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_ProductId",
-                table: "Orders",
-                column: "ProductId");
+                name: "IX_Payments_OrderId",
+                table: "Payments",
+                column: "OrderId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Payment_OrderId",
-                table: "Payment",
-                column: "OrderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Payment_PaymentMethodId",
-                table: "Payment",
+                name: "IX_Payments_PaymentMethodId",
+                table: "Payments",
                 column: "PaymentMethodId");
 
             migrationBuilder.CreateIndex(
@@ -603,13 +594,13 @@ namespace Persistence.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ShoppingCartDetail_ProductId",
-                table: "ShoppingCartDetail",
+                name: "IX_ShoppingCartDetails_ProductId",
+                table: "ShoppingCartDetails",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ShoppingCartDetail_ShoppingCartId",
-                table: "ShoppingCartDetail",
+                name: "IX_ShoppingCartDetails_ShoppingCartId",
+                table: "ShoppingCartDetails",
                 column: "ShoppingCartId");
 
             migrationBuilder.CreateIndex(
@@ -619,13 +610,13 @@ namespace Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserOperations_OperationClaimId",
-                table: "UserOperations",
+                name: "IX_UserOperationClaims_OperationClaimId",
+                table: "UserOperationClaims",
                 column: "OperationClaimId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserOperations_UserId",
-                table: "UserOperations",
+                name: "IX_UserOperationClaims_UserId",
+                table: "UserOperationClaims",
                 column: "UserId");
         }
 
@@ -639,22 +630,25 @@ namespace Persistence.Migrations
                 name: "OrderDetails");
 
             migrationBuilder.DropTable(
-                name: "Payment");
+                name: "Payments");
 
             migrationBuilder.DropTable(
                 name: "ProductReviews");
 
             migrationBuilder.DropTable(
-                name: "ShoppingCartDetail");
+                name: "ShoppingCartDetails");
 
             migrationBuilder.DropTable(
-                name: "UserOperations");
+                name: "UserOperationClaims");
 
             migrationBuilder.DropTable(
                 name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "PaymentMethod");
+                name: "PaymentMethods");
+
+            migrationBuilder.DropTable(
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "ShoppingCarts");
@@ -663,16 +657,13 @@ namespace Persistence.Migrations
                 name: "OperationClaims");
 
             migrationBuilder.DropTable(
-                name: "OrderStatus");
-
-            migrationBuilder.DropTable(
-                name: "Products");
-
-            migrationBuilder.DropTable(
-                name: "Customers");
+                name: "OrderStatuses");
 
             migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Customers");
 
             migrationBuilder.DropTable(
                 name: "Users");

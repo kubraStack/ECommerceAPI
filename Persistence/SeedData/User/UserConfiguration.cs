@@ -71,7 +71,7 @@ namespace Persistence.SeedData.User
             builder.HasData(
                new Domain.Entities.User
                {
-                   Id = 99,
+                   Id = 4,
                    FirstName = "Admin",
                    LastName = "Yönetici",
                    Email = "admin1@example.com",

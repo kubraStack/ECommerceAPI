@@ -15,5 +15,6 @@ namespace Domain.Entities
         public DateTime PaymentDate { get; set; }
         public int PaymentMethodId { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
+
     }
 }

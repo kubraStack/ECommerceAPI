@@ -9,7 +9,7 @@ namespace Application.Features.Order.Commands.CreateOrder
     public class CreateOrderCommandResponse
     {
         public int OrderId { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public string Status { get; set; }
+     
+        public string Message { get; set; }
     }
 }

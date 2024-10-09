@@ -74,6 +74,7 @@ namespace Application.Features.Auth.Commands.Register
                 };
 
                 await _customerRepository.AddAsync(customer);
+               
                 await _mailService.SendEmailAsync(request.Email, "Hoşgeldiniz", "Hesabınız başarıyla oluşturuldu");
                 return new RegisterCommandResponse
                 {

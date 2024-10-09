@@ -2,6 +2,7 @@
 using Application.Features.Order.Commands.CreateOrder;
 using Application.Features.Order.Commands.ProductReturn;
 using Application.Features.Order.Queries.GetAllOrders;
+using Application.Features.Order.Queries.GetByIdOrder;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -48,6 +49,15 @@ namespace WebAPI.Controllers
         {
             var result = await _mediator.Send(returnProductCommand);
             return Ok(result);
+        }
+
+        [HttpGet("orders/{id}")]
+        public async Task<IActionResult> GetOrderById(int id) { 
+            
+            var query = new GetOrderByIdQuery { OrderId = id };
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        
         }
     }
 }

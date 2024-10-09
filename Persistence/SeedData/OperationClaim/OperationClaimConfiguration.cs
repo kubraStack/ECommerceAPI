@@ -50,7 +50,7 @@ namespace Persistence.SeedData.OperationClaim
                 new Domain.Entities.UserOperationClaim
                 {
                     Id = 1,
-                    UserId = 99,  // Kullanıcı Id (Users tablosundaki Id)
+                    UserId = 4,  // Kullanıcı Id (Users tablosundaki Id)
                     OperationClaimId = 1,  // Rol Id (AdminRole)
                     CreatedDate = DateTime.Now
                 }

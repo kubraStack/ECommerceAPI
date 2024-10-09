@@ -14,5 +14,6 @@ namespace Domain.Entities
 
         // Bu duruma ait açıklama veya ek bilgiler
         public string Description { get; set; }
+        public ICollection<Order> Orders { get; set; }
     }
 }

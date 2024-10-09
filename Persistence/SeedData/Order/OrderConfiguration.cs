@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Persistence.SeedData.Order
@@ -19,6 +20,7 @@ namespace Persistence.SeedData.Order
                 {
                     Id = 1,
                     CustomerId = 1,
+                    GuestInfo =  null ,
                     TotalAmount = 1,
                     OrderStatusId = 1,
                     PaymentId = 1
@@ -30,6 +32,7 @@ namespace Persistence.SeedData.Order
                 {
                     Id = 2,
                     CustomerId = 2,
+                    GuestInfo = null,
                     TotalAmount = 2,
                     OrderStatusId = 2,
                     PaymentId = 2

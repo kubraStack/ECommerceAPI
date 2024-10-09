@@ -8,9 +8,9 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
-    <PackageReference Include="FluentValidation" Version="11.9.2" />
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.2" />
-    <PackageReference Include="MediatR" Version="12.4.0" />
+    <PackageReference Include="FluentValidation" Version="11.10.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.10.0" />
+    <PackageReference Include="MediatR" Version="12.4.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Order\Queries\GetByIdOrder\" />
-    <Folder Include="Features\Order\Queries\GetOrdersByCustomerId\" />
+    <Folder Include="Features\OrderDetails\Commands\" />
+    <Folder Include="Features\OrderDetails\Queries\" />
     <Folder Include="Features\Order\Queries\GetOrderStatus\" />
     <Folder Include="Features\Payment\Commands\" />
     <Folder Include="Features\Payment\Profiles\" />

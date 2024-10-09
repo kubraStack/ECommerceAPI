@@ -30,11 +30,12 @@ namespace Core.Entitites
 
         public UserType UserType { get; set; }
     }
-
     public enum UserType
     {
-        Customer = 2,
+
         Admin = 1,
+        Customer = 2,
         Guest = 3
     }
+
 }

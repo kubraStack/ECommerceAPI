@@ -10,6 +10,6 @@ namespace Application.Repositories
 {
     public interface ICustomerRepository : IRepository<Customer>, IAsyncRepository<Customer>
     {
-      
+        Task<Customer?> GetByUserIdAsync(int userId);
     }
 }
