@@ -17,9 +17,9 @@ namespace Domain.Entities
         public int OrderStatusId { get; set; }
         public OrderStatus OrderStatus { get; set; }
         public int PaymentId { get; set; }
-        public Payment Payment { get; set; }
+        public ICollection<Payment> Payments { get; set; }
 
       
-        public ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
+        public ICollection<OrderDetail> OrderDetails { get; set; } 
     }
 }

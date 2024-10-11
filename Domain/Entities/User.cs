@@ -14,8 +14,8 @@ namespace Domain.Entities
         public string Gender{ get; set; }
         public bool IsDeleted { get; set; }
         public Customer Customer { get; set; }
-        public UserType UserType { get; set; }
-        public ICollection<UserOperationClaim> UserOperationClaims { get; set; }
+      
+       
     }
     
 }

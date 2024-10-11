@@ -42,107 +42,179 @@ namespace Persistence.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // User - Customer
-            modelBuilder.Entity<User>(entity =>
-            {
-                entity.Property(u => u.UserType)
-                .IsRequired();
-                entity.HasOne(u => u.Customer)
-                    .WithOne(c => c.User)
-                    .HasForeignKey<Customer>(c => c.UserId);
-            });
+            //Category
+            modelBuilder.Entity<Category>()
+                .HasMany(c => c.Products) // Bir Kategori - Çok Ürün
+                .WithOne(p => p.Category)
+                .HasForeignKey(p => p.CategoryId)
+                .OnDelete(DeleteBehavior.Cascade); //Kategori silindiğinde, ilişkili ürünlerde silinir.
 
-            // UserOperationClaim - User & OperationClaim
-            modelBuilder.Entity<UserOperationClaim>(entity =>
-            {
-                entity.HasOne(uoc => uoc.User)
-                    .WithMany(u => u.UserOperationClaims)
-                    .HasForeignKey(uoc => uoc.UserId);
-
-                entity.HasOne(uoc => uoc.OperationClaim)
-                    .WithMany(oc => oc.UserOperationClaims)
-                    .HasForeignKey(uoc => uoc.OperationClaimId);
-            });
-
-            // Customer - Order
-            modelBuilder.Entity<Order>(entity =>
-            {
-                entity.HasOne(o => o.Customer)
-                    .WithMany(c => c.Orders)
-                    .HasForeignKey(o => o.CustomerId);
-
-                entity.HasOne(o => o.OrderStatus)
-                    .WithMany(os => os.Orders)
-                    .HasForeignKey(o => o.OrderStatusId);
-
-                entity.HasOne(o => o.Payment)
-                    .WithOne(p => p.Order)
-                    .HasForeignKey<Payment>(o => o.OrderId);
-            });
-
-            // Customer - ProductReview
-            modelBuilder.Entity<ProductReview>(entity =>
-            {
-                entity.HasOne(pr => pr.Customer)
-                    .WithMany(c => c.ProductReviews)
-                    .HasForeignKey(pr => pr.CustomerId);
-            });
-
-            // Customer - Favorite
-            modelBuilder.Entity<Favorite>(entity =>
-            {
-                entity.HasOne(f => f.Customer)
-                    .WithMany(c => c.Favorites)
-                    .HasForeignKey(f => f.CustomerId);
-
-                entity.HasOne(f => f.Product)
-                    .WithMany(p => p.Favorites)
-                    .HasForeignKey(f => f.ProductId);
-            });
-
-            // Customer - ShoppingCart
-            modelBuilder.Entity<ShoppingCart>(entity =>
-            {
-                entity.HasOne(sc => sc.Customer)
-                    .WithOne(c => c.ShoppingCart)
-                    .HasForeignKey<ShoppingCart>(sc => sc.CustomerId);
-            });
-
-            // Order - OrderDetail
-            modelBuilder.Entity<OrderDetail>(entity =>
-            {
-                entity.HasOne(od => od.Order)
-                    .WithMany(o => o.OrderDetails)
-                    .HasForeignKey(od => od.OrderId);
-            });
-
-            // PaymentMethod - Payment
-            modelBuilder.Entity<Payment>(entity =>
-            {
-                entity.HasOne(p => p.PaymentMethod)
-                    .WithMany(pm => pm.Payments)
-                    .HasForeignKey(p => p.PaymentMethodId);
-            });
-
-            // Category - Product
+            // Product
             modelBuilder.Entity<Product>(entity =>
             {
                 entity.HasOne(p => p.Category)
-                    .WithMany(c => c.Products)
-                    .HasForeignKey(p => p.CategoryId);
+                .WithMany(c => c.Products) //Bir ürün bir kategori
+                .HasForeignKey(p => p.CategoryId); // Ürünler bir kategoriye ait olmalı.
+
+                entity.HasMany(p => p.ProductReviews)
+                .WithOne(pr => pr.Product)
+                .HasForeignKey(pr => pr.ProductId);
             });
 
-            // Product - ShoppingCartDetail
+            //Favorite
+            modelBuilder.Entity<Favorite>(entity =>
+            {
+                entity.HasOne(f => f.Customer)
+                .WithMany(c => c.Favorites)
+                .HasForeignKey(f => f.CustomerId);
+
+                entity.HasOne(f => f.Product)
+                .WithMany(p => p.Favorites)
+                .HasForeignKey(f => f.ProductId);
+            });
+
+
+
+            //ProductReview
+            modelBuilder.Entity<ProductReview>(entity =>
+            {
+                entity.HasOne(pr => pr.Customer)
+                .WithMany(c => c.ProductReviews)
+                .HasForeignKey(pr => pr.CustomerId);
+
+                entity.HasOne(pr => pr.Product)
+                .WithMany(p => p.ProductReviews)
+                .HasForeignKey(pr => pr.ProductId);
+            });
+
+            //User
+            modelBuilder.Entity<User>(entity => {
+
+                entity.Property(u => u.PhoneNumber)
+                .IsRequired()
+                .HasMaxLength(15);
+
+                entity.Property(u => u.Gender)
+                .IsRequired(false);
+
+                entity.Property(u => u.IsDeleted)
+                .IsRequired()
+                .HasDefaultValue(false); //Varsayılan olarak silinmiş değil          
+
+                //Customer ile one-to-one ilişkisi
+                entity.HasOne(u => u.Customer)
+                .WithOne(c => c.User) //Customer tarafından User'a olan ilişki
+                .HasForeignKey<Customer>(c => c.UserId)
+                .OnDelete(DeleteBehavior.Cascade); // User silindiğinde müşteri de silinir.
+
+            });
+
+            //Customer
+
+            modelBuilder.Entity<Customer>(entity =>
+            {
+                entity.HasOne(c => c.User)
+                .WithOne(u => u.Customer)
+                .HasForeignKey<Customer>(c => c.UserId);
+
+
+                entity.HasMany(c => c.Orders)
+                .WithOne(o => o.Customer)
+                .HasForeignKey(o => o.CustomerId);
+
+                entity.HasMany(c => c.ProductReviews)
+                .WithOne(pr => pr.Customer)
+                .HasForeignKey(pr => pr.CustomerId);
+
+                entity.HasOne(c => c.ShoppingCart)
+                .WithOne(sc => sc.Customer)
+                .HasForeignKey<ShoppingCart>(sc => sc.CustomerId)
+                .OnDelete(DeleteBehavior.Cascade); //Müşteri silindiğinde alışveriş sepetide silinecek
+
+            });
+
+            //Order
+            modelBuilder.Entity<Order>(entity =>
+            {
+                entity.HasOne(o => o.Customer)
+                .WithMany(c => c.Orders)
+                .HasForeignKey(o => o.CustomerId);
+
+                entity.HasOne(o => o.OrderStatus)
+                .WithMany()
+                .HasForeignKey(o => o.OrderStatusId);
+
+                entity.HasMany(o => o.Payments)
+                .WithOne(p => p.Order)
+                .HasForeignKey(p => p.OrderId);
+
+                entity.HasMany(o => o.OrderDetails)
+                .WithOne(od => od.Order)
+                .HasForeignKey(od => od.OrderId);
+            });
+
+            //OrderStatus
+            modelBuilder.Entity<OrderStatus>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+            });
+            //Order-Detail
+            modelBuilder.Entity<OrderDetail>(entity =>
+            {
+                entity.HasOne(od => od.Order)
+                .WithMany(o => o.OrderDetails)
+                .HasForeignKey(od => od.OrderId)
+                .OnDelete(DeleteBehavior.Cascade); //Sipariş silindiğinde sipariş detayları da silinir
+
+
+                entity.HasOne(od => od.Product)
+                .WithMany()
+                .HasForeignKey(od => od.ProductId)
+                .OnDelete(DeleteBehavior.Restrict); //Ürün silindiğinde sipariş detaylarını silme
+            });
+
+            //Payment
+            modelBuilder.Entity<Payment>(entity =>
+            {
+                entity.HasOne(py => py.Order)
+                .WithMany(o => o.Payments)
+                .HasForeignKey(o => o.OrderId);
+
+                entity.HasOne(py => py.PaymentMethod)
+               .WithMany(pm => pm.Payments)
+               .HasForeignKey(p => p.PaymentMethodId);
+            });
+
+            //Payment Method
+            modelBuilder.Entity<PaymentMethod>(entity => {
+
+                entity.HasMany(pm => pm.Payments)
+                .WithOne(p => p.PaymentMethod)
+                .HasForeignKey(p => p.PaymentMethodId);
+
+            });
+
+            //ShoppingCart 
+            modelBuilder.Entity<ShoppingCart>(entity =>
+            {
+                entity.HasMany(sc => sc.ShoppingCartDetails)
+                .WithOne(scd => scd.ShoppingCart) // ShoppingCartDetail, ShoppingCart'a referans verir
+                .HasForeignKey(scd => scd.ShoppingCartId)
+                .OnDelete(DeleteBehavior.Cascade); // Sepet silindiğinde detaylar da silinir
+            });
+
+            //ShoppingCart-Detail 
             modelBuilder.Entity<ShoppingCartDetail>(entity =>
             {
-                entity.HasOne(scd => scd.Product)
-                    .WithMany(p => p.ShoppingCartDetails)
-                    .HasForeignKey(scd => scd.ProductId);
-
                 entity.HasOne(scd => scd.ShoppingCart)
-                    .WithMany(sc => sc.ShoppingCartDetails)
-                    .HasForeignKey(scd => scd.ShoppingCartId);
+                .WithMany(sc => sc.ShoppingCartDetails)
+                .HasForeignKey(scd => scd.ShoppingCartId)
+                .OnDelete(DeleteBehavior.Cascade);
             });
+
+
+
+
 
             // Global Query Filter for Soft Delete (IsDeleted)
             modelBuilder.Entity<User>().HasQueryFilter(u => !u.IsDeleted);
