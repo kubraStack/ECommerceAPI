@@ -85,7 +85,17 @@ namespace Application.Features.Order.Commands.CreateOrder
                 }
 
                 decimal totalAmount = 0;
+                // OrderDetails koleksiyonunun null olup olmadığını kontrol edin
+                if (order.OrderDetails == null)
+                {
+                    order.OrderDetails = new List<OrderDetail>();
+                }
 
+                // OrderItems null olup olmadığını kontrol edin
+                if (request.OrderItems == null)
+                {
+                    throw new BusinessException("Order items cannot be null.");
+                }
                 foreach (var item in request.OrderItems)
                 {
                     var product = await _productRepository.GetByIdAsync(item.ProductId);

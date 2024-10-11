@@ -19,18 +19,19 @@ namespace Application.Features.Order.Queries.GetAllOrders
         {
             private readonly IOrderRepository _orderRepository;
             private readonly IHttpContextAccessor _httpContextAccessor;
+            private readonly ICustomerRepository _customerRepository;
 
-
-            public GetAllOrdersQueryHandler(IOrderRepository orderRepository, IHttpContextAccessor httpContextAccessor)
+            public GetAllOrdersQueryHandler(IOrderRepository orderRepository, IHttpContextAccessor httpContextAccessor, ICustomerRepository customerRepository = null)
             {
                 _orderRepository = orderRepository;
                 _httpContextAccessor = httpContextAccessor;
+                _customerRepository = customerRepository;
             }
 
             public async Task<GetAllOrdersQueryResponse> Handle(GetAllOrdersQuery request, CancellationToken cancellationToken)
             {
                 // Kullanıcı rolünü ve ID'sini al
-                var userRoleClaim = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Role)?.Value;
+                var userRoleClaim = _httpContextAccessor.HttpContext.User.FindFirst("UserType")?.Value;
                 var userIdClaim = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
                 
@@ -57,11 +58,6 @@ namespace Application.Features.Order.Queries.GetAllOrders
                 {
                     return await GetCustomerOrders(userIdClaim);
                 }
-                else if (userRoleClaim == "Customer")
-                {
-                    return await GetCustomerOrders(userIdClaim);
-                }
-
                 else
                 {
                     throw new Exception("Geçersiz kullanıcı rolü.");
@@ -95,7 +91,13 @@ namespace Application.Features.Order.Queries.GetAllOrders
 
             private async Task<GetAllOrdersQueryResponse> GetCustomerOrders(string userId)
             {
-                var customerOrders = await _orderRepository.GetListAsync(order => order.CustomerId == Convert.ToInt32(userId));
+                var customer = await _customerRepository.GetAsync(c =>c.UserId == int.Parse(userId));
+                if (customer == null)
+                {
+                    throw new Exception("Müşteri bilgileri bulunamadı.");
+                }
+
+                var customerOrders = await _orderRepository.GetListAsync(order => order.CustomerId == customer.Id);
 
                 if (customerOrders == null || !customerOrders.Any())
                 {
