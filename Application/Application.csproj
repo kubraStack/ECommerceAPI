@@ -7,14 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Features\Payment\**" />
-    <Compile Remove="Features\ShoppingCart\**" />
     <Compile Remove="Features\SocialMedia\**" />
-    <EmbeddedResource Remove="Features\Payment\**" />
-    <EmbeddedResource Remove="Features\ShoppingCart\**" />
     <EmbeddedResource Remove="Features\SocialMedia\**" />
-    <None Remove="Features\Payment\**" />
-    <None Remove="Features\ShoppingCart\**" />
     <None Remove="Features\SocialMedia\**" />
   </ItemGroup>
 
@@ -38,8 +32,8 @@
     <Folder Include="Features\Product\Queries\GetTopSellingProduct\" />
     <Folder Include="Features\Product\Queries\FAQ\" />
     <Folder Include="Features\Product\Queries\SearchProducts\" />
-    <Folder Include="ShoppingCart\" />
-    <Folder Include="Payment\" />
+    <Folder Include="Features\ShoppingCart\" />
+    <Folder Include="Features\Payment\" />
   </ItemGroup>
 
 </Project>
