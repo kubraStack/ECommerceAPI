@@ -7,6 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\Payment\**" />
+    <Compile Remove="Features\ShoppingCart\**" />
+    <Compile Remove="Features\SocialMedia\**" />
+    <EmbeddedResource Remove="Features\Payment\**" />
+    <EmbeddedResource Remove="Features\ShoppingCart\**" />
+    <EmbeddedResource Remove="Features\SocialMedia\**" />
+    <None Remove="Features\Payment\**" />
+    <None Remove="Features\ShoppingCart\**" />
+    <None Remove="Features\SocialMedia\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="FluentValidation" Version="11.10.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.10.0" />
@@ -22,21 +34,12 @@
     <Folder Include="Features\OrderDetails\Commands\" />
     <Folder Include="Features\OrderDetails\Queries\" />
     <Folder Include="Features\Order\Queries\GetOrderStatus\" />
-    <Folder Include="Features\Payment\Commands\" />
-    <Folder Include="Features\Payment\Profiles\" />
-    <Folder Include="Features\Payment\Queries\" />
     <Folder Include="Features\Product\Queries\GetProductsByCategory\" />
     <Folder Include="Features\Product\Queries\GetTopSellingProduct\" />
     <Folder Include="Features\Product\Queries\FAQ\" />
     <Folder Include="Features\Product\Queries\SearchProducts\" />
-    <Folder Include="Features\ShoppingCart\Command\AddProductToShoppingCart\" />
-    <Folder Include="Features\ShoppingCart\Command\DeleteProductToShoppingCart\" />
-    <Folder Include="Features\ShoppingCart\Queries\ViewingShoppingCart\" />
-    <Folder Include="Features\ShoppingCart\Profiles\" />
-    <Folder Include="Features\ShoppingCart\Queries\" />
-    <Folder Include="Features\SocialMedia\Commands\SharingProducts\" />
-    <Folder Include="Features\SocialMedia\Profiles\" />
-    <Folder Include="Features\SocialMedia\Queries\" />
+    <Folder Include="ShoppingCart\" />
+    <Folder Include="Payment\" />
   </ItemGroup>
 
 </Project>
