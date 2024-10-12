@@ -68,10 +68,13 @@ namespace Application.Features.Order.Queries.GetAllOrders
             private async Task<GetAllOrdersQueryResponse> GetAllOrders()
             {
                 var orders = await _orderRepository.GetListAsync();
+                var guestOrders = await _orderRepository.GetAllOrdersWithGuestInfoAsync();
 
                 var orderDtos = orders.Select(order => new OrderDto
                 {
                     OrderId = order.Id,
+                    CustomerId = order.CustomerId ?? 0,
+                    GuestInfo = order.GuestInfo,
                     OrderDate = order.OrderDate ?? DateTime.Now, // Null kontrolü
                     TotalAmount = order.TotalAmount,
                     OrderStatusId = order.OrderStatusId,

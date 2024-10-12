@@ -10,6 +10,6 @@ namespace Application.Repositories
 {
     public interface IOrderRepository : IRepository<Order>, IAsyncRepository<Order>
     {
-        
+        Task<List<Order>> GetAllOrdersWithGuestInfoAsync();
     }
 }

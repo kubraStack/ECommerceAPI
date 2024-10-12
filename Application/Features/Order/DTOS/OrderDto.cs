@@ -12,6 +12,7 @@ namespace Application.Features.Order.DTOS
     {
         public int OrderId { get; set; } // Sipariş ID
         public int CustomerId { get; set; }
+        public string GuestInfo { get; set; } //Misafir bilgileri
         public int OrderStatusId { get; set; }
         public DateTime? OrderDate { get; set; } // Sipariş tarihi
         public decimal TotalAmount { get; set; } // Toplam tutar

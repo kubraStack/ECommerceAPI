@@ -48,17 +48,15 @@ namespace Application.Features.Order.Commands.CreateOrder
                 if (userIdClaim != null)
                 {
                     var userId = int.Parse(userIdClaim.Value);
-
-                    // Kullanıcı ID'sine göre müşteri kaydını alın
-                    var customer = await _customerRepository.GetByUserIdAsync(userId); // UserId'ye göre al
+                    var customer = await _customerRepository.GetByUserIdAsync(userId); 
 
                     if (customer != null)
                     {
-                        customerId = customer.Id; // Müşteri ID'sini al
+                        customerId = customer.Id; 
                     }
                 }
 
-                // Yeni Order oluşturun
+               
                 var order = new Domain.Entities.Order
                 {
                     CustomerId = customerId, // Eğer müşteri yoksa null olacak
@@ -69,9 +67,18 @@ namespace Application.Features.Order.Commands.CreateOrder
                     GuestInfo = null // Varsayılan olarak null
                 };
 
-                // Misafir bilgilerini ayarlayın, eğer müşteri yoksa
+                // Misafir bilgilerini ayarla, eğer müşteri yoksa
                 if (customerId == null)
                 {
+                    // Misafir bilgileri kontrolü
+                    if (string.IsNullOrWhiteSpace(request.GuestName) ||
+                        string.IsNullOrWhiteSpace(request.GuestEmail) ||
+                        string.IsNullOrWhiteSpace(request.GuestPhone) ||
+                        string.IsNullOrWhiteSpace(request.GuestAddress))
+                    {
+                        throw new BusinessException("Misafir bilgileri eksik. Tüm alanların doldurulması gerekiyor.");
+                    }
+
                     var guestInfo = new GuestInfoDto
                     {
                         GuestName = request.GuestName,
@@ -79,23 +86,22 @@ namespace Application.Features.Order.Commands.CreateOrder
                         GuestPhone = request.GuestPhone,
                         GuestAddress = request.GuestAddress
                     };
-
-                    // Misafir bilgilerini JSON formatında saklayın
                     order.GuestInfo = JsonSerializer.Serialize(guestInfo);
                 }
 
                 decimal totalAmount = 0;
-                // OrderDetails koleksiyonunun null olup olmadığını kontrol edin
+             
                 if (order.OrderDetails == null)
                 {
                     order.OrderDetails = new List<OrderDetail>();
                 }
 
-                // OrderItems null olup olmadığını kontrol edin
+               
                 if (request.OrderItems == null)
                 {
                     throw new BusinessException("Order items cannot be null.");
                 }
+
                 foreach (var item in request.OrderItems)
                 {
                     var product = await _productRepository.GetByIdAsync(item.ProductId);
@@ -105,27 +111,23 @@ namespace Application.Features.Order.Commands.CreateOrder
                         {
                             ProductId = product.Id,
                             Quantity = item.Quantity,
-                            Price = product.Price // Ürün fiyatını ayarlayın
+                            Price = product.Price 
                         };
 
-                        order.OrderDetails.Add(orderDetail); // OrderDetails koleksiyonuna ekleyin
-
-                        // Toplam tutarı hesaplayın
-                        totalAmount += product.Price * item.Quantity; // Ürün fiyatı ile miktarı çarpın
+                        order.OrderDetails.Add(orderDetail); 
+                        totalAmount += product.Price * item.Quantity; 
                     }
                 }
 
-                // Toplam tutarı ayarla
+                
                 order.TotalAmount = totalAmount;
-
-                // Siparişi veritabanına ekleyin
                 await _orderRepository.AddAsync(order);
 
-                // Yanıt nesnesini oluşturun
+               
                 var response = new CreateOrderCommandResponse
                 {
                     Message = "Sipariş oluşturuldu",
-                    OrderId = order.Id // Oluşturulan siparişin ID'si
+                    OrderId = order.Id 
                 };
 
                 return response;
