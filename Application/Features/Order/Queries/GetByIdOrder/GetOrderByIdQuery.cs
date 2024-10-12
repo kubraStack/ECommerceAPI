@@ -1,6 +1,7 @@
 ﻿using Application.Features.Order.DTOS;
 using Application.Features.OrderDetails.DTOS;
 using Application.Repositories;
+using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -21,12 +22,14 @@ namespace Application.Features.Order.Queries.GetByIdOrder
             private readonly IHttpContextAccessor _httpContextAccessor;
             private readonly IOrderRepository _orderRepository;
             private readonly IOrderDetailRepository _orderDetailRepository;
+            private readonly ICustomerRepository _customerRepository;
 
-            public GetOrderByIdQueryHandler(IHttpContextAccessor httpContextAccessor, IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository)
+            public GetOrderByIdQueryHandler(IHttpContextAccessor httpContextAccessor, IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository, ICustomerRepository customerRepository = null)
             {
                 _httpContextAccessor = httpContextAccessor;
                 _orderRepository = orderRepository;
                 _orderDetailRepository = orderDetailRepository;
+                _customerRepository = customerRepository;
             }
 
             public async Task<GetOrderByIdQueryResponse> Handle(GetOrderByIdQuery request, CancellationToken cancellationToken)
@@ -38,10 +41,23 @@ namespace Application.Features.Order.Queries.GetByIdOrder
                     throw new Exception("Kullanıcı bulunamadı.");
                 }
 
-                var userId = userIdClaim.Value;
+                var userId = int.Parse(userIdClaim.Value);
+                var userRoleClaim = _httpContextAccessor.HttpContext.User.FindFirst("UserType")?.Value;
 
-                //Sipariş
-                var order = await _orderRepository.GetAsync(o => o.Id == request.OrderId && o.CustomerId.ToString() == userId);
+                Domain.Entities.Order order;
+                if (userRoleClaim == "Admin")
+                {
+                    order = await _orderRepository.GetAsync(o => o.Id == request.OrderId);
+                }
+                else
+                {
+                    var customer = await _customerRepository.GetAsync(c => c.UserId == userId);
+                    if (customer == null)
+                    {
+                        throw new Exception("Müşteri bilgileri bulunamadı.");
+                    }
+                    order = await _orderRepository.GetAsync( o => o.Id == request.OrderId && o.CustomerId == customer.Id); 
+                }
                 if (order == null)
                 {
                     throw new Exception("Sipariş bulunamadı.");
@@ -51,6 +67,8 @@ namespace Application.Features.Order.Queries.GetByIdOrder
                 var orderDto = new OrderDto
                 {
                     OrderId = order.Id,
+                    CustomerId = order.CustomerId ?? 0,
+                    GuestInfo = order.GuestInfo,
                     OrderDate = order.OrderDate ?? DateTime.Now, //Nul Kontrolü
                     TotalAmount = order.TotalAmount,
                     OrderStatusId = order.OrderStatusId,
