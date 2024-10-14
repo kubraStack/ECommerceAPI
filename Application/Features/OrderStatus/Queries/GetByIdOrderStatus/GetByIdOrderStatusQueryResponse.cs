@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Application.Features.OrderStatus.Queries.GetByIdOrderStatus
 {
-    internal class GetByIdOrderStatusQueryResponse
+    public class GetByIdOrderStatusQueryResponse
     {
+        public int OrderStatusId { get; set; }
+        public string OrderName { get; set; }
+        public string Description { get; set; }
     }
 }

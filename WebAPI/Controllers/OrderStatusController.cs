@@ -2,6 +2,7 @@
 using Application.Features.OrderStatus.Commands.CreateOrderStatusCommand;
 using Application.Features.OrderStatus.Commands.DeleteOrderStatuscommand;
 using Application.Features.OrderStatus.Queries.GetAllOrderStatus;
+using Application.Features.OrderStatus.Queries.GetByIdOrderStatus;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -34,6 +35,16 @@ namespace WebAPI.Controllers
             var result = await _mediator.Send(query);
             return Ok(result); 
         }
+
+        [HttpGet("GetById/{id}")]
+        public async Task<IActionResult> GetByIdOrderStatus(int id) {
+
+            var query = new GetByIdOrderStatusQuery(id);
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        
+        }
+
 
         [HttpDelete("Delete-OrderStatus/{id}")]
         public async Task<ActionResult<DeleteOrderStatusCommandResponse>> DeleteOrderStatus(int id)
