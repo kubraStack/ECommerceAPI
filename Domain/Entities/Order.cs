@@ -20,6 +20,6 @@ namespace Domain.Entities
         public ICollection<Payment> Payments { get; set; }
 
       
-        public ICollection<OrderDetail> OrderDetails { get; set; } 
+        public ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
     }
 }

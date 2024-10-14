@@ -25,8 +25,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\OrderDetails\Commands\" />
-    <Folder Include="Features\OrderDetails\Queries\" />
+    <Folder Include="Features\OrderDetails\Commands\DeleteOrderDetail\" />
+    <Folder Include="Features\OrderDetails\Commands\UpdateOrderDetail\" />
     <Folder Include="Features\OrderStatus\Profile\" />
     <Folder Include="Features\ShoppingCartDetails\" />
     <Folder Include="Features\Order\Queries\GetOrderStatus\" />

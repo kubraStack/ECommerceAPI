@@ -1,5 +1,7 @@
 ﻿using Application.Features.Order.DTOS;
+using Application.Features.OrderDetails.Commands.CreateOrderDetail;
 using Application.Repositories;
+using AutoMapper;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
@@ -31,13 +33,16 @@ namespace Application.Features.Order.Commands.CreateOrder
             private readonly IOrderRepository _orderRepository;
             private readonly IProductRepository _productRepository;
             private readonly ICustomerRepository _customerRepository;
+           private readonly IMediator _mediator;
 
-            public CreatedOrderCommandHandler(IOrderRepository orderRepository, IHttpContextAccessor httpContextAccessor, IProductRepository productRepository, ICustomerRepository customerRepository)
+
+            public CreatedOrderCommandHandler(IOrderRepository orderRepository, IHttpContextAccessor httpContextAccessor, IProductRepository productRepository, ICustomerRepository customerRepository, IMapper mapper = null, IMediator mediator = null)
             {
                 _orderRepository = orderRepository;
                 _httpContextAccessor = httpContextAccessor;
                 _productRepository = productRepository;
                 _customerRepository = customerRepository;
+                _mediator = mediator;
             }
 
             public async Task<CreateOrderCommandResponse> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
@@ -90,7 +95,8 @@ namespace Application.Features.Order.Commands.CreateOrder
                 }
 
                 decimal totalAmount = 0;
-             
+                await _orderRepository.AddAsync(order);
+
                 if (order.OrderDetails == null)
                 {
                     order.OrderDetails = new List<OrderDetail>();
@@ -107,21 +113,26 @@ namespace Application.Features.Order.Commands.CreateOrder
                     var product = await _productRepository.GetByIdAsync(item.ProductId);
                     if (product != null)
                     {
-                        var orderDetail = new OrderDetail
+                        var createOrderDetailCommand = new CreateOrderDetailCommand
                         {
+                            OrderId = order.Id,
                             ProductId = product.Id,
                             Quantity = item.Quantity,
-                            Price = product.Price 
+                            UnitPrice = product.Price
+                            
                         };
 
-                        order.OrderDetails.Add(orderDetail); 
-                        totalAmount += product.Price * item.Quantity; 
+                        var orderDetailResponse = await _mediator.Send(createOrderDetailCommand, cancellationToken);
+                        if (orderDetailResponse.Success)
+                        {
+                            totalAmount += product.Price * item.Quantity;
+                        }
                     }
                 }
 
                 
                 order.TotalAmount = totalAmount;
-                await _orderRepository.AddAsync(order);
+                await _orderRepository.UpdateAsync(order);
 
                
                 var response = new CreateOrderCommandResponse
