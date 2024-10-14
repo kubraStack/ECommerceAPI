@@ -7,14 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Features\OrderDetails\Commands\**" />
-    <Compile Remove="Features\OrderDetails\Queries\**" />
     <Compile Remove="Features\SocialMedia\**" />
-    <EmbeddedResource Remove="Features\OrderDetails\Commands\**" />
-    <EmbeddedResource Remove="Features\OrderDetails\Queries\**" />
     <EmbeddedResource Remove="Features\SocialMedia\**" />
-    <None Remove="Features\OrderDetails\Commands\**" />
-    <None Remove="Features\OrderDetails\Queries\**" />
     <None Remove="Features\SocialMedia\**" />
   </ItemGroup>
 
@@ -31,6 +25,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Features\OrderDetails\Commands\" />
+    <Folder Include="Features\OrderDetails\Queries\" />
+    <Folder Include="Features\OrderStatus\Commands\ChangeOrderStatusCommand\" />
+    <Folder Include="Features\OrderStatus\Commands\UpdateOrderStatusCommand\" />
+    <Folder Include="Features\OrderStatus\Profile\" />
     <Folder Include="Features\ShoppingCartDetails\" />
     <Folder Include="Features\Order\Queries\GetOrderStatus\" />
     <Folder Include="Features\Product\Queries\GetProductsByCategory\" />

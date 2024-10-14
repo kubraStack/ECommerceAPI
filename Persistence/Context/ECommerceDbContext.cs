@@ -157,6 +157,7 @@ namespace Persistence.Context
             modelBuilder.Entity<OrderStatus>(entity =>
             {
                 entity.HasKey(e => e.Id);
+               
             });
             //Order-Detail
             modelBuilder.Entity<OrderDetail>(entity =>
