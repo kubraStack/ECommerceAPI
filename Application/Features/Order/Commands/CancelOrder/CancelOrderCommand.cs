@@ -1,4 +1,5 @@
-﻿using Application.Features.Order.DTOS;
+﻿using Application.Abstracts;
+using Application.Features.Order.DTOS;
 using Application.Features.Payment.Commands.DeletePayment;
 using Application.Features.Payment.Commands.UpdatePayment;
 using Application.Repositories;
@@ -28,7 +29,8 @@ namespace Application.Features.Order.Commands.CancelOrder
             private readonly IOrderStatusRepository _orderStatusRepository;
             private readonly IPaymentRepository _paymentRepository;
             private readonly IMediator _mediator;
-            public CancelOrderCommandHandler(IHttpContextAccessor httpContextAccessor, IOrderRepository orderRepository, IUserRepository userRepository, IOrderStatusRepository orderStatusRepository, IMediator mediator = null, IPaymentRepository paymentRepository = null, ICustomerRepository customerRepository = null)
+            private readonly IMailService _mailService;
+            public CancelOrderCommandHandler(IHttpContextAccessor httpContextAccessor, IOrderRepository orderRepository, IUserRepository userRepository, IOrderStatusRepository orderStatusRepository, IMediator mediator = null, IPaymentRepository paymentRepository = null, ICustomerRepository customerRepository = null, IMailService mailService = null)
             {
                 _httpContextAccessor = httpContextAccessor;
                 _orderRepository = orderRepository;
@@ -37,6 +39,7 @@ namespace Application.Features.Order.Commands.CancelOrder
                 _mediator = mediator;
                 _paymentRepository = paymentRepository;
                 _customerRepository = customerRepository;
+                _mailService = mailService;
             }
 
             public async Task<CancelOrderCommandResponse> Handle(CancelOrderCommand request, CancellationToken cancellationToken)
@@ -53,6 +56,7 @@ namespace Application.Features.Order.Commands.CancelOrder
                 if (customer == null) {
                     throw new Exception("Müşteri bulunamadı.");
                 }
+                var isGuestUser = customer == null;
 
                 var order = await _orderRepository.GetByIdAsync(request.OrderId);
                 if (order == null) { 
@@ -64,9 +68,8 @@ namespace Application.Features.Order.Commands.CancelOrder
                     };
                 
                 }
-
-                //Yetki
-                if (order.CustomerId != customer.Id)
+           
+                if (!isGuestUser && order.CustomerId != customer.Id)
                 {
                     return new CancelOrderCommandResponse
                     {
@@ -120,11 +123,26 @@ namespace Application.Features.Order.Commands.CancelOrder
 
                 await _orderRepository.UpdateAsync(order);
 
+                var emailToNotify = customer.User.Email; 
+                var subject = "Sipariş İptal Edildi"; 
+                var body = $"Siparişiniz (ID: {order.Id}) başarıyla iptal edilmiştir.";
+                if (isGuestUser)
+                {
+                    // Misafir kullanıcının bilgileri sipariş bilgileri içinde saklanmalı
+                    var guestEmail = order.GuestInfo; // Misafirin e-posta adresini buradan almalısınız
+                    emailToNotify = guestEmail; // Misafirin e-posta adresi
+                }
+                else
+                {
+                    emailToNotify = customer.User.Email; // Kullanıcının e-posta adresi
+                }
+                await _mailService.SendOrderConfirmationEmailAsync(emailToNotify, subject, body, order.Id.ToString());
+
                 return new CancelOrderCommandResponse
                 {
                     Success = true,
                     Message = "Sipariş başarıyla iptal edildi.",
-                    CancelledOrder = new OrderDto // İptal edilen siparişin bilgileri
+                    CancelledOrder = new OrderDto 
                     {
                         OrderId = order.Id,
                         OrderStatusId = order.OrderStatusId

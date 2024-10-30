@@ -9,6 +9,7 @@ namespace Application.Abstracts
     public interface IMailService
     {
         public Task SendEmailAsync(string toEmail, string subject, string body);    
-        public Task SendOrderConfirmationEmailAsync(string toEmail, string orderId);
+        public Task SendOrderConfirmationEmailAsync(string toEmail, string subject, string body, string orderId);
+        
     }
 }

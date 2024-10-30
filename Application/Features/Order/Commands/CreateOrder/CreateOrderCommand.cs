@@ -157,7 +157,10 @@ namespace Application.Features.Order.Commands.CreateOrder
 
                 if (!string.IsNullOrWhiteSpace(emailToNotify))
                 {
-                    await _mailService.SendOrderConfirmationEmailAsync(emailToNotify, order.Id.ToString());
+                    var subject = "Siparişiniz Oluşturuldu";
+                    var body = "Siparişiniz Başarıyla oluşturulmuştur.";
+                    await _mailService.SendOrderConfirmationEmailAsync(emailToNotify, subject, body, order.Id.ToString());
+
                 }
 
                 var response = new CreateOrderCommandResponse

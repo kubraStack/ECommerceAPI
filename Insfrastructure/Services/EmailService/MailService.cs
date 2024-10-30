@@ -51,11 +51,9 @@ namespace Infrastructure.Services.EmailService
             }
         }
 
-        public async Task SendOrderConfirmationEmailAsync(string toEmail, string orderId)
+        public async Task SendOrderConfirmationEmailAsync(string toEmail,string subject, string body string orderId)
         {
-            var subject = "Siparişiniz Oluşturuldu";
-            var body = $"Siparişiniz başarıyla oluşturulmuştur. Sipariş ID: {orderId}";
-
+            var formattedBody = $"{body} Sipariş ID: {orderId}";
             await SendEmailAsync(toEmail, subject, body);
 
 
