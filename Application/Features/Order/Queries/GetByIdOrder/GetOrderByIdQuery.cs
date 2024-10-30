@@ -50,7 +50,7 @@ namespace Application.Features.Order.Queries.GetByIdOrder
 
                 if (userRoleClaim == "Admin")
                 {
-                    order = await _orderRepository.GetAsync(o => o.Id == request.OrderId);
+                    order = await _orderRepository.GetAsync(o => o.Id == request.OrderId, include: o => o.Include(od => od.OrderDetails));
                 }
                 else
                 {
@@ -67,36 +67,21 @@ namespace Application.Features.Order.Queries.GetByIdOrder
                     throw new Exception("Sipariş bulunamadı.");
                 }
 
-                var orderDetailDtos  = order.OrderDetails.Select(detail => new OrderDetailDto
-                {
-                    ProductId = detail.ProductId,
-                    Quantity = detail.Quantity,
-                    UnitPrice = detail.Price
-                }).ToList(); 
-
-                if (order.OrderDetails != null && order.OrderDetails.Any())
-                {
-                    foreach (var detail in order.OrderDetails)
-                    {
-                        var detailQuery = new GetByIdOrderDetailQuery(detail.Id);
-                        var detailResponse = await _mediator.Send(detailQuery, cancellationToken);
-                        if (detailResponse != null)
-                        {
-                            orderDetailDtos.Add(detailResponse.OrderDetail);
-                        }
-                    }
-                }
-                
-                //Dto'ya dönüştür
+                // Dto'ya dönüştür
                 var orderDto = new OrderDto
                 {
                     OrderId = order.Id,
                     CustomerId = order.CustomerId ?? 0,
                     GuestInfo = order.GuestInfo,
-                    OrderDate = order.OrderDate ?? DateTime.Now, //Nul Kontrolü
+                    OrderDate = order.OrderDate ?? DateTime.Now, 
                     TotalAmount = order.TotalAmount,
                     OrderStatusId = order.OrderStatusId,
-                    OrderDetails = orderDetailDtos
+                    OrderDetails = order.OrderDetails.Select(detail => new OrderDetailDto
+                    {
+                        ProductId = detail.ProductId,
+                        Quantity = detail.Quantity,
+                        UnitPrice = detail.Price
+                    }).ToList()
                 };
 
                 return new GetOrderByIdQueryResponse

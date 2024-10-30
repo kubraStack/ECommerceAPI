@@ -15,6 +15,15 @@ namespace Domain.Entities
         public DateTime PaymentDate { get; set; }
         public int PaymentMethodId { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
-
+        public PaymentStatus PaymentStatus { get; set; } 
     }
+    public enum PaymentStatus
+    {
+        Pending = 1,
+        Completed = 2,
+        Failed = 3,
+        Refunded = 4
+    }
+
+
 }

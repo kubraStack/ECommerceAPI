@@ -33,6 +33,7 @@ namespace Persistence.Context
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<OrderStatus> OrderStatuses { get; set; }
         public DbSet<Payment> Payments { get; set; }
+        
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductReview> ProductReviews { get; set; }
@@ -185,7 +186,8 @@ namespace Persistence.Context
                .WithMany(pm => pm.Payments)
                .HasForeignKey(p => p.PaymentMethodId);
             });
-
+                       
+            
             //Payment Method
             modelBuilder.Entity<PaymentMethod>(entity => {
 
@@ -235,6 +237,11 @@ namespace Persistence.Context
             modelBuilder.ApplyConfiguration(new UserOperationClaimConfiguration());
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
 
+            modelBuilder.Entity<Payment>().HasData(
+                new Payment { Id = 3, OrderId = 1, Amount = 100.00m, PaymentDate = DateTime.UtcNow, PaymentMethodId = 1, PaymentStatus = PaymentStatus.Pending },
+                new Payment { Id = 4, OrderId = 2, Amount = 200.00m, PaymentDate = DateTime.UtcNow, PaymentMethodId = 2, PaymentStatus = PaymentStatus.Completed }                
+            );
+
             // Seed data for PaymentMethod
             modelBuilder.Entity<PaymentMethod>().HasData(
                 new PaymentMethod { Id = 1, Name = "Credit Card", Description = "Kredi Kartı İle Ödeme" },
@@ -242,7 +249,7 @@ namespace Persistence.Context
                 new PaymentMethod { Id = 3, Name = "Mobile Payment", Description = "Mobil Ödeme" },
                 new PaymentMethod { Id = 4, Name = "Payment At Door", Description = "Kapıda Ödeme" }
             );
-
+           
             // Seed data for OrderStatus
             modelBuilder.Entity<OrderStatus>().HasData(
                 new OrderStatus { Id = 1, Name = "Pending", Description = "Beklemede" },

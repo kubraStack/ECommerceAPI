@@ -10,5 +10,6 @@ namespace Application.Repositories
 {
     public interface IOrderStatusRepository : IRepository<OrderStatus>, IAsyncRepository<OrderStatus>
     {
+       
     }
 }

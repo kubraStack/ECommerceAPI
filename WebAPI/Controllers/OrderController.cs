@@ -50,7 +50,7 @@ namespace WebAPI.Controllers
             var result = await _mediator.Send(returnProductCommand);
             return Ok(result);
         }
-
+        
         [HttpGet("orders/{id}")]
         public async Task<IActionResult> GetOrderById(int id) { 
             

@@ -1,6 +1,7 @@
 ﻿using Application.Features.Order.Queries.GetAllOrders;
 using Application.Features.OrderStatus.Commands.CreateOrderStatusCommand;
 using Application.Features.OrderStatus.Commands.DeleteOrderStatuscommand;
+using Application.Features.OrderStatus.Commands.UpdateOrderStatusCommand;
 using Application.Features.OrderStatus.Queries.GetAllOrderStatus;
 using Application.Features.OrderStatus.Queries.GetByIdOrderStatus;
 using MediatR;
@@ -45,6 +46,18 @@ namespace WebAPI.Controllers
         
         }
 
+        [HttpPut("Update-OrderStatus/{orderId}")]
+        public async Task<IActionResult> UpdateOrderStatus(int orderId, [FromBody] UpdateOrderStatusCommand updateOrderStatusCommand)
+        {
+            updateOrderStatusCommand.OrderId = orderId;
+            var response = await _mediator.Send(updateOrderStatusCommand);
+            return Ok(
+                new {
+                    updatedStatus = response.NewStatusName,
+                    message = response.Message
+                }
+            );
+        }
 
         [HttpDelete("Delete-OrderStatus/{id}")]
         public async Task<ActionResult<DeleteOrderStatusCommandResponse>> DeleteOrderStatus(int id)

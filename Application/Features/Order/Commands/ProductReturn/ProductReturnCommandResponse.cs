@@ -8,8 +8,7 @@ namespace Application.Features.Order.Commands.ProductReturn
 {
     public class ProductReturnCommandResponse
     {
-        private bool v1;
-        private string v2;
+        
 
         public bool Success { get; set; }
         public string Message { get; set; }
@@ -30,10 +29,6 @@ namespace Application.Features.Order.Commands.ProductReturn
             
         }
 
-        public ProductReturnCommandResponse(bool v1, string v2)
-        {
-            this.v1 = v1;
-            this.v2 = v2;
-        }
+       
     }
 }

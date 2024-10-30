@@ -1,5 +1,6 @@
 ﻿using Application.Features.Order.DTOS;
 using Application.Features.OrderDetails.Commands.CreateOrderDetail;
+using Application.Features.Payment.Commands.CreatePayment;
 using Application.Repositories;
 using AutoMapper;
 using Core.CrossCuttingConcerns.Exceptions.Types;
@@ -21,7 +22,7 @@ namespace Application.Features.Order.Commands.CreateOrder
     {
        
         public List<OrderItemDto>  OrderItems { get; set; }
-        public int PaymentId { get; set; }
+        public int PaymentMethodId { get; set; }
         public string   GuestName { get; set; }
         public string GuestEmail { get; set; }
         public string GuestPhone { get; set; }
@@ -65,7 +66,7 @@ namespace Application.Features.Order.Commands.CreateOrder
                 var order = new Domain.Entities.Order
                 {
                     CustomerId = customerId, // Eğer müşteri yoksa null olacak
-                    PaymentId = request.PaymentId,
+                   
                     OrderDate = DateTime.UtcNow,
                     TotalAmount = 0,
                     OrderStatusId = 1,
@@ -134,7 +135,21 @@ namespace Application.Features.Order.Commands.CreateOrder
                 order.TotalAmount = totalAmount;
                 await _orderRepository.UpdateAsync(order);
 
-               
+                var createPaymentCommand = new CreatePaymentCommand
+                {
+                    OrderId = order.Id,
+                    Amount = totalAmount,
+                    PaymentMethodId = request.PaymentMethodId,
+                    PaymentStatus = PaymentStatus.Pending
+                };
+                var paymentResponse = await _mediator.Send(createPaymentCommand, cancellationToken);
+                if (paymentResponse == null)
+                {
+                    throw new BusinessException("Ödeme işlemi sırasında bir hata oluştu.");
+                }
+                order.PaymentId = paymentResponse.PaymentId;
+                await _orderRepository.UpdateAsync(order);
+
                 var response = new CreateOrderCommandResponse
                 {
                     Message = "Sipariş oluşturuldu",

@@ -15,5 +15,6 @@ namespace Application.Features.Product.Command.AdminCommands.UpdateProductComman
         public int StockQuantity { get; set; }
         public string ImageUrl { get; set; } 
         public int CategoryId { get; set; }
+      
     }
 }

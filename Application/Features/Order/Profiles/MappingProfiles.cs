@@ -18,6 +18,7 @@ namespace Application.Features.Order.Profiles
            .ForMember(dest => dest.OrderDetails, opt => opt.MapFrom(src => src.OrderDetails)); // OrderDetails eşlemesi
 
             CreateMap<OrderDetail, OrderDetailDto>(); // OrderDetail ile OrderDetailDto arasında eşleme
+            CreateMap<OrderDetailDto, OrderDetail>();
         }
     }
 }

@@ -25,17 +25,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\OrderDetails\Commands\DeleteOrderDetail\" />
-    <Folder Include="Features\OrderDetails\Commands\UpdateOrderDetail\" />
-    <Folder Include="Features\OrderStatus\Profile\" />
+    <Folder Include="Features\Payment\Queries\GetPaymentById\" />
+    <Folder Include="Features\Payment\Queries\GetPaymentsByOrderId\" />
+    <Folder Include="Features\Payment\Queries\GetAllPayments\" />
     <Folder Include="Features\ShoppingCartDetails\" />
-    <Folder Include="Features\Order\Queries\GetOrderStatus\" />
     <Folder Include="Features\Product\Queries\GetProductsByCategory\" />
     <Folder Include="Features\Product\Queries\GetTopSellingProduct\" />
     <Folder Include="Features\Product\Queries\FAQ\" />
     <Folder Include="Features\Product\Queries\SearchProducts\" />
     <Folder Include="Features\ShoppingCart\" />
-    <Folder Include="Features\Payment\" />
   </ItemGroup>
 
 </Project>
