@@ -50,5 +50,15 @@ namespace Infrastructure.Services.EmailService
                 throw; // Hatanın üst katmana iletilmesi
             }
         }
+
+        public async Task SendOrderConfirmationEmailAsync(string toEmail, string orderId)
+        {
+            var subject = "Siparişiniz Oluşturuldu";
+            var body = $"Siparişiniz başarıyla oluşturulmuştur. Sipariş ID: {orderId}";
+
+            await SendEmailAsync(toEmail, subject, body);
+
+
+        }
     }
 }

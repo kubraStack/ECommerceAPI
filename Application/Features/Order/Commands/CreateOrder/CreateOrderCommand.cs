@@ -1,4 +1,5 @@
-﻿using Application.Features.Order.DTOS;
+﻿using Application.Abstracts;
+using Application.Features.Order.DTOS;
 using Application.Features.OrderDetails.Commands.CreateOrderDetail;
 using Application.Features.Payment.Commands.CreatePayment;
 using Application.Repositories;
@@ -35,21 +36,24 @@ namespace Application.Features.Order.Commands.CreateOrder
             private readonly IProductRepository _productRepository;
             private readonly ICustomerRepository _customerRepository;
             private readonly IMediator _mediator;
+            private readonly IMailService _mailService;
 
 
-            public CreatedOrderCommandHandler(IOrderRepository orderRepository, IHttpContextAccessor httpContextAccessor, IProductRepository productRepository, ICustomerRepository customerRepository, IMapper mapper = null, IMediator mediator = null)
+            public CreatedOrderCommandHandler(IOrderRepository orderRepository, IHttpContextAccessor httpContextAccessor, IProductRepository productRepository, ICustomerRepository customerRepository, IMapper mapper = null, IMediator mediator = null, IMailService mailService = null)
             {
                 _orderRepository = orderRepository;
                 _httpContextAccessor = httpContextAccessor;
                 _productRepository = productRepository;
                 _customerRepository = customerRepository;
                 _mediator = mediator;
+                _mailService = mailService;
             }
 
             public async Task<CreateOrderCommandResponse> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
             {
                 var userIdClaim = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier);
                 int? customerId = null;
+                string emailToNotify = null;
 
                 if (userIdClaim != null)
                 {
@@ -58,7 +62,8 @@ namespace Application.Features.Order.Commands.CreateOrder
 
                     if (customer != null)
                     {
-                        customerId = customer.Id; 
+                        customerId = customer.Id;
+                        emailToNotify = customer.User.Email;
                     }
                 }
 
@@ -92,6 +97,7 @@ namespace Application.Features.Order.Commands.CreateOrder
                         GuestAddress = request.GuestAddress
                     };
                     order.GuestInfo = JsonSerializer.Serialize(guestInfo);
+                    emailToNotify = request.GuestEmail;
                 }
 
                 decimal totalAmount = 0;
@@ -148,6 +154,11 @@ namespace Application.Features.Order.Commands.CreateOrder
                 }
                 order.PaymentId = paymentResponse.PaymentId;
                 await _orderRepository.UpdateAsync(order);
+
+                if (!string.IsNullOrWhiteSpace(emailToNotify))
+                {
+                    await _mailService.SendOrderConfirmationEmailAsync(emailToNotify, order.Id.ToString());
+                }
 
                 var response = new CreateOrderCommandResponse
                 {
