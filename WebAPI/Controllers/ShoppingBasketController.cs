@@ -3,7 +3,11 @@ using Application.Features.ShoppingBasket.Commands.AddToBasket;
 using Application.Features.ShoppingBasket.Commands.ClearBasket;
 using Application.Features.ShoppingBasket.Commands.RemoveFromBasket;
 using Application.Features.ShoppingBasket.Commands.UpdateBasketItemQuantity;
+using Application.Features.ShoppingBasket.Queries.CheckIfProductInBasket;
+using Application.Features.ShoppingBasket.Queries.GetBasketItemQuantity;
+using Application.Features.ShoppingBasket.Queries.GetBasketTotalAmount;
 using Application.Features.ShoppingBasket.Queries.GetShoppingBasket;
+using Application.Features.ShoppingBasket.Queries.GetShoppingBasketDetails;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -58,5 +62,42 @@ namespace WebAPI.Controllers
             return Ok(response);
         }
 
+        [HttpGet("GetBasketDetail")]
+        public async Task<IActionResult> GetBasketDetail()
+        {
+            var query = new GetShoppingBasketDetailQuery();
+            var result = await _mediator.Send(query);   
+            return Ok(result);
+        }
+
+        [HttpGet("GetBasketTotalAmount")]
+        public async Task<IActionResult> GetBasketTotalAmount()
+        {
+            var query = new GetBasketTotalAmountQuery();
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+
+        [HttpGet("BasketItemQuantity")]
+        public async Task<IActionResult> GetBasketItemQuantity([FromQuery] int productId)
+        {
+            var query = new GetBasketItemQuantityQuery
+            {
+                ProductId = productId
+            };
+            var result = await _mediator.Send(query);     
+            return Ok(result);
+        }
+
+        [HttpGet("CheckIfProductInBasket")]
+        public async Task<IActionResult> CheckIfProductInBasket([FromQuery] int productId)
+        {
+            var query = new CheckIfPorductInBasketQuery
+            {
+                ProductId = productId
+            };
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
     }
 }

@@ -18,5 +18,7 @@ namespace Application.Repositories
         Task<bool> ClearBasketAsync(int customerId);
         Task<bool> UpdateBasketItemQuantityAsync(int customerId, int productId, int quantity);
         Task<ShoppingBasket> GetBasketAsync(int customerId);
+        Task<ShoppingBasket> GetBasketWithDetailAsync(int customerId);
+        Task<ShoppingBasketDetail> GetBasketItemAsync(int customerId, int productId);
     }
 }

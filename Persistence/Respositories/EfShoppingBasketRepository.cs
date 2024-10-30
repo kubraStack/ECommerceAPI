@@ -105,6 +105,33 @@ namespace Persistence.Respositories
             return shoppingBasket;
         }
 
+        public async Task<ShoppingBasketDetail> GetBasketItemAsync(int customerId, int productId)
+        {
+            return await _context.ShoppingBasketDetails
+           .Include(d => d.ShoppingBasket)
+           .Where(d => d.ShoppingBasket.CustomerId == customerId && d.ProductId == productId)
+           .FirstOrDefaultAsync();
+        }
+
+        public async Task<ShoppingBasket> GetBasketWithDetailAsync(int customerId)
+        {
+            var shoppingBasket = await _context.ShoppingBasket
+             .Include(b => b.ShoppingBasketDetails)
+                 .ThenInclude(d => d.Product)
+             .FirstOrDefaultAsync(b => b.CustomerId == customerId);
+
+            if (shoppingBasket == null)
+            {
+                return null;
+            }
+            foreach (var item in shoppingBasket.ShoppingBasketDetails)
+            {
+                item.Price = (double)item.Product.Price;
+            } 
+            await _context.SaveChangesAsync();
+            return shoppingBasket;
+        }
+
         public async Task<bool> RemoveFromBasketAsync(int customerId, int productId)
         {
             var shoppingBasket = await _context.ShoppingBasket
