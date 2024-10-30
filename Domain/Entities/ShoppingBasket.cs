@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class ShoppingCart : Entity
+    public class ShoppingBasket : Entity
     {
         public int CustomerId { get; set; }
         public Customer Customer { get; set; }
-        public ICollection<ShoppingCartDetail> ShoppingCartDetails { get; set; }
+        public ICollection<ShoppingBasketDetail> ShoppingBasketDetails { get; set; }
     }
 }

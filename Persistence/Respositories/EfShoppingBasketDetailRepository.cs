@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Persistence.Respositories
 {
-    public class EfShoppingCartRepository : EfRepositoryBase<ShoppingCart, ECommerceDbContext>, IShoppingCartRepository
+    public class EfShoppingBasketDetailRepository : EfRepositoryBase<ShoppingBasketDetail, ECommerceDbContext>, IShoppingBasketDetailRepository
     {
-        public EfShoppingCartRepository(ECommerceDbContext context) : base(context)
+        public EfShoppingBasketDetailRepository(ECommerceDbContext context) : base(context)
         {
         }
     }

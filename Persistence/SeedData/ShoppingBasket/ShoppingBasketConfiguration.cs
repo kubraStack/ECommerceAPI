@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace Persistence.SeedData.ShoppingCart
 {
-    public class ShoppingCartConfiguration : IEntityTypeConfiguration<Domain.Entities.ShoppingCart>
+    public class ShoppingBasketConfiguration : IEntityTypeConfiguration<Domain.Entities.ShoppingBasket>
     {
-        public void Configure(EntityTypeBuilder<Domain.Entities.ShoppingCart> builder)
+        public void Configure(EntityTypeBuilder<Domain.Entities.ShoppingBasket> builder)
         {
             builder.HasData(
-                new Domain.Entities.ShoppingCart
+                new Domain.Entities.ShoppingBasket
                 {
                     Id = 1,
                     CustomerId= 1,
@@ -23,7 +23,7 @@ namespace Persistence.SeedData.ShoppingCart
                 
             );
             builder.HasData(
-               new Domain.Entities.ShoppingCart
+               new Domain.Entities.ShoppingBasket
                {
                    Id = 2,
                    CustomerId = 2,
@@ -34,25 +34,25 @@ namespace Persistence.SeedData.ShoppingCart
         }
     }
 
-    public class ShoppingCartDetailConfiguration : IEntityTypeConfiguration<Domain.Entities.ShoppingCartDetail>
+    public class ShoppingBasketDetailConfiguration : IEntityTypeConfiguration<Domain.Entities.ShoppingBasketDetail>
     {
-        public void Configure(EntityTypeBuilder<ShoppingCartDetail> builder)
+        public void Configure(EntityTypeBuilder<ShoppingBasketDetail> builder)
         {
             builder.HasData(
-                new Domain.Entities.ShoppingCartDetail
+                new Domain.Entities.ShoppingBasketDetail
                 {
                     Id = 1,
-                    ShoppingCartId = 1,
+                    ShoppingBasketId = 1,
                     ProductId = 1,
                     Quantity = 1,
                     Price = 500,
                 }    
             );
             builder.HasData(
-                new Domain.Entities.ShoppingCartDetail
+                new Domain.Entities.ShoppingBasketDetail
                 {
                     Id = 2,
-                    ShoppingCartId = 2,
+                    ShoppingBasketId = 2,
                     ProductId = 2,
                     Quantity = 2,
                     Price = 300,

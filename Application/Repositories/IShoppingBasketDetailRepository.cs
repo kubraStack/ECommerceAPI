@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Repositories
 {
-    public interface IShoppingCartRepository : IRepository<ShoppingCart>, IAsyncRepository<ShoppingCart>
+    public interface IShoppingBasketDetailRepository : IRepository<ShoppingBasketDetail>, IAsyncRepository<ShoppingBasketDetail>
     {
     }
 }

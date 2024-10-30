@@ -34,7 +34,7 @@ namespace Application.Features.Order.Commands.CreateOrder
             private readonly IOrderRepository _orderRepository;
             private readonly IProductRepository _productRepository;
             private readonly ICustomerRepository _customerRepository;
-           private readonly IMediator _mediator;
+            private readonly IMediator _mediator;
 
 
             public CreatedOrderCommandHandler(IOrderRepository orderRepository, IHttpContextAccessor httpContextAccessor, IProductRepository productRepository, ICustomerRepository customerRepository, IMapper mapper = null, IMediator mediator = null)
@@ -65,15 +65,14 @@ namespace Application.Features.Order.Commands.CreateOrder
                
                 var order = new Domain.Entities.Order
                 {
-                    CustomerId = customerId, // Eğer müşteri yoksa null olacak
-                   
+                    CustomerId = customerId,                    
                     OrderDate = DateTime.UtcNow,
                     TotalAmount = 0,
                     OrderStatusId = 1,
-                    GuestInfo = null // Varsayılan olarak null
+                    GuestInfo = null 
                 };
 
-                // Misafir bilgilerini ayarla, eğer müşteri yoksa
+               
                 if (customerId == null)
                 {
                     // Misafir bilgileri kontrolü

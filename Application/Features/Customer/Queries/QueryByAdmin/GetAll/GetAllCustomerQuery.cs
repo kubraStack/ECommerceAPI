@@ -56,7 +56,7 @@ namespace Application.Features.Customer.Queries.QueryByAdmin.GetAll
                     c.Orders,
                     c.ShippingAddress,
                     c.BillingAddress,
-                    c.ShoppingCart,
+                    c.ShoppingBasket,
                     c.ProductReviews
                 }).ToList();
 

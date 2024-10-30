@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Payment.Commands.UpdatePayment
+namespace Application.Features.ShoppingBasket.Commands.RemoveFromBasket
 {
-    public class UpdatePaymentStatusCommandResponse
+    public class RemoveFromBasketCommandResponse
     {
         public bool Success { get; set; }
         public string Message { get; set; }

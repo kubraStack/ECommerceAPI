@@ -1,4 +1,5 @@
-﻿using Core.DataAccess;
+﻿using Application.Features.Payment.DTO;
+using Core.DataAccess;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,5 +11,6 @@ namespace Application.Repositories
 {
     public interface IPaymentRepository : IRepository<Payment>, IAsyncRepository<Payment>
     {
+        Task<IEnumerable<PaymentDto>> GetPaymentByOrderIdAsync(int orderId);
     }
 }

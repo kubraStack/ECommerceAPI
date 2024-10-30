@@ -16,6 +16,6 @@ namespace Application.Features.Customer.Queries.GetByIdSelf
         public string UserName { get; set; }
         public ICollection<OrderDto> Orders { get; set; }
         public ICollection<ProductReview> ProductReviews { get; set; }
-        public ShoppingCart ShoppingCart { get; set; }
+        public Domain.Entities.ShoppingBasket ShoppingCart { get; set; }
     }
 }

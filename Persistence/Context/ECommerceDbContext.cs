@@ -7,7 +7,7 @@ using Persistence.SeedData.OperationClaim;
 using Persistence.SeedData.Order;
 using Persistence.SeedData.Payment;
 using Persistence.SeedData.Product;
-using Persistence.SeedData.ShoppingCart;
+
 using Persistence.SeedData.User;
 using System;
 using System.Collections.Generic;
@@ -37,8 +37,8 @@ namespace Persistence.Context
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductReview> ProductReviews { get; set; }
-        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
-        public DbSet<ShoppingCartDetail> ShoppingCartDetails { get; set; }
+        public DbSet<ShoppingBasket> ShoppingBasket { get; set; }
+        public DbSet<ShoppingBasketDetail> ShoppingBasketDetails { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -127,9 +127,9 @@ namespace Persistence.Context
                 .WithOne(pr => pr.Customer)
                 .HasForeignKey(pr => pr.CustomerId);
 
-                entity.HasOne(c => c.ShoppingCart)
+                entity.HasOne(c => c.ShoppingBasket)
                 .WithOne(sc => sc.Customer)
-                .HasForeignKey<ShoppingCart>(sc => sc.CustomerId)
+                .HasForeignKey<ShoppingBasket>(sc => sc.CustomerId)
                 .OnDelete(DeleteBehavior.Cascade); //Müşteri silindiğinde alışveriş sepetide silinecek
 
             });
@@ -197,21 +197,21 @@ namespace Persistence.Context
 
             });
 
-            //ShoppingCart 
-            modelBuilder.Entity<ShoppingCart>(entity =>
+            //ShoppingBasket
+            modelBuilder.Entity<ShoppingBasket>(entity =>
             {
-                entity.HasMany(sc => sc.ShoppingCartDetails)
-                .WithOne(scd => scd.ShoppingCart) // ShoppingCartDetail, ShoppingCart'a referans verir
-                .HasForeignKey(scd => scd.ShoppingCartId)
+                entity.HasMany(sc => sc.ShoppingBasketDetails)
+                .WithOne(scd => scd.ShoppingBasket) // ShoppingCartDetail, ShoppingCart'a referans verir
+                .HasForeignKey(scd => scd.ShoppingBasketId)
                 .OnDelete(DeleteBehavior.Cascade); // Sepet silindiğinde detaylar da silinir
             });
 
-            //ShoppingCart-Detail 
-            modelBuilder.Entity<ShoppingCartDetail>(entity =>
+            //ShoppingBasket-Detail 
+            modelBuilder.Entity<ShoppingBasketDetail>(entity =>
             {
-                entity.HasOne(scd => scd.ShoppingCart)
-                .WithMany(sc => sc.ShoppingCartDetails)
-                .HasForeignKey(scd => scd.ShoppingCartId)
+                entity.HasOne(scd => scd.ShoppingBasket)
+                .WithMany(sc => sc.ShoppingBasketDetails)
+                .HasForeignKey(scd => scd.ShoppingBasketId)
                 .OnDelete(DeleteBehavior.Cascade);
             });
 
@@ -226,8 +226,8 @@ namespace Persistence.Context
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new CustomerConfiguration());
-            modelBuilder.ApplyConfiguration(new ShoppingCartConfiguration());
-            modelBuilder.ApplyConfiguration(new ShoppingCartDetailConfiguration());
+            modelBuilder.ApplyConfiguration(new SeedData.ShoppingCart.ShoppingBasketConfiguration());
+            modelBuilder.ApplyConfiguration(new SeedData.ShoppingCart.ShoppingBasketDetailConfiguration());
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
             modelBuilder.ApplyConfiguration(new ProductReviewConfiguration());
             modelBuilder.ApplyConfiguration(new PaymentConfiguration());

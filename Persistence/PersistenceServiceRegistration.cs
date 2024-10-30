@@ -40,8 +40,8 @@ namespace Persistence
             services.AddScoped<IPaymentMethodRepository, EfPaymentMethodRepository>();
             services.AddScoped<IProductRepository, EfProductRepository>();
             services.AddScoped<IProductReviewRepository, EfProductReviewRepository>();
-            services.AddScoped<IShoppingCartRepository, EfShoppingCartRepository>();
-            services.AddScoped<IShoppingCartDetailRepository, EfShoppingCartDetailRepository>();
+            services.AddScoped<IShoppingBasketRepository, EfShoppingBasketRepository>();
+            services.AddScoped<IShoppingBasketDetailRepository, EfShoppingBasketDetailRepository>();
             return services;
         }
     }

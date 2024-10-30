@@ -19,6 +19,6 @@ namespace Domain.Entities
         public Category? Category { get; set; }
         public ICollection<ProductReview> ProductReviews { get; set; }
         public ICollection<Favorite> Favorites { get; set; }
-        public ICollection<ShoppingCartDetail> ShoppingCartDetails { get; set; } = new List<ShoppingCartDetail>();
+        public ICollection<ShoppingBasketDetail> ShoppingCartDetails { get; set; } = new List<ShoppingBasketDetail>();
     }
 }

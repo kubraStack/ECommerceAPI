@@ -38,7 +38,7 @@ namespace Application.Features.Customer.Profiles
                 : new List<OrderDto>())
             )
             .ForMember(dest => dest.ProductReviews, opt => opt.MapFrom(src => src.ProductReviews))
-            .ForMember(dest => dest.ShoppingCart, opt => opt.MapFrom(src => src.ShoppingCart));
+            .ForMember(dest => dest.ShoppingCart, opt => opt.MapFrom(src => src.ShoppingBasket));
 
 
         }
