@@ -51,12 +51,28 @@ namespace Infrastructure.Services.EmailService
             }
         }
 
-        public async Task SendOrderConfirmationEmailAsync(string toEmail,string subject, string body, string orderId)
+        public async Task SendOrderCancelledEmailAsync(string toEmail, int orderId, string reason)
         {
-            var formattedBody = $"{body} Sipariş ID: {orderId}";
+            string subject = $"Siparişiniz İptal Edildi - Sipariş No: {orderId}";
+            string body = $"Merhaba, <br><br>Siparişiniz iptal edilmiştir. <br>Sipariş No: {orderId} <br>İptal Sebebi: {reason} <br><br>Detaylar için bizimle iletişime geçebilirsiniz.";
             await SendEmailAsync(toEmail, subject, body);
-
-
         }
+
+        public async Task SendOrderCreatedEmailAsync(string toEmail, int orderId, decimal totalAmount)
+        {
+            string subject = $"Siparişiniz Oluşturuldu - Sipariş No: {orderId}";
+            string body = $"Merhaba, <br><br>Siparişiniz başarıyla oluşturulmuştur. Sipariş No: {orderId} <br>Toplam Tutar: {totalAmount:C} <br><br>Teşekkür ederiz!";
+            await SendEmailAsync(toEmail, subject, body);
+        }
+
+        public async Task SendOrderReturnedEmailAsync(string toEmail, int orderId, List<string> returnedItems, string returnReason)
+        {
+            string subject = $"Ürün İadesi - Sipariş No: {orderId}";
+            string itemsList = string.Join(", ", returnedItems);
+            string body = $"Merhaba, <br><br> Siparişinizdeki  ürünler iade edilmiştir. <br>Sipariş No: {orderId} <br>İade Edilen Ürünler: {itemsList} <br>İade Sebebi: {returnReason} <br><br>Detaylar için bizimle iletişime geçebilirsiniz.";
+            await SendEmailAsync(toEmail, subject, body);
+        }
+
+
     }
 }

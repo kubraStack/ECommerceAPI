@@ -8,8 +8,11 @@ namespace Application.Abstracts
 {
     public interface IMailService
     {
-        public Task SendEmailAsync(string toEmail, string subject, string body);    
-        public Task SendOrderConfirmationEmailAsync(string toEmail, string subject, string body, string orderId);
-        
+        public Task SendEmailAsync(string toEmail, string subject, string body);
+
+        Task SendOrderCreatedEmailAsync(string toEmail, int orderId, decimal totalAmount);
+        Task SendOrderCancelledEmailAsync(string toEmail, int orderId, string reason);
+        Task SendOrderReturnedEmailAsync(string toEmail, int orderId, List<string> returnedItems, string returnReason);
+
     }
 }

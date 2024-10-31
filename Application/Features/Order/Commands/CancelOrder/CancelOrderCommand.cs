@@ -44,31 +44,33 @@ namespace Application.Features.Order.Commands.CancelOrder
 
             public async Task<CancelOrderCommandResponse> Handle(CancelOrderCommand request, CancellationToken cancellationToken)
             {
+               
+                
                 var userId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-                
                 var user = await _userRepository.GetByIdAsync(userId);
-                if (user == null) {
+                if (user == null)
+                {
                     throw new Exception("Kullanıcı bulunamadı.");
                 }
 
-               var customer = await _customerRepository.GetByUserIdAsync(userId);
-                if (customer == null) {
+                var customer = await _customerRepository.GetByUserIdAsync(userId);
+                if (customer == null)
+                {
                     throw new Exception("Müşteri bulunamadı.");
                 }
                 var isGuestUser = customer == null;
 
                 var order = await _orderRepository.GetByIdAsync(request.OrderId);
-                if (order == null) { 
-                    
-                    return new CancelOrderCommandResponse { 
-                    
+                if (order == null)
+                {
+                    return new CancelOrderCommandResponse
+                    {
                         Success = false,
-                        Message ="Sipariş Bulunamadı"
+                        Message = "Sipariş Bulunamadı"
                     };
-                
                 }
-           
+
                 if (!isGuestUser && order.CustomerId != customer.Id)
                 {
                     return new CancelOrderCommandResponse
@@ -80,7 +82,7 @@ namespace Application.Features.Order.Commands.CancelOrder
 
                 var orderStatuses = await _orderStatusRepository.GetListAsync();
                 var pendingStatus = orderStatuses.FirstOrDefault(status => status.Name.Equals("Pending"));
-                var cancelledStatus = orderStatuses.FirstOrDefault(status => status.Name.Equals("Cancelled")); 
+                var cancelledStatus = orderStatuses.FirstOrDefault(status => status.Name.Equals("Cancelled"));
                 if (pendingStatus == null || cancelledStatus == null)
                 {
                     return new CancelOrderCommandResponse
@@ -99,7 +101,7 @@ namespace Application.Features.Order.Commands.CancelOrder
                     };
                 }
 
-                //İptal İşlemi
+                // İptal İşlemi
                 order.OrderStatusId = cancelledStatus.Id;
 
                 var payment = await _paymentRepository.GetByIdAsync(order.PaymentId);
@@ -110,7 +112,7 @@ namespace Application.Features.Order.Commands.CancelOrder
                 var updatePaymentCommand = new UpdatePaymentCommand
                 {
                     PaymentId = order.PaymentId,
-                    Amount = 0, 
+                    Amount = 0,
                     PaymentMethodId = payment.PaymentMethodId,
                     Status = PaymentStatus.Cancelled
                 };
@@ -123,9 +125,8 @@ namespace Application.Features.Order.Commands.CancelOrder
 
                 await _orderRepository.UpdateAsync(order);
 
-                var emailToNotify = customer.User.Email; 
-                var subject = "Sipariş İptal Edildi"; 
-                var body = $"Siparişiniz (ID: {order.Id}) başarıyla iptal edilmiştir.";
+                // Email sending logic
+                string emailToNotify;
                 if (isGuestUser)
                 {
                     // Misafir kullanıcının bilgileri sipariş bilgileri içinde saklanmalı
@@ -136,19 +137,23 @@ namespace Application.Features.Order.Commands.CancelOrder
                 {
                     emailToNotify = customer.User.Email; // Kullanıcının e-posta adresi
                 }
-                await _mailService.SendOrderConfirmationEmailAsync(emailToNotify, subject, body, order.Id.ToString());
+
+                // Reason for cancellation
+                string cancellationReason = "Müşteri iptali talep etti."; // You can modify this as needed.
+                await _mailService.SendOrderCancelledEmailAsync(emailToNotify, order.Id, cancellationReason);
 
                 return new CancelOrderCommandResponse
                 {
                     Success = true,
                     Message = "Sipariş başarıyla iptal edildi.",
-                    CancelledOrder = new OrderDto 
+                    CancelledOrder = new OrderDto
                     {
                         OrderId = order.Id,
                         OrderStatusId = order.OrderStatusId
-                        
                     }
                 };
+                
+
             }
         }
     }

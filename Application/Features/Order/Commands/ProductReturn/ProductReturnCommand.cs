@@ -1,4 +1,5 @@
-﻿using Application.Features.Order.DTOS;
+﻿using Application.Abstracts;
+using Application.Features.Order.DTOS;
 using Application.Repositories;
 using AutoMapper;
 using Domain.Entities;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Application.Features.Order.Commands.ProductReturn
@@ -27,36 +29,50 @@ namespace Application.Features.Order.Commands.ProductReturn
             private readonly IOrderDetailRepository _orderDetailRepository;
             private readonly IProductRepository _productRepository;
             private readonly IHttpContextAccessor _httpContextAccessor;
+            private readonly IUserRepository _userRepository;
+            private readonly ICustomerRepository _customerRepository;
             private readonly IMapper _mapper;
+            private readonly IMailService _mailService;
 
-            public ProductReturnCommandHandler(IOrderRepository orderRepository, IProductRepository productRepository, IHttpContextAccessor httpContextAccessor, IMapper mapper, IOrderDetailRepository orderDetailRepository)
+            public ProductReturnCommandHandler(IOrderRepository orderRepository, IProductRepository productRepository, IHttpContextAccessor httpContextAccessor, IMapper mapper, IOrderDetailRepository orderDetailRepository, IUserRepository userRepository = null, ICustomerRepository customerRepository = null, IMailService mailService = null)
             {
                 _orderRepository = orderRepository;
                 _productRepository = productRepository;
                 _httpContextAccessor = httpContextAccessor;
                 _mapper = mapper;
                 _orderDetailRepository = orderDetailRepository;
+                _userRepository = userRepository;
+                _customerRepository = customerRepository;
+                _mailService = mailService;
             }
 
             public async Task<ProductReturnCommandResponse> Handle(ProductReturnCommand request, CancellationToken cancellationToken)
             {
+                string emailToNotify = null;
                 // Kullanıcı ID'sini alma
-                var customerIdClaim = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-                if (customerIdClaim == null || !int.TryParse(customerIdClaim.Value, out int customerId))
+                var userId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                var user = await _userRepository.GetByIdAsync(userId);
+                if (user == null)
                 {
-                    throw new Exception("Kullanıcı bilgileri bulunamadı.");
+                    throw new Exception("User Bulunamadı");
                 }
+                var customer = await _customerRepository.GetByUserIdAsync(userId);
+                if (customer == null)
+                {
+                    throw new Exception("Customer Bulunamadı");
+                }
+                var isGuestUser = customer == null;
 
                 // İade edilecek ürün siparişini alma
                 var order = await _orderRepository.GetByIdAsync(request.OrderId);
-                if (order == null || order.CustomerId != customerId)
+                if (order == null || order.CustomerId != customer.Id)
                 {
                     throw new Exception("Sipariş bulunamadı veya bu sipariş size ait değil.");
                 }
 
                //Sipariş detaylarını alma
                var orderDetails = await _orderDetailRepository.GetByIdAsync(request.OrderId);
-                if (order == null || order.CustomerId != customerId)
+                if (order == null || order.CustomerId != customer.Id)
                 {
                     throw new Exception("Sipariş bulunamadı veya bu sipariş size ait değil.");
                 }
@@ -86,21 +102,41 @@ namespace Application.Features.Order.Commands.ProductReturn
                     throw new Exception("İade edilecek miktar sipariş edilen miktardan fazla olamaz.");
                 }
 
-                // Stok güncellemesi
-                product.StockQuantity += request.Quantity; // Stok miktarı artar
-
-                // İade tutarını hesaplama
+                product.StockQuantity += request.Quantity;
                 decimal refundAmount = product.Price * request.Quantity;
-
-                // Siparişin toplam tutarının güncellenmesi
                 order.TotalAmount -= refundAmount;
-
-                // Sipariş durumu güncellenmesi (İade durumu)
                 order.OrderStatusId = 6;
 
-                // Veritabanı güncellemeleri
+               
                 await _orderRepository.UpdateAsync(order);
                 await _productRepository.UpdateAsync(product);
+
+                if (!isGuestUser)
+                {
+                    emailToNotify = user.Email; // Customer maili
+                }
+                else
+                {
+                    // Misafir bilgilerini JSON olarak alıyoruz
+                    var guestInfoJson = order.GuestInfo; // Misafir bilgileri JSON olarak buradan alındığını varsayıyoruz
+
+                    using(JsonDocument doc = JsonDocument.Parse(guestInfoJson))
+                    {
+                        JsonElement root = doc.RootElement;
+                        if (root.TryGetProperty("Email", out JsonElement emailElement))
+                        {
+                            emailToNotify = emailElement.GetString();
+                        }
+                    }
+                    
+                }
+
+                // E-posta gönderme işlemi
+                if (!string.IsNullOrEmpty(emailToNotify))
+                {
+                    await _mailService.SendOrderReturnedEmailAsync(emailToNotify, order.Id, new List<string> { product.Name }, request.Reason);
+                }
+
 
                 return new ProductReturnCommandResponse
                 {

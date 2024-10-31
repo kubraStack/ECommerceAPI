@@ -37,9 +37,10 @@ namespace Application.Features.Order.Commands.CreateOrder
             private readonly ICustomerRepository _customerRepository;
             private readonly IMediator _mediator;
             private readonly IMailService _mailService;
+            IUserRepository _userRepository;
 
 
-            public CreatedOrderCommandHandler(IOrderRepository orderRepository, IHttpContextAccessor httpContextAccessor, IProductRepository productRepository, ICustomerRepository customerRepository, IMapper mapper = null, IMediator mediator = null, IMailService mailService = null)
+            public CreatedOrderCommandHandler(IOrderRepository orderRepository, IHttpContextAccessor httpContextAccessor, IProductRepository productRepository, ICustomerRepository customerRepository, IMapper mapper = null, IMediator mediator = null, IMailService mailService = null, IUserRepository userRepository = null)
             {
                 _orderRepository = orderRepository;
                 _httpContextAccessor = httpContextAccessor;
@@ -47,40 +48,39 @@ namespace Application.Features.Order.Commands.CreateOrder
                 _customerRepository = customerRepository;
                 _mediator = mediator;
                 _mailService = mailService;
+                _userRepository = userRepository;
             }
 
             public async Task<CreateOrderCommandResponse> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
             {
-                var userIdClaim = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier);
-                int? customerId = null;
                 string emailToNotify = null;
-
-                if (userIdClaim != null)
-                {
-                    var userId = int.Parse(userIdClaim.Value);
-                    var customer = await _customerRepository.GetByUserIdAsync(userId); 
-
-                    if (customer != null)
-                    {
-                        customerId = customer.Id;
-                        emailToNotify = customer.User.Email;
-                    }
+                var userId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                var user = await _userRepository.GetByIdAsync(userId);
+                if (user == null) {
+                    throw new Exception("User Bulunamadı");
                 }
 
-               
+                var customer = await _customerRepository.GetByUserIdAsync(userId);
+                if (customer == null)
+                {
+                    throw new Exception("Customer Bulunamadı");
+                }
+                var isGuestUser = customer == null;
+                
+
                 var order = new Domain.Entities.Order
                 {
-                    CustomerId = customerId,                    
+                    CustomerId = customer.Id,
                     OrderDate = DateTime.UtcNow,
                     TotalAmount = 0,
                     OrderStatusId = 1,
-                    GuestInfo = null 
+                    GuestInfo = null
                 };
 
-               
-                if (customerId == null)
+                // Misafir bilgileri kontrolü
+                if (customer.Id == null)
                 {
-                    // Misafir bilgileri kontrolü
+                   
                     if (string.IsNullOrWhiteSpace(request.GuestName) ||
                         string.IsNullOrWhiteSpace(request.GuestEmail) ||
                         string.IsNullOrWhiteSpace(request.GuestPhone) ||
@@ -97,18 +97,16 @@ namespace Application.Features.Order.Commands.CreateOrder
                         GuestAddress = request.GuestAddress
                     };
                     order.GuestInfo = JsonSerializer.Serialize(guestInfo);
-                    emailToNotify = request.GuestEmail;
+                    emailToNotify = request.GuestEmail; //Guest email
+                }
+                else
+                {
+                    emailToNotify = user.Email; //customer
                 }
 
                 decimal totalAmount = 0;
                 await _orderRepository.AddAsync(order);
-
-                if (order.OrderDetails == null)
-                {
-                    order.OrderDetails = new List<OrderDetail>();
-                }
-
-               
+                order.OrderDetails = new List<OrderDetail>();
                 if (request.OrderItems == null)
                 {
                     throw new BusinessException("Order items cannot be null.");
@@ -125,7 +123,6 @@ namespace Application.Features.Order.Commands.CreateOrder
                             ProductId = product.Id,
                             Quantity = item.Quantity,
                             UnitPrice = product.Price
-                            
                         };
 
                         var orderDetailResponse = await _mediator.Send(createOrderDetailCommand, cancellationToken);
@@ -136,7 +133,6 @@ namespace Application.Features.Order.Commands.CreateOrder
                     }
                 }
 
-                
                 order.TotalAmount = totalAmount;
                 await _orderRepository.UpdateAsync(order);
 
@@ -155,18 +151,21 @@ namespace Application.Features.Order.Commands.CreateOrder
                 order.PaymentId = paymentResponse.PaymentId;
                 await _orderRepository.UpdateAsync(order);
 
-                if (!string.IsNullOrWhiteSpace(emailToNotify))
+                if (!string.IsNullOrEmpty(emailToNotify))
                 {
-                    var subject = "Siparişiniz Oluşturuldu";
-                    var body = "Siparişiniz Başarıyla oluşturulmuştur.";
-                    await _mailService.SendOrderConfirmationEmailAsync(emailToNotify, subject, body, order.Id.ToString());
-
+                    await _mailService.SendOrderCreatedEmailAsync(emailToNotify, order.Id, totalAmount);
                 }
+                else
+                {
+                    throw new BusinessException("E-posta adresi bulunamadı.");
+                }
+
+
 
                 var response = new CreateOrderCommandResponse
                 {
                     Message = "Sipariş oluşturuldu",
-                    OrderId = order.Id 
+                    OrderId = order.Id
                 };
 
                 return response;
