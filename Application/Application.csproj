@@ -28,7 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Product\Queries\GetProductByCategory\" />
     <Folder Include="Features\Product\Queries\SearchProducts\" />
     <Folder Include="Features\Product\Queries\SearchProducts\" />
   </ItemGroup>

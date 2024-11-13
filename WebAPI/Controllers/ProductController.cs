@@ -9,6 +9,7 @@ using Application.Features.Product.Command.CustomerCommands.UpdateProductReviews
 using Application.Features.Product.Queries.GetById;
 using Application.Features.Product.Queries.GetFilteredProduct;
 using Application.Features.Product.Queries.GetListProduct;
+using Application.Features.Product.Queries.GetProductByCategory;
 using Application.Features.Product.Queries.GetProductDetails;
 using Application.Features.Product.Queries.GetTopSellingProduct;
 using MediatR;
@@ -131,7 +132,7 @@ namespace WebAPI.Controllers
         }
 
         //Top Selling Products
-        [HttpGet("top-selling")]
+        [HttpGet("product/top-selling")]
         public async Task<IActionResult> GetTopSellingProducts([FromQuery] int count)
         {
             var query = new GetTopSellingProductQuery { TopCount = count };
@@ -140,11 +141,21 @@ namespace WebAPI.Controllers
         }
 
         //Filtered Products
-        [HttpGet("filtered-products")]
+        [HttpGet("product/filtered-products")]
         public async Task<IActionResult> GetFilteredProducts([FromQuery] GetFilteredProductQuery query)
         {
             var result = await _mediator.Send(query);
             return Ok(result);
+        }
+
+        //Get Products By Category
+        [HttpGet("product/GetProductByCategory")]
+        public async Task<ActionResult<List<GetProductByCategoryQueryResponse>>> GetProductsByCategory([FromQuery] string category)
+        {
+            var query = new GetProductByCategoryQuery(category);
+            var products = await _mediator.Send(query);
+
+            return Ok(products);
         }
     }
 }

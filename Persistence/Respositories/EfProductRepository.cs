@@ -65,6 +65,13 @@ namespace Persistence.Respositories
             return result;
         }
 
+        public async Task<List<Product>> GetProductsByCategoryAsync(string category)
+        {
+           return await _context.Products
+                .Where(p =>p.Category.Name == category)
+                .ToListAsync();
+        }
+
         public async Task<List<GetTopSellingProductQueryResponse>> GetTopSellingProductQueryAsync(int count)
         {
             // TopSellingProducts için DTO 

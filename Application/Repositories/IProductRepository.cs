@@ -14,6 +14,6 @@ namespace Application.Repositories
     {
         Task<List<GetTopSellingProductQueryResponse>> GetTopSellingProductQueryAsync(int count);
         Task<List<GetFilteredProductQueryResponse>> GetFilteredProductsAsync(GetFilteredProductQuery query);
-
+        Task<List<Product>> GetProductsByCategoryAsync(string category);
     }
 }
