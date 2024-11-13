@@ -1,4 +1,5 @@
-﻿using Core.DataAccess;
+﻿using Application.Features.Product.Queries.GetTopSellingProduct;
+using Core.DataAccess;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,5 +11,6 @@ namespace Application.Repositories
 {
     public interface IProductRepository : IRepository<Product>, IAsyncRepository<Product>
     {
+        Task<List<GetTopSellingProductQueryResponse>> GetTopSellingProductQueryAsync(int count);
     }
 }

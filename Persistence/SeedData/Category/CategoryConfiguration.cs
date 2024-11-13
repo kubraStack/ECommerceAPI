@@ -16,8 +16,8 @@ namespace Persistence.SeedData.Category
                 new Domain.Entities.Category
                 {
                     Id = 1,
-                    Name ="Kozmetik",
-                    Description = "Kozmetik ürünleri kategorisi"
+                    Name = "Kitchen Products",
+                    Description = "Tasarım Kupa, Tabak ve Çanaklar.."
                 }    
                 
             );
@@ -25,11 +25,19 @@ namespace Persistence.SeedData.Category
                new Domain.Entities.Category
                {
                    Id = 2,
-                   Name = "Cilt Bakım",
-                   Description = "Cilt bakım ürünleri kategorisi"
+                   Name = "Home Decor",
+                   Description = "Tasarım Ev Ürünleri"
                }
 
-           );
+            );
+            builder.HasData(
+                new Domain.Entities.Category
+                {
+                    Id=3,
+                    Name="OutDoor Decor",
+                    Description="Bahçe ve Dış Tasarım Ürümleri "
+                }
+            );
         }
     }
 }

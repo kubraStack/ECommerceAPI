@@ -50,6 +50,7 @@ namespace Persistence.SeedData.User
                    CreatedDate = DateTime.UtcNow
                }
             );
+            
 
             builder.HasData(
 
@@ -111,6 +112,15 @@ namespace Persistence.SeedData.User
                {
                    Id = 2,
                    UserId= 2,
+                   ShippingAddress = "4321 Ny St.",
+                   BillingAddress = "4321 Ny St."
+               }
+           );
+            builder.HasData(
+               new Domain.Entities.Customer
+               {
+                   Id = 3,
+                   UserId = 3,
                    ShippingAddress = "4321 Ny St.",
                    BillingAddress = "4321 Ny St."
                }

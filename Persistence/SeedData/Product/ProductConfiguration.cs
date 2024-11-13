@@ -18,11 +18,11 @@ namespace Persistence.SeedData.Product
                 {
                     Id = 1,
                     CategoryId = 1,
-                    Name = "Eyeliner",
+                    Name = "Kupa",
                     Description = "Description",
                     Price = 500,
                     StockQuantity = 10,
-                    ImageUrl = "https://images.pexels.com/photos/4938197/pexels-photo-4938197.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                    ImageUrl = "https://www.pexels.com/tr-tr/fotograf/plaka-tabak-kahve-gevseme-11020238/",
                    
                 }    
                 
@@ -32,15 +32,27 @@ namespace Persistence.SeedData.Product
                {
                    Id = 2,
                    CategoryId = 2,
-                   Name = "C Vitaminli Krem",
+                   Name = "Vazo",
                    Description = "Description",
                    Price = 300,
                    StockQuantity = 5,
-                   ImageUrl = "https://images.pexels.com/photos/9748717/pexels-photo-9748717.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                   ImageUrl = "https://www.pexels.com/tr-tr/fotograf/kitaplar-dekorasyon-susleme-mum-6805518/",
 
                }
 
-           );
+            );
+            builder.HasData(
+                new Domain.Entities.Product
+                {
+                    Id=3,
+                    CategoryId = 3,
+                    Name="Saksı",
+                    Description= "Description",
+                    Price= 500,
+                    StockQuantity = 25,
+                    ImageUrl= "https://www.pexels.com/tr-tr/fotograf/kayalar-beyaz-dizayn-tasarim-9130701/"
+                }    
+            );
         }
     }
 
@@ -54,7 +66,7 @@ namespace Persistence.SeedData.Product
                     Id = 1,
                     ProductId = 1,
                     CustomerId = 1,
-                    Review = "Bu eyeliner harikaa!",
+                    Review = "Bu kupa harikaa! Çok kullanışlı..",
                     Rating = 5,
                     ReviewDate = new DateTime(2024, 1, 5)
                 }
@@ -65,11 +77,22 @@ namespace Persistence.SeedData.Product
                    Id = 2,
                    ProductId = 2,
                    CustomerId = 2,
-                   Review = "Bu ruj harikaa!",
+                   Review = "Bu vazo harikaa! Evime çok güzel bir hava getirdi.",
                    Rating = 5,
                    ReviewDate = new DateTime(2024, 1, 5)
                }
-           );
+            );
+            builder.HasData(
+                new ProductReview
+                {
+                    Id=3,
+                    ProductId=3,
+                    CustomerId= 3,
+                    Review="Çok güzel bir saksı.",
+                    Rating = 5,
+                    ReviewDate = new DateTime(2024,2,7)
+                }    
+            );
         }
     }
 

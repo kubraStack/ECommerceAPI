@@ -9,6 +9,7 @@ using Application.Features.Product.Command.CustomerCommands.UpdateProductReviews
 using Application.Features.Product.Queries.GetById;
 using Application.Features.Product.Queries.GetListProduct;
 using Application.Features.Product.Queries.GetProductDetails;
+using Application.Features.Product.Queries.GetTopSellingProduct;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -126,6 +127,15 @@ namespace WebAPI.Controllers
             updateProductReviewsCommand.ProductReviewId = productReviewId;
             var response = await _mediator.Send(updateProductReviewsCommand);
             return Ok(response);
+        }
+
+        //Top Selling Products
+        [HttpGet("top-selling")]
+        public async Task<IActionResult> GetTopSellingProducts([FromQuery] int count)
+        {
+            var query = new GetTopSellingProductQuery { TopCount = count };
+            var result = await _mediator.Send(query);
+            return Ok(result);
         }
     }
 }

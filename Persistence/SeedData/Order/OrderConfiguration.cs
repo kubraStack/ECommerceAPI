@@ -38,6 +38,17 @@ namespace Persistence.SeedData.Order
                     PaymentId = 2
                 }
             );
+            builder.HasData(
+               new Domain.Entities.Order
+               {
+                   Id = 3,
+                   CustomerId = 3,
+                   GuestInfo = null,
+                   TotalAmount = 3,
+                   OrderStatusId =3,
+                   PaymentId = 3
+               }
+           );
         }
     }
     public class OrderDetailConfiguration : IEntityTypeConfiguration<Domain.Entities.OrderDetail>
@@ -64,7 +75,18 @@ namespace Persistence.SeedData.Order
                    Quantity = 2,
                    Price = 200
                }
-           );
+            );
+
+            builder.HasData(
+               new OrderDetail
+               {
+                   Id= 3,
+                   OrderId = 3,
+                   ProductId = 3,
+                   Quantity = 3,
+                   Price = 500
+               }
+            );
         }
     }
 }

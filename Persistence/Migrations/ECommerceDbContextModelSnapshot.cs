@@ -55,14 +55,20 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            Description = "Kozmetik ürünleri kategorisi",
-                            Name = "Kozmetik"
+                            Description = "Tasarım Kupa, Tabak ve Çanaklar..",
+                            Name = "Kitchen Products"
                         },
                         new
                         {
                             Id = 2,
-                            Description = "Cilt bakım ürünleri kategorisi",
-                            Name = "Cilt Bakım"
+                            Description = "Tasarım Ev Ürünleri",
+                            Name = "Home Decor"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Bahçe ve Dış Tasarım Ürümleri ",
+                            Name = "OutDoor Decor"
                         });
                 });
 
@@ -115,6 +121,13 @@ namespace Persistence.Migrations
                             BillingAddress = "4321 Ny St.",
                             ShippingAddress = "4321 Ny St.",
                             UserId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            BillingAddress = "4321 Ny St.",
+                            ShippingAddress = "4321 Ny St.",
+                            UserId = 3
                         });
                 });
 
@@ -179,19 +192,19 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2024, 10, 30, 14, 3, 44, 186, DateTimeKind.Local).AddTicks(9713),
+                            CreatedDate = new DateTime(2024, 11, 13, 15, 22, 44, 681, DateTimeKind.Local).AddTicks(610),
                             Name = "Admin"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2024, 10, 30, 14, 3, 44, 186, DateTimeKind.Local).AddTicks(9719),
+                            CreatedDate = new DateTime(2024, 11, 13, 15, 22, 44, 681, DateTimeKind.Local).AddTicks(618),
                             Name = "Customer"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2024, 10, 30, 14, 3, 44, 186, DateTimeKind.Local).AddTicks(9722),
+                            CreatedDate = new DateTime(2024, 11, 13, 15, 22, 44, 681, DateTimeKind.Local).AddTicks(621),
                             Name = "Guest"
                         });
                 });
@@ -260,6 +273,14 @@ namespace Persistence.Migrations
                             OrderStatusId = 2,
                             PaymentId = 2,
                             TotalAmount = 2m
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CustomerId = 3,
+                            OrderStatusId = 3,
+                            PaymentId = 3,
+                            TotalAmount = 3m
                         });
                 });
 
@@ -316,6 +337,14 @@ namespace Persistence.Migrations
                             Price = 200m,
                             ProductId = 2,
                             Quantity = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            OrderId = 3,
+                            Price = 500m,
+                            ProductId = 3,
+                            Quantity = 3
                         });
                 });
 
@@ -433,7 +462,7 @@ namespace Persistence.Migrations
                             Id = 1,
                             Amount = 500m,
                             OrderId = 1,
-                            PaymentDate = new DateTime(2024, 10, 30, 14, 3, 44, 186, DateTimeKind.Local).AddTicks(9099),
+                            PaymentDate = new DateTime(2024, 11, 13, 15, 22, 44, 680, DateTimeKind.Local).AddTicks(9848),
                             PaymentMethodId = 1,
                             PaymentStatus = 0
                         },
@@ -442,7 +471,7 @@ namespace Persistence.Migrations
                             Id = 2,
                             Amount = 200m,
                             OrderId = 2,
-                            PaymentDate = new DateTime(2024, 10, 30, 14, 3, 44, 186, DateTimeKind.Local).AddTicks(9118),
+                            PaymentDate = new DateTime(2024, 11, 13, 15, 22, 44, 680, DateTimeKind.Local).AddTicks(9869),
                             PaymentMethodId = 2,
                             PaymentStatus = 0
                         },
@@ -451,7 +480,7 @@ namespace Persistence.Migrations
                             Id = 3,
                             Amount = 100.00m,
                             OrderId = 1,
-                            PaymentDate = new DateTime(2024, 10, 30, 11, 3, 44, 186, DateTimeKind.Utc).AddTicks(9939),
+                            PaymentDate = new DateTime(2024, 11, 13, 12, 22, 44, 681, DateTimeKind.Utc).AddTicks(836),
                             PaymentMethodId = 1,
                             PaymentStatus = 1
                         },
@@ -460,7 +489,7 @@ namespace Persistence.Migrations
                             Id = 4,
                             Amount = 200.00m,
                             OrderId = 2,
-                            PaymentDate = new DateTime(2024, 10, 30, 11, 3, 44, 186, DateTimeKind.Utc).AddTicks(9941),
+                            PaymentDate = new DateTime(2024, 11, 13, 12, 22, 44, 681, DateTimeKind.Utc).AddTicks(838),
                             PaymentMethodId = 2,
                             PaymentStatus = 2
                         });
@@ -575,8 +604,8 @@ namespace Persistence.Migrations
                             Id = 1,
                             CategoryId = 1,
                             Description = "Description",
-                            ImageUrl = "https://images.pexels.com/photos/4938197/pexels-photo-4938197.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-                            Name = "Eyeliner",
+                            ImageUrl = "https://www.pexels.com/tr-tr/fotograf/plaka-tabak-kahve-gevseme-11020238/",
+                            Name = "Kupa",
                             Price = 500m,
                             StockQuantity = 10
                         },
@@ -585,10 +614,20 @@ namespace Persistence.Migrations
                             Id = 2,
                             CategoryId = 2,
                             Description = "Description",
-                            ImageUrl = "https://images.pexels.com/photos/9748717/pexels-photo-9748717.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-                            Name = "C Vitaminli Krem",
+                            ImageUrl = "https://www.pexels.com/tr-tr/fotograf/kitaplar-dekorasyon-susleme-mum-6805518/",
+                            Name = "Vazo",
                             Price = 300m,
                             StockQuantity = 5
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryId = 3,
+                            Description = "Description",
+                            ImageUrl = "https://www.pexels.com/tr-tr/fotograf/kayalar-beyaz-dizayn-tasarim-9130701/",
+                            Name = "Saksı",
+                            Price = 500m,
+                            StockQuantity = 25
                         });
                 });
 
@@ -640,7 +679,7 @@ namespace Persistence.Migrations
                             CustomerId = 1,
                             ProductId = 1,
                             Rating = 5,
-                            Review = "Bu eyeliner harikaa!",
+                            Review = "Bu kupa harikaa! Çok kullanışlı..",
                             ReviewDate = new DateTime(2024, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -649,8 +688,17 @@ namespace Persistence.Migrations
                             CustomerId = 2,
                             ProductId = 2,
                             Rating = 5,
-                            Review = "Bu ruj harikaa!",
+                            Review = "Bu vazo harikaa! Evime çok güzel bir hava getirdi.",
                             ReviewDate = new DateTime(2024, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CustomerId = 3,
+                            ProductId = 3,
+                            Rating = 5,
+                            Review = "Çok güzel bir saksı.",
+                            ReviewDate = new DateTime(2024, 2, 7, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -809,56 +857,56 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2024, 10, 30, 11, 3, 44, 186, DateTimeKind.Utc).AddTicks(8134),
+                            CreatedDate = new DateTime(2024, 11, 13, 12, 22, 44, 680, DateTimeKind.Utc).AddTicks(8844),
                             Email = "customer1@example.com",
                             FirstName = "+2vS9SiEjuEtdomA+E1iOw==",
                             Gender = "Famela",
                             IsDeleted = false,
                             LastName = "evKlCl7mIBJkEqQf5ueGMg==",
-                            PasswordHash = new byte[] { 249, 25, 152, 141, 233, 155, 134, 5, 39, 6, 215, 112, 58, 165, 143, 189, 154, 162, 122, 133, 211, 132, 34, 101, 198, 34, 188, 41, 135, 44, 119, 37, 45, 11, 156, 51, 167, 101, 78, 208, 81, 35, 87, 171, 58, 196, 216, 49, 219, 67, 170, 73, 118, 250, 142, 76, 98, 118, 131, 129, 47, 46, 38, 206 },
-                            PasswordSalt = new byte[] { 56, 28, 39, 243, 65, 60, 118, 127, 202, 118, 215, 65, 211, 78, 9, 88, 26, 94, 175, 178, 94, 154, 112, 166, 211, 44, 62, 73, 79, 109, 79, 189, 113, 220, 28, 71, 136, 248, 64, 95, 29, 212, 253, 228, 27, 208, 202, 167, 122, 119, 122, 128, 215, 133, 126, 51, 95, 207, 149, 186, 195, 105, 196, 218, 206, 22, 78, 154, 45, 229, 203, 20, 0, 184, 30, 114, 134, 159, 243, 209, 125, 189, 180, 125, 14, 154, 22, 176, 234, 93, 97, 150, 136, 86, 102, 70, 66, 121, 188, 166, 170, 221, 153, 51, 33, 183, 222, 43, 4, 27, 115, 85, 180, 207, 93, 231, 188, 237, 5, 213, 215, 13, 9, 78, 160, 234, 29, 223 },
+                            PasswordHash = new byte[] { 239, 58, 122, 66, 126, 203, 186, 40, 73, 88, 63, 2, 27, 111, 244, 140, 243, 205, 152, 224, 0, 171, 221, 182, 133, 83, 169, 121, 130, 29, 166, 60, 76, 156, 70, 118, 229, 242, 1, 167, 119, 199, 146, 172, 14, 123, 18, 148, 33, 198, 31, 132, 180, 63, 218, 15, 61, 190, 129, 172, 13, 136, 11, 93 },
+                            PasswordSalt = new byte[] { 188, 47, 200, 72, 231, 148, 191, 242, 131, 108, 46, 203, 117, 54, 196, 204, 154, 6, 250, 232, 110, 28, 96, 195, 107, 52, 228, 245, 65, 239, 57, 12, 26, 228, 56, 160, 171, 48, 48, 139, 246, 138, 140, 101, 198, 40, 143, 159, 222, 179, 86, 115, 187, 130, 141, 56, 55, 156, 234, 117, 248, 92, 72, 187, 132, 164, 14, 46, 171, 114, 226, 44, 245, 183, 189, 117, 241, 132, 95, 7, 106, 23, 9, 138, 189, 110, 225, 116, 139, 114, 249, 13, 179, 141, 78, 2, 245, 149, 63, 8, 214, 74, 152, 117, 36, 122, 159, 210, 62, 1, 116, 196, 51, 116, 209, 163, 132, 182, 134, 18, 63, 250, 164, 73, 86, 153, 72, 213 },
                             PhoneNumber = "1234567890",
                             UserType = 2
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2024, 10, 30, 11, 3, 44, 186, DateTimeKind.Utc).AddTicks(8231),
+                            CreatedDate = new DateTime(2024, 11, 13, 12, 22, 44, 680, DateTimeKind.Utc).AddTicks(8967),
                             Email = "customer2@example.com",
                             FirstName = "lx191yNB5UTgUeNqX1QIZQ==",
                             Gender = "Male",
                             IsDeleted = false,
                             LastName = "ESeBAof1D3qOrdvr0NsjqQ==",
-                            PasswordHash = new byte[] { 249, 25, 152, 141, 233, 155, 134, 5, 39, 6, 215, 112, 58, 165, 143, 189, 154, 162, 122, 133, 211, 132, 34, 101, 198, 34, 188, 41, 135, 44, 119, 37, 45, 11, 156, 51, 167, 101, 78, 208, 81, 35, 87, 171, 58, 196, 216, 49, 219, 67, 170, 73, 118, 250, 142, 76, 98, 118, 131, 129, 47, 46, 38, 206 },
-                            PasswordSalt = new byte[] { 56, 28, 39, 243, 65, 60, 118, 127, 202, 118, 215, 65, 211, 78, 9, 88, 26, 94, 175, 178, 94, 154, 112, 166, 211, 44, 62, 73, 79, 109, 79, 189, 113, 220, 28, 71, 136, 248, 64, 95, 29, 212, 253, 228, 27, 208, 202, 167, 122, 119, 122, 128, 215, 133, 126, 51, 95, 207, 149, 186, 195, 105, 196, 218, 206, 22, 78, 154, 45, 229, 203, 20, 0, 184, 30, 114, 134, 159, 243, 209, 125, 189, 180, 125, 14, 154, 22, 176, 234, 93, 97, 150, 136, 86, 102, 70, 66, 121, 188, 166, 170, 221, 153, 51, 33, 183, 222, 43, 4, 27, 115, 85, 180, 207, 93, 231, 188, 237, 5, 213, 215, 13, 9, 78, 160, 234, 29, 223 },
+                            PasswordHash = new byte[] { 239, 58, 122, 66, 126, 203, 186, 40, 73, 88, 63, 2, 27, 111, 244, 140, 243, 205, 152, 224, 0, 171, 221, 182, 133, 83, 169, 121, 130, 29, 166, 60, 76, 156, 70, 118, 229, 242, 1, 167, 119, 199, 146, 172, 14, 123, 18, 148, 33, 198, 31, 132, 180, 63, 218, 15, 61, 190, 129, 172, 13, 136, 11, 93 },
+                            PasswordSalt = new byte[] { 188, 47, 200, 72, 231, 148, 191, 242, 131, 108, 46, 203, 117, 54, 196, 204, 154, 6, 250, 232, 110, 28, 96, 195, 107, 52, 228, 245, 65, 239, 57, 12, 26, 228, 56, 160, 171, 48, 48, 139, 246, 138, 140, 101, 198, 40, 143, 159, 222, 179, 86, 115, 187, 130, 141, 56, 55, 156, 234, 117, 248, 92, 72, 187, 132, 164, 14, 46, 171, 114, 226, 44, 245, 183, 189, 117, 241, 132, 95, 7, 106, 23, 9, 138, 189, 110, 225, 116, 139, 114, 249, 13, 179, 141, 78, 2, 245, 149, 63, 8, 214, 74, 152, 117, 36, 122, 159, 210, 62, 1, 116, 196, 51, 116, 209, 163, 132, 182, 134, 18, 63, 250, 164, 73, 86, 153, 72, 213 },
                             PhoneNumber = "1234512345",
                             UserType = 2
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2024, 10, 30, 11, 3, 44, 186, DateTimeKind.Utc).AddTicks(8337),
+                            CreatedDate = new DateTime(2024, 11, 13, 12, 22, 44, 680, DateTimeKind.Utc).AddTicks(9055),
                             Email = "guest1@example.com",
                             FirstName = "XsKf4aJaXsFVtCmJtPLh9A==",
                             Gender = "Male",
                             IsDeleted = false,
                             LastName = "jp8wRnLaDCWzCeqYjo2dOQ==",
-                            PasswordHash = new byte[] { 249, 25, 152, 141, 233, 155, 134, 5, 39, 6, 215, 112, 58, 165, 143, 189, 154, 162, 122, 133, 211, 132, 34, 101, 198, 34, 188, 41, 135, 44, 119, 37, 45, 11, 156, 51, 167, 101, 78, 208, 81, 35, 87, 171, 58, 196, 216, 49, 219, 67, 170, 73, 118, 250, 142, 76, 98, 118, 131, 129, 47, 46, 38, 206 },
-                            PasswordSalt = new byte[] { 56, 28, 39, 243, 65, 60, 118, 127, 202, 118, 215, 65, 211, 78, 9, 88, 26, 94, 175, 178, 94, 154, 112, 166, 211, 44, 62, 73, 79, 109, 79, 189, 113, 220, 28, 71, 136, 248, 64, 95, 29, 212, 253, 228, 27, 208, 202, 167, 122, 119, 122, 128, 215, 133, 126, 51, 95, 207, 149, 186, 195, 105, 196, 218, 206, 22, 78, 154, 45, 229, 203, 20, 0, 184, 30, 114, 134, 159, 243, 209, 125, 189, 180, 125, 14, 154, 22, 176, 234, 93, 97, 150, 136, 86, 102, 70, 66, 121, 188, 166, 170, 221, 153, 51, 33, 183, 222, 43, 4, 27, 115, 85, 180, 207, 93, 231, 188, 237, 5, 213, 215, 13, 9, 78, 160, 234, 29, 223 },
+                            PasswordHash = new byte[] { 239, 58, 122, 66, 126, 203, 186, 40, 73, 88, 63, 2, 27, 111, 244, 140, 243, 205, 152, 224, 0, 171, 221, 182, 133, 83, 169, 121, 130, 29, 166, 60, 76, 156, 70, 118, 229, 242, 1, 167, 119, 199, 146, 172, 14, 123, 18, 148, 33, 198, 31, 132, 180, 63, 218, 15, 61, 190, 129, 172, 13, 136, 11, 93 },
+                            PasswordSalt = new byte[] { 188, 47, 200, 72, 231, 148, 191, 242, 131, 108, 46, 203, 117, 54, 196, 204, 154, 6, 250, 232, 110, 28, 96, 195, 107, 52, 228, 245, 65, 239, 57, 12, 26, 228, 56, 160, 171, 48, 48, 139, 246, 138, 140, 101, 198, 40, 143, 159, 222, 179, 86, 115, 187, 130, 141, 56, 55, 156, 234, 117, 248, 92, 72, 187, 132, 164, 14, 46, 171, 114, 226, 44, 245, 183, 189, 117, 241, 132, 95, 7, 106, 23, 9, 138, 189, 110, 225, 116, 139, 114, 249, 13, 179, 141, 78, 2, 245, 149, 63, 8, 214, 74, 152, 117, 36, 122, 159, 210, 62, 1, 116, 196, 51, 116, 209, 163, 132, 182, 134, 18, 63, 250, 164, 73, 86, 153, 72, 213 },
                             PhoneNumber = "2568947898",
                             UserType = 3
                         },
                         new
                         {
                             Id = 4,
-                            CreatedDate = new DateTime(2024, 10, 30, 11, 3, 44, 186, DateTimeKind.Utc).AddTicks(8424),
+                            CreatedDate = new DateTime(2024, 11, 13, 12, 22, 44, 680, DateTimeKind.Utc).AddTicks(9197),
                             Email = "admin1@example.com",
                             FirstName = "aNbdnOzUNuGnMPCOxe7GbA==",
                             Gender = "Male",
                             IsDeleted = false,
                             LastName = "zWkKiFF1SEkTjhIMvlgAfg==",
-                            PasswordHash = new byte[] { 249, 25, 152, 141, 233, 155, 134, 5, 39, 6, 215, 112, 58, 165, 143, 189, 154, 162, 122, 133, 211, 132, 34, 101, 198, 34, 188, 41, 135, 44, 119, 37, 45, 11, 156, 51, 167, 101, 78, 208, 81, 35, 87, 171, 58, 196, 216, 49, 219, 67, 170, 73, 118, 250, 142, 76, 98, 118, 131, 129, 47, 46, 38, 206 },
-                            PasswordSalt = new byte[] { 56, 28, 39, 243, 65, 60, 118, 127, 202, 118, 215, 65, 211, 78, 9, 88, 26, 94, 175, 178, 94, 154, 112, 166, 211, 44, 62, 73, 79, 109, 79, 189, 113, 220, 28, 71, 136, 248, 64, 95, 29, 212, 253, 228, 27, 208, 202, 167, 122, 119, 122, 128, 215, 133, 126, 51, 95, 207, 149, 186, 195, 105, 196, 218, 206, 22, 78, 154, 45, 229, 203, 20, 0, 184, 30, 114, 134, 159, 243, 209, 125, 189, 180, 125, 14, 154, 22, 176, 234, 93, 97, 150, 136, 86, 102, 70, 66, 121, 188, 166, 170, 221, 153, 51, 33, 183, 222, 43, 4, 27, 115, 85, 180, 207, 93, 231, 188, 237, 5, 213, 215, 13, 9, 78, 160, 234, 29, 223 },
+                            PasswordHash = new byte[] { 239, 58, 122, 66, 126, 203, 186, 40, 73, 88, 63, 2, 27, 111, 244, 140, 243, 205, 152, 224, 0, 171, 221, 182, 133, 83, 169, 121, 130, 29, 166, 60, 76, 156, 70, 118, 229, 242, 1, 167, 119, 199, 146, 172, 14, 123, 18, 148, 33, 198, 31, 132, 180, 63, 218, 15, 61, 190, 129, 172, 13, 136, 11, 93 },
+                            PasswordSalt = new byte[] { 188, 47, 200, 72, 231, 148, 191, 242, 131, 108, 46, 203, 117, 54, 196, 204, 154, 6, 250, 232, 110, 28, 96, 195, 107, 52, 228, 245, 65, 239, 57, 12, 26, 228, 56, 160, 171, 48, 48, 139, 246, 138, 140, 101, 198, 40, 143, 159, 222, 179, 86, 115, 187, 130, 141, 56, 55, 156, 234, 117, 248, 92, 72, 187, 132, 164, 14, 46, 171, 114, 226, 44, 245, 183, 189, 117, 241, 132, 95, 7, 106, 23, 9, 138, 189, 110, 225, 116, 139, 114, 249, 13, 179, 141, 78, 2, 245, 149, 63, 8, 214, 74, 152, 117, 36, 122, 159, 210, 62, 1, 116, 196, 51, 116, 209, 163, 132, 182, 134, 18, 63, 250, 164, 73, 86, 153, 72, 213 },
                             PhoneNumber = "1234512345",
                             UserType = 1
                         });
@@ -899,28 +947,28 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2024, 10, 30, 14, 3, 44, 186, DateTimeKind.Local).AddTicks(9803),
+                            CreatedDate = new DateTime(2024, 11, 13, 15, 22, 44, 681, DateTimeKind.Local).AddTicks(704),
                             OperationClaimId = 1,
                             UserId = 4
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2024, 10, 30, 14, 3, 44, 186, DateTimeKind.Local).AddTicks(9809),
+                            CreatedDate = new DateTime(2024, 11, 13, 15, 22, 44, 681, DateTimeKind.Local).AddTicks(711),
                             OperationClaimId = 2,
                             UserId = 1
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2024, 10, 30, 14, 3, 44, 186, DateTimeKind.Local).AddTicks(9813),
+                            CreatedDate = new DateTime(2024, 11, 13, 15, 22, 44, 681, DateTimeKind.Local).AddTicks(714),
                             OperationClaimId = 3,
                             UserId = 3
                         },
                         new
                         {
                             Id = 4,
-                            CreatedDate = new DateTime(2024, 10, 30, 14, 3, 44, 186, DateTimeKind.Local).AddTicks(9816),
+                            CreatedDate = new DateTime(2024, 11, 13, 15, 22, 44, 681, DateTimeKind.Local).AddTicks(718),
                             OperationClaimId = 3,
                             UserId = 2
                         });

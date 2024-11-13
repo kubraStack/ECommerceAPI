@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\Product\Queries\GetProductsByCategory\**" />
     <Compile Remove="Features\SocialMedia\**" />
+    <EmbeddedResource Remove="Features\Product\Queries\GetProductsByCategory\**" />
     <EmbeddedResource Remove="Features\SocialMedia\**" />
+    <None Remove="Features\Product\Queries\GetProductsByCategory\**" />
     <None Remove="Features\SocialMedia\**" />
   </ItemGroup>
 
@@ -25,9 +28,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Product\Queries\GetProductsByCategory\" />
-    <Folder Include="Features\Product\Queries\GetTopSellingProduct\" />
     <Folder Include="Features\Product\Queries\FAQ\" />
+    <Folder Include="Features\Product\Queries\FAQ\" />
+    <Folder Include="Features\Product\Queries\GetProductByCategory\" />
+    <Folder Include="Features\Product\Queries\SearchProducts\" />
     <Folder Include="Features\Product\Queries\SearchProducts\" />
   </ItemGroup>
 
