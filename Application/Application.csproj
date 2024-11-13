@@ -27,9 +27,4 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Product\Queries\SearchProducts\" />
-    <Folder Include="Features\Product\Queries\SearchProducts\" />
-  </ItemGroup>
-
 </Project>

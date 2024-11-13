@@ -12,6 +12,7 @@ using Application.Features.Product.Queries.GetListProduct;
 using Application.Features.Product.Queries.GetProductByCategory;
 using Application.Features.Product.Queries.GetProductDetails;
 using Application.Features.Product.Queries.GetTopSellingProduct;
+using Application.Features.Product.Queries.SearchProducts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -156,6 +157,15 @@ namespace WebAPI.Controllers
             var products = await _mediator.Send(query);
 
             return Ok(products);
+        }
+
+        //Search Products
+        [HttpGet("/search")]
+        public async Task<IActionResult> SearchProducts([FromQuery] string searchTerm)
+        {
+            var query = new SearchProductsQuery(searchTerm);
+            var result = await _mediator.Send(query);
+            return Ok(result);
         }
     }
 }

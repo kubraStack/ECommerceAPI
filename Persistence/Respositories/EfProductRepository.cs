@@ -100,5 +100,11 @@ namespace Persistence.Respositories
 
             return result;
         }
+
+        public async Task<List<Product>> SearchProductsAsync(string searchTerm)
+        {
+            return await _context.Products
+                .Where(p => p.Name.Contains(searchTerm) || p.Description.Contains(searchTerm)).ToListAsync();
+        }
     }
 }
