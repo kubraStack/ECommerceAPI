@@ -1,4 +1,5 @@
-﻿using Application.Features.Product.Queries.GetTopSellingProduct;
+﻿using Application.Features.Product.Queries.GetFilteredProduct;
+using Application.Features.Product.Queries.GetTopSellingProduct;
 using Core.DataAccess;
 using Domain.Entities;
 using System;
@@ -12,5 +13,7 @@ namespace Application.Repositories
     public interface IProductRepository : IRepository<Product>, IAsyncRepository<Product>
     {
         Task<List<GetTopSellingProductQueryResponse>> GetTopSellingProductQueryAsync(int count);
+        Task<List<GetFilteredProductQueryResponse>> GetFilteredProductsAsync(GetFilteredProductQuery query);
+
     }
 }

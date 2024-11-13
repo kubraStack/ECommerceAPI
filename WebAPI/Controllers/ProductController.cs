@@ -7,6 +7,7 @@ using Application.Features.Product.Command.CustomerCommands.AddProductReviews;
 using Application.Features.Product.Command.CustomerCommands.DeleteProductReviews;
 using Application.Features.Product.Command.CustomerCommands.UpdateProductReviews;
 using Application.Features.Product.Queries.GetById;
+using Application.Features.Product.Queries.GetFilteredProduct;
 using Application.Features.Product.Queries.GetListProduct;
 using Application.Features.Product.Queries.GetProductDetails;
 using Application.Features.Product.Queries.GetTopSellingProduct;
@@ -134,6 +135,14 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetTopSellingProducts([FromQuery] int count)
         {
             var query = new GetTopSellingProductQuery { TopCount = count };
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+
+        //Filtered Products
+        [HttpGet("filtered-products")]
+        public async Task<IActionResult> GetFilteredProducts([FromQuery] GetFilteredProductQuery query)
+        {
             var result = await _mediator.Send(query);
             return Ok(result);
         }

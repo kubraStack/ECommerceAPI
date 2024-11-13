@@ -1,4 +1,5 @@
-﻿using Application.Features.Product.Queries.GetTopSellingProduct;
+﻿using Application.Features.Product.Queries.GetFilteredProduct;
+using Application.Features.Product.Queries.GetTopSellingProduct;
 using Application.Repositories;
 using Core.DataAccess;
 using Domain.Entities;
@@ -16,6 +17,52 @@ namespace Persistence.Respositories
     {
         public EfProductRepository(ECommerceDbContext context) : base(context)
         {
+        }
+
+        public async Task<List<GetFilteredProductQueryResponse>> GetFilteredProductsAsync(GetFilteredProductQuery query)
+        {
+            var productQuery = _context.Products.AsQueryable();
+
+            //Category filtered
+            if (!string.IsNullOrEmpty(query.Category))
+            {
+                productQuery = productQuery.Where(p => p.Category.Name == query.Category);
+            }
+            //Min - Max Price
+            if (query.MinPrice.HasValue)
+            {
+                productQuery = productQuery.Where(p => p.Price >= query.MinPrice.Value);
+            }
+            else if (query.MaxPrice.HasValue)
+            {
+                productQuery = productQuery.Where(p => p.Price <= query.MaxPrice.Value);
+            }
+
+            //Stock Control
+            if (query.InStock.HasValue)
+            {
+                if (query.InStock.Value)
+                {
+                    productQuery = productQuery.Where(p => p.StockQuantity > 0); // Stokta olanlar
+                }
+                else
+                {
+                    productQuery = productQuery.Where(p => p.StockQuantity == 0); // Stokta olmayanlar
+                }
+            }
+
+            var result = await productQuery
+                .Select(p => new GetFilteredProductQueryResponse
+                    {
+                       ProductId = p.Id,
+                       ProductName = p.Name,
+                       Price = p.Price,
+                       Category = p.Category.Name,
+                       InStock = p.StockQuantity > 0
+
+                    }
+                ).ToListAsync();
+            return result;
         }
 
         public async Task<List<GetTopSellingProductQueryResponse>> GetTopSellingProductQueryAsync(int count)
