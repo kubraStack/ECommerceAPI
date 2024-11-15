@@ -11,6 +11,7 @@ using Core.Utilities.Encryption;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Core.CrossCuttingConcerns.Exceptions.Extentions;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 //CORS (Cross-Origin Resource Sharing) => bir web sayfasýnýn baþka bir domain'den (kaynak) veri alabilmesini kontrol eden bir güvenlik özelliðidir. 
@@ -86,6 +87,7 @@ builder.Services
 
     });
 builder.Services.AddHttpContextAccessor();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

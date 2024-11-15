@@ -22,7 +22,7 @@ namespace Persistence.SeedData.Product
                     Description = "Description",
                     Price = 500,
                     StockQuantity = 10,
-                    ImageUrl = "https://www.pexels.com/tr-tr/fotograf/plaka-tabak-kahve-gevseme-11020238/",
+                    ImageUrl = "https://images.pexels.com/photos/11020238/pexels-photo-11020238.jpeg",
                    
                 }    
                 
@@ -36,7 +36,7 @@ namespace Persistence.SeedData.Product
                    Description = "Description",
                    Price = 300,
                    StockQuantity = 5,
-                   ImageUrl = "https://www.pexels.com/tr-tr/fotograf/kitaplar-dekorasyon-susleme-mum-6805518/",
+                   ImageUrl = "https://images.pexels.com/photos/6805518/pexels-photo-6805518.jpeg",
 
                }
 
@@ -50,7 +50,7 @@ namespace Persistence.SeedData.Product
                     Description= "Description",
                     Price= 500,
                     StockQuantity = 25,
-                    ImageUrl= "https://www.pexels.com/tr-tr/fotograf/kayalar-beyaz-dizayn-tasarim-9130701/"
+                    ImageUrl= "https://images.pexels.com/photos/9130701/pexels-photo-9130701.jpeg"
                 }    
             );
         }
