@@ -2,6 +2,7 @@
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,9 +26,9 @@ namespace Application.Features.Product.Queries.GetListProduct
 
             public async Task<GetListProductQueryResponse> Handle(GetListProductQuery request, CancellationToken cancellationToken)
             {
-                
-
-                var allProducts = await _productRepository.GetListAsync();
+                var allProducts = await _productRepository.GetListAsync(
+                    include: query => query.Include(p=>p.Category)
+                );
 
                 return new GetListProductQueryResponse
                 {
