@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Application.Features.Product.DTOS;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace Application.Features.Product.Queries.GetListProduct
 {
     public class GetListProductQueryResponse
     {
-        public IEnumerable<Domain.Entities.Product> Products { get; set; }
+        public IEnumerable<ProductDto> Products { get; set; }
     }
 }
