@@ -12,7 +12,7 @@ namespace Application.Repositories
 {
     public interface IProductRepository : IRepository<Product>, IAsyncRepository<Product>
     {
-        Task<List<GetTopSellingProductQueryResponse>> GetTopSellingProductQueryAsync(int count);
+        Task<List<GetTopSellingProductQueryResponse>> GetTopSellingProductQueryAsync(int pageNumber, int pageSize);
         Task<List<GetFilteredProductQueryResponse>> GetFilteredProductsAsync(GetFilteredProductQuery query);
         Task<List<Product>> GetProductsByCategoryAsync(string category);
         Task<List<Product>> SearchProductsAsync(string searchTerm);

@@ -134,9 +134,9 @@ namespace WebAPI.Controllers
 
         //Top Selling Products
         [HttpGet("product/top-selling")]
-        public async Task<IActionResult> GetTopSellingProducts([FromQuery] int count)
+        public async Task<IActionResult> GetTopSellingProducts([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
-            var query = new GetTopSellingProductQuery { TopCount = count };
+            var query = new GetTopSellingProductQuery(pageNumber, pageSize);
             var result = await _mediator.Send(query);
             return Ok(result);
         }

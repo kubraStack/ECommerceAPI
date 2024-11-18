@@ -72,32 +72,29 @@ namespace Persistence.Respositories
                 .ToListAsync();
         }
 
-        public async Task<List<GetTopSellingProductQueryResponse>> GetTopSellingProductQueryAsync(int count)
+        public async Task<List<GetTopSellingProductQueryResponse>> GetTopSellingProductQueryAsync(int pageNumber, int pageSize)
         {
-            // TopSellingProducts için DTO 
-            var topSellingProducts = _context.OrderDetails
-               .GroupBy(od => od.ProductId)
-               .Select(g => new
-               {
-                   ProductId = g.Key,
-                   TotalQuantity = g.Sum(od => od.Quantity)
-               })
-               .OrderByDescending(g => g.TotalQuantity)
-               .Take(count);
-
-
-            // DTO kullanarak Join yapılacak
-            var result = await (from tp in topSellingProducts
-                                join p in _context.Products on tp.ProductId equals p.Id
-                                select new GetTopSellingProductQueryResponse
-                                {
-                                    ProductId = tp.ProductId,
-                                    Name = p.Name,
-                                    Price = p.Price,
-                                    TotalSold = tp.TotalQuantity,
-                                    ImageUrl = p.ImageUrl
-                                }).ToListAsync();
-
+            var topSellingProducts = await _context.OrderDetails
+                 .GroupBy(od => od.ProductId)
+                 .Select(g => new
+                 {
+                     ProductId = g.Key,
+                     TotalQuantity = g.Sum(od => od.Quantity)
+                 })
+                 .OrderByDescending(o => o.TotalQuantity)
+                 .Skip((pageNumber - 1) * pageSize)
+                 .Take(pageSize)
+                 .ToListAsync();
+            var result = (from tp in topSellingProducts
+                          join p in _context.Products on tp.ProductId equals p.Id
+                          select new GetTopSellingProductQueryResponse
+                          {
+                              ProductId = tp.ProductId,
+                              Name = p.Name,
+                              Price = p.Price,
+                              TotalSold = tp.TotalQuantity,
+                              ImageUrl = p.ImageUrl
+                          }).ToList();
             return result;
         }
 
