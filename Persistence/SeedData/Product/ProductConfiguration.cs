@@ -53,6 +53,43 @@ namespace Persistence.SeedData.Product
                     ImageUrl= "https://images.pexels.com/photos/9130701/pexels-photo-9130701.jpeg"
                 }    
             );
+            builder.HasData(
+               new Domain.Entities.Product
+               {
+                   Id = 4,
+                   CategoryId = 1,
+                   Name = "Kupa",
+                   Description = "Description",
+                   Price = 350,
+                   StockQuantity = 55,
+                   ImageUrl = "https://websitedemos.net/ceramic-products-store-04/wp-content/uploads/sites/1413/2024/02/ceramic-cup-01-300x300.jpg"
+               }
+            );
+            builder.HasData(
+               new Domain.Entities.Product
+               {
+                   Id = 5,
+                   CategoryId = 2,
+                   Name = "Vazo",
+                   Description = "Description",
+                   Price = 750,
+                   StockQuantity = 25,
+                   ImageUrl = "https://images.pexels.com/photos/29432556/pexels-photo-29432556/free-photo-of-masada-mumlu-mavi-vazoda-mor-cicekler.jpeg"
+               }
+            );
+            builder.HasData(
+              new Domain.Entities.Product
+              {
+                  Id = 6,
+                  CategoryId = 3,
+                  Name = "Saksı",
+                  Description = "Description",
+                  Price = 550,
+                  StockQuantity = 85,
+                  ImageUrl = "https://images.pexels.com/photos/21273580/pexels-photo-21273580/free-photo-of-yapraklar-pencereler-camlar-bitkiler.jpeg"
+              }
+           );
+
         }
     }
 
@@ -92,6 +129,39 @@ namespace Persistence.SeedData.Product
                     Rating = 5,
                     ReviewDate = new DateTime(2024,2,7)
                 }    
+            );
+            builder.HasData(
+                new ProductReview
+                {
+                    Id = 4,
+                    ProductId = 4,
+                    CustomerId = 3,
+                    Review = "Çok güzel bir kupa ve kullanışlı.",
+                    Rating =4,
+                    ReviewDate = new DateTime(2024, 2, 7)
+                }
+            );
+            builder.HasData(
+                new ProductReview
+                {
+                    Id = 5,
+                    ProductId = 5,
+                    CustomerId = 3,
+                    Review = "Çok güzel bir vazo ve çok şık durdu.",
+                    Rating = 5,
+                    ReviewDate = new DateTime(2024, 2, 7)
+                }
+            );
+            builder.HasData(
+                new ProductReview
+                {
+                    Id = 6,
+                    ProductId = 5,
+                    CustomerId = 3,
+                    Review = "Çok güzel bir saksı çiceklerimle çok uyumlu.",
+                    Rating = 5,
+                    ReviewDate = new DateTime(2024, 2, 7)
+                }
             );
         }
     }

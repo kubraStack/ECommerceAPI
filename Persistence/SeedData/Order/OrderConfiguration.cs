@@ -48,6 +48,39 @@ namespace Persistence.SeedData.Order
                    OrderStatusId =3,
                    PaymentId = 3
                }
+            );
+            builder.HasData(
+              new Domain.Entities.Order
+              {
+                  Id = 4,
+                  CustomerId = 3,
+                  GuestInfo = null,
+                  TotalAmount = 8,
+                  OrderStatusId = 3,
+                  PaymentId = 3
+              }
+            );
+            builder.HasData(
+                 new Domain.Entities.Order
+                 {
+                     Id = 5,
+                     CustomerId = 2,
+                     GuestInfo = null,
+                     TotalAmount = 28,
+                     OrderStatusId = 3,
+                     PaymentId = 3
+                 }
+            );
+            builder.HasData(
+                new Domain.Entities.Order
+                {
+                    Id = 6,
+                    CustomerId =1,
+                    GuestInfo = null,
+                    TotalAmount = 18,
+                    OrderStatusId = 3,
+                    PaymentId = 3
+                }
            );
         }
     }
@@ -87,6 +120,37 @@ namespace Persistence.SeedData.Order
                    Price = 500
                }
             );
+            builder.HasData(
+              new OrderDetail
+              {
+                  Id = 4,
+                  OrderId = 4,
+                  ProductId = 4,
+                  Quantity = 3,
+                  Price = 500
+              }
+            );
+            builder.HasData(
+              new OrderDetail
+              {
+                  Id = 5,
+                  OrderId = 5,
+                  ProductId = 5,
+                  Quantity = 3,
+                  Price = 500
+              }
+            );
+            builder.HasData(
+                new OrderDetail
+                {
+                    Id = 6,
+                    OrderId = 6,
+                    ProductId = 6,
+                    Quantity = 3,
+                    Price = 500
+                }
+            );
+
         }
     }
 }
