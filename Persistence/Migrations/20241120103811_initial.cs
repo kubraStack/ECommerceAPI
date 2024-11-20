@@ -415,9 +415,9 @@ namespace Persistence.Migrations
                 columns: new[] { "Id", "CreatedDate", "DeletedDate", "Name", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 11, 15, 16, 35, 55, 648, DateTimeKind.Local).AddTicks(5063), null, "Admin", null },
-                    { 2, new DateTime(2024, 11, 15, 16, 35, 55, 648, DateTimeKind.Local).AddTicks(5078), null, "Customer", null },
-                    { 3, new DateTime(2024, 11, 15, 16, 35, 55, 648, DateTimeKind.Local).AddTicks(5087), null, "Guest", null }
+                    { 1, new DateTime(2024, 11, 20, 13, 38, 10, 543, DateTimeKind.Local).AddTicks(5672), null, "Admin", null },
+                    { 2, new DateTime(2024, 11, 20, 13, 38, 10, 543, DateTimeKind.Local).AddTicks(5680), null, "Customer", null },
+                    { 3, new DateTime(2024, 11, 20, 13, 38, 10, 543, DateTimeKind.Local).AddTicks(5683), null, "Guest", null }
                 });
 
             migrationBuilder.InsertData(
@@ -449,10 +449,10 @@ namespace Persistence.Migrations
                 columns: new[] { "Id", "CreatedDate", "DeletedDate", "Email", "FirstName", "Gender", "LastName", "PasswordHash", "PasswordSalt", "PhoneNumber", "UpdatedDate", "UserType" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 11, 15, 13, 35, 55, 648, DateTimeKind.Utc).AddTicks(1688), null, "customer1@example.com", "+2vS9SiEjuEtdomA+E1iOw==", "Famela", "evKlCl7mIBJkEqQf5ueGMg==", new byte[] { 142, 73, 186, 225, 24, 87, 241, 135, 40, 54, 232, 86, 7, 205, 238, 157, 97, 241, 51, 51, 237, 104, 32, 235, 64, 135, 68, 178, 245, 10, 195, 209, 165, 207, 255, 210, 207, 48, 120, 23, 70, 156, 38, 31, 233, 87, 245, 11, 112, 185, 176, 30, 216, 243, 183, 118, 187, 40, 67, 115, 36, 248, 248, 14 }, new byte[] { 112, 111, 10, 139, 219, 198, 148, 133, 210, 114, 132, 33, 44, 78, 224, 165, 190, 141, 177, 232, 121, 96, 88, 88, 207, 192, 44, 240, 242, 26, 113, 124, 220, 82, 90, 238, 34, 161, 114, 248, 54, 145, 38, 162, 160, 132, 43, 236, 140, 90, 25, 231, 11, 57, 147, 48, 164, 83, 24, 102, 174, 142, 152, 58, 142, 95, 56, 248, 28, 34, 249, 232, 25, 124, 173, 169, 96, 161, 231, 224, 157, 118, 167, 64, 151, 108, 167, 21, 106, 238, 48, 110, 234, 132, 161, 28, 120, 157, 84, 187, 45, 5, 9, 49, 16, 206, 109, 141, 152, 78, 213, 119, 178, 52, 187, 161, 195, 76, 138, 227, 114, 20, 80, 6, 20, 10, 165, 204 }, "1234567890", null, 2 },
-                    { 2, new DateTime(2024, 11, 15, 13, 35, 55, 648, DateTimeKind.Utc).AddTicks(1865), null, "customer2@example.com", "lx191yNB5UTgUeNqX1QIZQ==", "Male", "ESeBAof1D3qOrdvr0NsjqQ==", new byte[] { 142, 73, 186, 225, 24, 87, 241, 135, 40, 54, 232, 86, 7, 205, 238, 157, 97, 241, 51, 51, 237, 104, 32, 235, 64, 135, 68, 178, 245, 10, 195, 209, 165, 207, 255, 210, 207, 48, 120, 23, 70, 156, 38, 31, 233, 87, 245, 11, 112, 185, 176, 30, 216, 243, 183, 118, 187, 40, 67, 115, 36, 248, 248, 14 }, new byte[] { 112, 111, 10, 139, 219, 198, 148, 133, 210, 114, 132, 33, 44, 78, 224, 165, 190, 141, 177, 232, 121, 96, 88, 88, 207, 192, 44, 240, 242, 26, 113, 124, 220, 82, 90, 238, 34, 161, 114, 248, 54, 145, 38, 162, 160, 132, 43, 236, 140, 90, 25, 231, 11, 57, 147, 48, 164, 83, 24, 102, 174, 142, 152, 58, 142, 95, 56, 248, 28, 34, 249, 232, 25, 124, 173, 169, 96, 161, 231, 224, 157, 118, 167, 64, 151, 108, 167, 21, 106, 238, 48, 110, 234, 132, 161, 28, 120, 157, 84, 187, 45, 5, 9, 49, 16, 206, 109, 141, 152, 78, 213, 119, 178, 52, 187, 161, 195, 76, 138, 227, 114, 20, 80, 6, 20, 10, 165, 204 }, "1234512345", null, 2 },
-                    { 3, new DateTime(2024, 11, 15, 13, 35, 55, 648, DateTimeKind.Utc).AddTicks(2046), null, "guest1@example.com", "XsKf4aJaXsFVtCmJtPLh9A==", "Male", "jp8wRnLaDCWzCeqYjo2dOQ==", new byte[] { 142, 73, 186, 225, 24, 87, 241, 135, 40, 54, 232, 86, 7, 205, 238, 157, 97, 241, 51, 51, 237, 104, 32, 235, 64, 135, 68, 178, 245, 10, 195, 209, 165, 207, 255, 210, 207, 48, 120, 23, 70, 156, 38, 31, 233, 87, 245, 11, 112, 185, 176, 30, 216, 243, 183, 118, 187, 40, 67, 115, 36, 248, 248, 14 }, new byte[] { 112, 111, 10, 139, 219, 198, 148, 133, 210, 114, 132, 33, 44, 78, 224, 165, 190, 141, 177, 232, 121, 96, 88, 88, 207, 192, 44, 240, 242, 26, 113, 124, 220, 82, 90, 238, 34, 161, 114, 248, 54, 145, 38, 162, 160, 132, 43, 236, 140, 90, 25, 231, 11, 57, 147, 48, 164, 83, 24, 102, 174, 142, 152, 58, 142, 95, 56, 248, 28, 34, 249, 232, 25, 124, 173, 169, 96, 161, 231, 224, 157, 118, 167, 64, 151, 108, 167, 21, 106, 238, 48, 110, 234, 132, 161, 28, 120, 157, 84, 187, 45, 5, 9, 49, 16, 206, 109, 141, 152, 78, 213, 119, 178, 52, 187, 161, 195, 76, 138, 227, 114, 20, 80, 6, 20, 10, 165, 204 }, "2568947898", null, 3 },
-                    { 4, new DateTime(2024, 11, 15, 13, 35, 55, 648, DateTimeKind.Utc).AddTicks(2218), null, "admin1@example.com", "aNbdnOzUNuGnMPCOxe7GbA==", "Male", "zWkKiFF1SEkTjhIMvlgAfg==", new byte[] { 142, 73, 186, 225, 24, 87, 241, 135, 40, 54, 232, 86, 7, 205, 238, 157, 97, 241, 51, 51, 237, 104, 32, 235, 64, 135, 68, 178, 245, 10, 195, 209, 165, 207, 255, 210, 207, 48, 120, 23, 70, 156, 38, 31, 233, 87, 245, 11, 112, 185, 176, 30, 216, 243, 183, 118, 187, 40, 67, 115, 36, 248, 248, 14 }, new byte[] { 112, 111, 10, 139, 219, 198, 148, 133, 210, 114, 132, 33, 44, 78, 224, 165, 190, 141, 177, 232, 121, 96, 88, 88, 207, 192, 44, 240, 242, 26, 113, 124, 220, 82, 90, 238, 34, 161, 114, 248, 54, 145, 38, 162, 160, 132, 43, 236, 140, 90, 25, 231, 11, 57, 147, 48, 164, 83, 24, 102, 174, 142, 152, 58, 142, 95, 56, 248, 28, 34, 249, 232, 25, 124, 173, 169, 96, 161, 231, 224, 157, 118, 167, 64, 151, 108, 167, 21, 106, 238, 48, 110, 234, 132, 161, 28, 120, 157, 84, 187, 45, 5, 9, 49, 16, 206, 109, 141, 152, 78, 213, 119, 178, 52, 187, 161, 195, 76, 138, 227, 114, 20, 80, 6, 20, 10, 165, 204 }, "1234512345", null, 1 }
+                    { 1, new DateTime(2024, 11, 20, 10, 38, 10, 543, DateTimeKind.Utc).AddTicks(3813), null, "customer1@example.com", "+2vS9SiEjuEtdomA+E1iOw==", "Famela", "evKlCl7mIBJkEqQf5ueGMg==", new byte[] { 236, 163, 90, 162, 102, 68, 123, 216, 9, 193, 128, 101, 85, 57, 16, 61, 51, 85, 205, 87, 218, 96, 225, 217, 156, 146, 128, 188, 112, 143, 179, 215, 37, 81, 210, 11, 28, 198, 224, 241, 159, 237, 39, 221, 231, 194, 182, 253, 251, 209, 252, 49, 90, 52, 99, 24, 88, 8, 222, 124, 214, 189, 24, 186 }, new byte[] { 225, 206, 210, 246, 135, 212, 243, 103, 114, 47, 51, 117, 23, 39, 89, 30, 51, 63, 97, 82, 199, 134, 146, 17, 89, 147, 248, 106, 161, 153, 250, 8, 148, 20, 126, 113, 161, 243, 222, 225, 219, 186, 162, 143, 131, 116, 147, 173, 84, 183, 177, 112, 253, 245, 17, 7, 65, 156, 83, 15, 245, 158, 251, 121, 86, 239, 67, 165, 135, 41, 57, 84, 94, 179, 245, 68, 43, 126, 47, 2, 45, 222, 232, 101, 106, 195, 219, 12, 133, 140, 34, 50, 210, 4, 213, 41, 171, 195, 40, 239, 117, 255, 128, 191, 68, 41, 27, 21, 201, 227, 2, 51, 26, 116, 78, 56, 111, 220, 1, 173, 143, 27, 83, 162, 238, 128, 180, 228 }, "1234567890", null, 2 },
+                    { 2, new DateTime(2024, 11, 20, 10, 38, 10, 543, DateTimeKind.Utc).AddTicks(3956), null, "customer2@example.com", "lx191yNB5UTgUeNqX1QIZQ==", "Male", "ESeBAof1D3qOrdvr0NsjqQ==", new byte[] { 236, 163, 90, 162, 102, 68, 123, 216, 9, 193, 128, 101, 85, 57, 16, 61, 51, 85, 205, 87, 218, 96, 225, 217, 156, 146, 128, 188, 112, 143, 179, 215, 37, 81, 210, 11, 28, 198, 224, 241, 159, 237, 39, 221, 231, 194, 182, 253, 251, 209, 252, 49, 90, 52, 99, 24, 88, 8, 222, 124, 214, 189, 24, 186 }, new byte[] { 225, 206, 210, 246, 135, 212, 243, 103, 114, 47, 51, 117, 23, 39, 89, 30, 51, 63, 97, 82, 199, 134, 146, 17, 89, 147, 248, 106, 161, 153, 250, 8, 148, 20, 126, 113, 161, 243, 222, 225, 219, 186, 162, 143, 131, 116, 147, 173, 84, 183, 177, 112, 253, 245, 17, 7, 65, 156, 83, 15, 245, 158, 251, 121, 86, 239, 67, 165, 135, 41, 57, 84, 94, 179, 245, 68, 43, 126, 47, 2, 45, 222, 232, 101, 106, 195, 219, 12, 133, 140, 34, 50, 210, 4, 213, 41, 171, 195, 40, 239, 117, 255, 128, 191, 68, 41, 27, 21, 201, 227, 2, 51, 26, 116, 78, 56, 111, 220, 1, 173, 143, 27, 83, 162, 238, 128, 180, 228 }, "1234512345", null, 2 },
+                    { 3, new DateTime(2024, 11, 20, 10, 38, 10, 543, DateTimeKind.Utc).AddTicks(4064), null, "guest1@example.com", "XsKf4aJaXsFVtCmJtPLh9A==", "Male", "jp8wRnLaDCWzCeqYjo2dOQ==", new byte[] { 236, 163, 90, 162, 102, 68, 123, 216, 9, 193, 128, 101, 85, 57, 16, 61, 51, 85, 205, 87, 218, 96, 225, 217, 156, 146, 128, 188, 112, 143, 179, 215, 37, 81, 210, 11, 28, 198, 224, 241, 159, 237, 39, 221, 231, 194, 182, 253, 251, 209, 252, 49, 90, 52, 99, 24, 88, 8, 222, 124, 214, 189, 24, 186 }, new byte[] { 225, 206, 210, 246, 135, 212, 243, 103, 114, 47, 51, 117, 23, 39, 89, 30, 51, 63, 97, 82, 199, 134, 146, 17, 89, 147, 248, 106, 161, 153, 250, 8, 148, 20, 126, 113, 161, 243, 222, 225, 219, 186, 162, 143, 131, 116, 147, 173, 84, 183, 177, 112, 253, 245, 17, 7, 65, 156, 83, 15, 245, 158, 251, 121, 86, 239, 67, 165, 135, 41, 57, 84, 94, 179, 245, 68, 43, 126, 47, 2, 45, 222, 232, 101, 106, 195, 219, 12, 133, 140, 34, 50, 210, 4, 213, 41, 171, 195, 40, 239, 117, 255, 128, 191, 68, 41, 27, 21, 201, 227, 2, 51, 26, 116, 78, 56, 111, 220, 1, 173, 143, 27, 83, 162, 238, 128, 180, 228 }, "2568947898", null, 3 },
+                    { 4, new DateTime(2024, 11, 20, 10, 38, 10, 543, DateTimeKind.Utc).AddTicks(4215), null, "admin1@example.com", "aNbdnOzUNuGnMPCOxe7GbA==", "Male", "zWkKiFF1SEkTjhIMvlgAfg==", new byte[] { 236, 163, 90, 162, 102, 68, 123, 216, 9, 193, 128, 101, 85, 57, 16, 61, 51, 85, 205, 87, 218, 96, 225, 217, 156, 146, 128, 188, 112, 143, 179, 215, 37, 81, 210, 11, 28, 198, 224, 241, 159, 237, 39, 221, 231, 194, 182, 253, 251, 209, 252, 49, 90, 52, 99, 24, 88, 8, 222, 124, 214, 189, 24, 186 }, new byte[] { 225, 206, 210, 246, 135, 212, 243, 103, 114, 47, 51, 117, 23, 39, 89, 30, 51, 63, 97, 82, 199, 134, 146, 17, 89, 147, 248, 106, 161, 153, 250, 8, 148, 20, 126, 113, 161, 243, 222, 225, 219, 186, 162, 143, 131, 116, 147, 173, 84, 183, 177, 112, 253, 245, 17, 7, 65, 156, 83, 15, 245, 158, 251, 121, 86, 239, 67, 165, 135, 41, 57, 84, 94, 179, 245, 68, 43, 126, 47, 2, 45, 222, 232, 101, 106, 195, 219, 12, 133, 140, 34, 50, 210, 4, 213, 41, 171, 195, 40, 239, 117, 255, 128, 191, 68, 41, 27, 21, 201, 227, 2, 51, 26, 116, 78, 56, 111, 220, 1, 173, 143, 27, 83, 162, 238, 128, 180, 228 }, "1234512345", null, 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -472,7 +472,10 @@ namespace Persistence.Migrations
                 {
                     { 1, 1, null, null, "Description", null, "https://images.pexels.com/photos/11020238/pexels-photo-11020238.jpeg", "Kupa", 500m, 10, null },
                     { 2, 2, null, null, "Description", null, "https://images.pexels.com/photos/6805518/pexels-photo-6805518.jpeg", "Vazo", 300m, 5, null },
-                    { 3, 3, null, null, "Description", null, "https://images.pexels.com/photos/9130701/pexels-photo-9130701.jpeg", "Saksı", 500m, 25, null }
+                    { 3, 3, null, null, "Description", null, "https://images.pexels.com/photos/9130701/pexels-photo-9130701.jpeg", "Saksı", 500m, 25, null },
+                    { 4, 1, null, null, "Description", null, "https://websitedemos.net/ceramic-products-store-04/wp-content/uploads/sites/1413/2024/02/ceramic-cup-01-300x300.jpg", "Kupa", 350m, 55, null },
+                    { 5, 2, null, null, "Description", null, "https://images.pexels.com/photos/29432556/pexels-photo-29432556/free-photo-of-masada-mumlu-mavi-vazoda-mor-cicekler.jpeg", "Vazo", 750m, 25, null },
+                    { 6, 3, null, null, "Description", null, "https://images.pexels.com/photos/21273580/pexels-photo-21273580/free-photo-of-yapraklar-pencereler-camlar-bitkiler.jpeg", "Saksı", 550m, 85, null }
                 });
 
             migrationBuilder.InsertData(
@@ -480,10 +483,10 @@ namespace Persistence.Migrations
                 columns: new[] { "Id", "CreatedDate", "DeletedDate", "OperationClaimId", "UpdatedDate", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 11, 15, 16, 35, 55, 648, DateTimeKind.Local).AddTicks(5298), null, 1, null, 4 },
-                    { 2, new DateTime(2024, 11, 15, 16, 35, 55, 648, DateTimeKind.Local).AddTicks(5311), null, 2, null, 1 },
-                    { 3, new DateTime(2024, 11, 15, 16, 35, 55, 648, DateTimeKind.Local).AddTicks(5319), null, 3, null, 3 },
-                    { 4, new DateTime(2024, 11, 15, 16, 35, 55, 648, DateTimeKind.Local).AddTicks(5326), null, 3, null, 2 }
+                    { 1, new DateTime(2024, 11, 20, 13, 38, 10, 543, DateTimeKind.Local).AddTicks(5761), null, 1, null, 4 },
+                    { 2, new DateTime(2024, 11, 20, 13, 38, 10, 543, DateTimeKind.Local).AddTicks(5767), null, 2, null, 1 },
+                    { 3, new DateTime(2024, 11, 20, 13, 38, 10, 543, DateTimeKind.Local).AddTicks(5770), null, 3, null, 3 },
+                    { 4, new DateTime(2024, 11, 20, 13, 38, 10, 543, DateTimeKind.Local).AddTicks(5774), null, 3, null, 2 }
                 });
 
             migrationBuilder.InsertData(
@@ -493,7 +496,10 @@ namespace Persistence.Migrations
                 {
                     { 1, null, 1, null, null, null, 1, null, 1, 1m, null },
                     { 2, null, 2, null, null, null, 2, null, 2, 2m, null },
-                    { 3, null, 3, null, null, null, 3, null, 3, 3m, null }
+                    { 3, null, 3, null, null, null, 3, null, 3, 3m, null },
+                    { 4, null, 3, null, null, null, 3, null, 3, 8m, null },
+                    { 5, null, 2, null, null, null, 3, null, 3, 28m, null },
+                    { 6, null, 1, null, null, null, 3, null, 3, 18m, null }
                 });
 
             migrationBuilder.InsertData(
@@ -503,7 +509,10 @@ namespace Persistence.Migrations
                 {
                     { 1, null, 1, null, 1, 5, "Bu kupa harikaa! Çok kullanışlı..", new DateTime(2024, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), null },
                     { 2, null, 2, null, 2, 5, "Bu vazo harikaa! Evime çok güzel bir hava getirdi.", new DateTime(2024, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), null },
-                    { 3, null, 3, null, 3, 5, "Çok güzel bir saksı.", new DateTime(2024, 2, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), null }
+                    { 3, null, 3, null, 3, 5, "Çok güzel bir saksı.", new DateTime(2024, 2, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), null },
+                    { 4, null, 3, null, 4, 4, "Çok güzel bir kupa ve kullanışlı.", new DateTime(2024, 2, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), null },
+                    { 5, null, 3, null, 5, 5, "Çok güzel bir vazo ve çok şık durdu.", new DateTime(2024, 2, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), null },
+                    { 6, null, 3, null, 5, 5, "Çok güzel bir saksı çiceklerimle çok uyumlu.", new DateTime(2024, 2, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), null }
                 });
 
             migrationBuilder.InsertData(
@@ -522,7 +531,10 @@ namespace Persistence.Migrations
                 {
                     { 1, null, null, 1, 100m, 1, 1, null },
                     { 2, null, null, 2, 200m, 2, 2, null },
-                    { 3, null, null, 3, 500m, 3, 3, null }
+                    { 3, null, null, 3, 500m, 3, 3, null },
+                    { 4, null, null, 4, 500m, 4, 3, null },
+                    { 5, null, null, 5, 500m, 5, 3, null },
+                    { 6, null, null, 6, 500m, 6, 3, null }
                 });
 
             migrationBuilder.InsertData(
@@ -530,10 +542,10 @@ namespace Persistence.Migrations
                 columns: new[] { "Id", "Amount", "CreatedDate", "DeletedDate", "OrderId", "PaymentDate", "PaymentMethodId", "PaymentStatus", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { 1, 500m, null, null, 1, new DateTime(2024, 11, 15, 16, 35, 55, 648, DateTimeKind.Local).AddTicks(3687), 1, 0, null },
-                    { 2, 200m, null, null, 2, new DateTime(2024, 11, 15, 16, 35, 55, 648, DateTimeKind.Local).AddTicks(3724), 2, 0, null },
-                    { 3, 100.00m, null, null, 1, new DateTime(2024, 11, 15, 13, 35, 55, 648, DateTimeKind.Utc).AddTicks(5570), 1, 1, null },
-                    { 4, 200.00m, null, null, 2, new DateTime(2024, 11, 15, 13, 35, 55, 648, DateTimeKind.Utc).AddTicks(5574), 2, 2, null }
+                    { 1, 500m, null, null, 1, new DateTime(2024, 11, 20, 13, 38, 10, 543, DateTimeKind.Local).AddTicks(4877), 1, 0, null },
+                    { 2, 200m, null, null, 2, new DateTime(2024, 11, 20, 13, 38, 10, 543, DateTimeKind.Local).AddTicks(4897), 2, 0, null },
+                    { 3, 100.00m, null, null, 1, new DateTime(2024, 11, 20, 10, 38, 10, 543, DateTimeKind.Utc).AddTicks(5888), 1, 1, null },
+                    { 4, 200.00m, null, null, 2, new DateTime(2024, 11, 20, 10, 38, 10, 543, DateTimeKind.Utc).AddTicks(5890), 2, 2, null }
                 });
 
             migrationBuilder.InsertData(
