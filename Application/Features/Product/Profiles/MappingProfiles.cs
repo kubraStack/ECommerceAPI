@@ -1,4 +1,5 @@
 ﻿using Application.Features.Product.Command.AdminCommands.AddProductCommand;
+using Application.Features.Product.DTOS;
 using Application.Features.Product.Queries.GetById;
 using Application.Features.Product.Queries.GetProductDetails;
 using AutoMapper;
@@ -22,6 +23,7 @@ namespace Application.Features.Product.Profiles
 
             // ProductReviewResponse için haritalama
             CreateMap<ProductReview, ProductReviewResponse>();
+            CreateMap<Domain.Entities.Product, ProductDto>();
 
         }
     }

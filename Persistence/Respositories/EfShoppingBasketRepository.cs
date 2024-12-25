@@ -36,6 +36,11 @@ namespace Persistence.Respositories
                     ShoppingBasketDetails = new List<ShoppingBasketDetail>()
                 };
                 _context.ShoppingBasket.Add(existingBasket);
+                if (!await _context.Products.AnyAsync(p => p.Id == productId))
+                {
+                    throw new Exception("Geçersiz ürün ID'si.");
+                }
+
             }
 
             var basketItem = existingBasket.ShoppingBasketDetails

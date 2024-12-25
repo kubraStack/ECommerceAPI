@@ -15,18 +15,19 @@ namespace Application.Features.ShoppingBasket.Commands.AddToBasket
     {
         public int ProductId { get; set; }
         public int Quantity { get; set; }
-
         public class AddToBasketCommandHandler : IRequestHandler<AddToBasketCommand, AddToBasketCommandResponse>
         {
             private readonly IShoppingBasketRepository _shoppingBasketRepository;
             private readonly ICustomerRepository _customerRepository;
+            private readonly IProductRepository _productRepository;
             private readonly IHttpContextAccessor _httpContextAccessor;
 
-            public AddToBasketCommandHandler(IShoppingBasketRepository shoppingBasketRepository, IHttpContextAccessor httpContextAccessor, ICustomerRepository customerRepository = null)
+            public AddToBasketCommandHandler(IShoppingBasketRepository shoppingBasketRepository, IHttpContextAccessor httpContextAccessor, ICustomerRepository customerRepository = null, IProductRepository productRepository = null)
             {
                 _shoppingBasketRepository = shoppingBasketRepository;
                 _httpContextAccessor = httpContextAccessor;
                 _customerRepository = customerRepository;
+                _productRepository = productRepository;
             }
 
             public async Task<AddToBasketCommandResponse> Handle(AddToBasketCommand request, CancellationToken cancellationToken)
@@ -57,6 +58,16 @@ namespace Application.Features.ShoppingBasket.Commands.AddToBasket
                 }
                 // Sepete ekleme işlemini gerçekleştirin
                 var result = await _shoppingBasketRepository.AddToBasketAsync(customer.Id, request.ProductId, request.Quantity);
+                var product = await _productRepository.GetByIdAsync(request.ProductId);
+                if (product == null)
+                {
+                    return new AddToBasketCommandResponse
+                    {
+                        Success = false,
+                        Message = "Ürün bulunamadı."
+                    };
+                }
+                Console.WriteLine($"ProductId: {request.ProductId}, UserId: {customer.Id}");
 
                 return new AddToBasketCommandResponse
                 {

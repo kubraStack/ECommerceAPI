@@ -26,10 +26,10 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("AddToBasket")]
-        public async Task<IActionResult> AddToCart([FromBody] AddToBasketCommand command)
-        {
-            var response = await _mediator.Send(command);
-            return Ok(response);
+        public async Task<IActionResult> AddToBasket([FromBody] AddToBasketCommand command)
+        {  
+                var response = await _mediator.Send(command);
+                return Ok(response);  
         }
 
         [HttpPut("Update-Quantity")]
